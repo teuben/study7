@@ -10,6 +10,8 @@ cd QAC/casa
 source casa_start.csh
 cd ..
 
+casa-config --version
+
 if (! -e ~/.casa/QAC) then
     make data
     make install
