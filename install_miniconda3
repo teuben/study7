@@ -1,0 +1,19 @@
+#! /bin/csh -f
+#
+
+
+set mc3 = https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh
+set msh = $mc3:t
+set dir = `pwd`/miniconda3
+
+if (! -e $msh) wget $mc3
+bash $msh -b -p $dir
+
+setenv PATH "$dir/bin:$PATH"
+
+which conda
+which pip
+
+conda install ipython numpy scipy matplotlib notebook jupyter astropy
+pip install astroquery
+
