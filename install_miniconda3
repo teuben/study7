@@ -14,6 +14,9 @@ setenv PATH "$dir/bin:$PATH"
 which conda
 which pip
 
-conda install ipython numpy scipy matplotlib notebook jupyter astropy
+conda install -y ipython numpy scipy matplotlib notebook jupyter astropy
 pip install astroquery
+
+echo "set path = ($dir/bin "'$path); rehash'  >> python_start.csh
+echo "export PATH=${dir}/bin:"'$PATH'         >> python_start.sh
 
