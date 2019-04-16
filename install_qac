@@ -1,6 +1,7 @@
 #! /bin/csh -f
 #
 
+set qac = `pwd`/QAC
 
 git clone https://github.com/teuben/QAC
 cd QAC/casa
@@ -8,3 +9,16 @@ cd QAC/casa
 source casa_start.csh
 cd ..
 
+if (! ~/.casa/QAC) then
+    make data
+    make install
+    cd ~/.casa
+    ln -s $qac
+    cd $qac
+    ln -s ../data/M100_TP_CO_cube.bl.fits
+    ln -s ../data/M100_aver_12.ms
+    ln -s ../data/M100_aver_7.ms
+    make bench
+else
+    echo You already have a QAC symlink.... cannot continue this way
+endif
