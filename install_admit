@@ -8,7 +8,7 @@ if (! -e admit) git clone https://github.com/astroumd/admit
 if ($?CASAROOT == 0) then
    echo CASA not installed, trying to find it
    if (-e QAC/casa/casa_start.csh) then
-      source QAC/casa/casa_start.csh) then
+      source QAC/casa/casa_start.csh
    else
       echo Giving up
       exit 1
