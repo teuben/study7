@@ -17,6 +17,6 @@ which pip
 conda install -y ipython numpy scipy matplotlib notebook jupyter astropy
 pip install astroquery
 
-echo "set path = ($dir/bin "'$path); rehash'  >> python_start.csh
-echo "export PATH=${dir}/bin:"'$PATH'         >> python_start.sh
+echo "set path = ($dir/bin "'$path); rehash'  >> $dir/python_start.csh
+echo "export PATH=${dir}/bin:"'$PATH'         >> $dir/python_start.sh
 
