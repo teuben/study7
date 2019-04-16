@@ -6,11 +6,15 @@ set admit = `pwd`/admit
 if (! -e admit) git clone https://github.com/astroumd/admit
 
 if ($?CASAROOT == 0) then
-   echo CASA not installed
-   exit 1
+   echo CASA not installed, trying to find it
+   if (-e QAC/casa/casa_start.csh) then
+      source QAC/casa/casa_start.csh) then
+   else
+      echo Giving up
+      exit 1
+   endif
 endif
 
-exit 0
 
 cd admit
 autoconf
