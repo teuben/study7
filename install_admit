@@ -1,0 +1,17 @@
+#! /bin/csh -f
+#
+
+set admit = `pwd`/admit
+
+if (! -e admit) git clone https://github.com/astroumd/admit
+
+if ($?CASAROOT == 0) then
+   echo CASA not installed
+   exit 1
+endif
+
+exit 0
+
+cd admit
+autoconf
+./configure
