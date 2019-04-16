@@ -8,6 +8,8 @@ from astroquery.alma import Alma
 pid = '2016.1.00324.L'
 pwd = os.getcwd() + '/data'
 
+os.system('mkdir -p %s' % pwd)
+
 data = Alma.query(payload={'project_code':pid},science=True,public=True)
 uids = np.unique(data['Member ous id'])
 print("For project code %s found:" % pid)
