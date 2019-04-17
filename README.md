@@ -4,7 +4,7 @@ Some tools for 'study7'
 
 ## Installation
 
-0. bootstrap your ubuntu with system tools we need down the line
+0. bootstrap your OS (ubuntu for now) with system tools we need down the line
 
         ./bootstrap_ubuntu
 
@@ -18,12 +18,14 @@ Some tools for 'study7'
 
         ./install_qac
         source QAC/casa/casa_start.sh
+	./test_qac1
 
 
 3. admit
 
         ./install_admit
-	source admit/admit_start.sh
+        source admit/admit_start.sh
+	./test_admit1
 
 ## Benchmark
 
