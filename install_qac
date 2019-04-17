@@ -21,7 +21,6 @@ if (! -e ~/.casa/QAC) then
     ln -sf ../data/M100_TP_CO_cube.bl.image
     ln -sf ../data/M100_aver_12.ms
     ln -sf ../data/M100_aver_7.ms
-    make bench
 else
     echo You already have a QAC symlink.... cannot continue this way
 endif
