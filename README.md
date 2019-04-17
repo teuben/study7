@@ -18,14 +18,14 @@ Some tools for 'study7'
 
         ./install_qac
         source QAC/casa/casa_start.sh
-	./test_qac1
+        ./test_qac1
 
 
 3. admit
 
         ./install_admit
         source admit/admit_start.sh
-	./test_admit1
+        ./test_admit1
 
 ## Benchmark
 
