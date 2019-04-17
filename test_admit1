@@ -1,0 +1,13 @@
+#! /bin/csh -f
+#
+
+set admit = `pwd`/admit
+
+cd $admit
+source admit_start.csh
+
+
+make testdata
+cd testdata
+runa1 test0.fits
+

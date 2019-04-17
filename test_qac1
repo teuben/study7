@@ -1,0 +1,16 @@
+#! /bin/csh -f
+#
+
+set qac = `pwd`/QAC
+
+if (! -e QAC) git clone https://github.com/teuben/QAC
+
+source QAC/casa/casa_start.csh
+
+casa-config --version
+
+cd $qac/test
+ln -sf ../data/M100_TP_CO_cube.bl.image
+ln -sf ../data/M100_aver_12.ms
+ln -sf ../data/M100_aver_7.ms
+make bench
