@@ -19,3 +19,5 @@ endif
 cd admit
 autoconf
 ./configure
+
+cp admit_start.csh admit_start.sh ..

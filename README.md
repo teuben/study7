@@ -17,7 +17,7 @@ Some tools for 'study7'. This will install self-contained versions of python3, c
 2. miniconda3 (mostly for astroquery things)
 
         ./install_miniconda3
-        source miniconda3/python_start.sh
+        source python_start.sh
         ./test_alma1
 
 This test will download large amounts of data from the archive. control-C it once it starts, as it can take hours on a slow connection.
@@ -25,7 +25,7 @@ This test will download large amounts of data from the archive. control-C it onc
 3. casa (via QAC)
 
         ./install_qac
-        source QAC/casa/casa_start.sh
+        source casa_start.sh
         ./test_qac1
 
 This test should take a few mins.
@@ -33,7 +33,7 @@ This test should take a few mins.
 4. admit
 
         ./install_admit
-        source admit/admit_start.sh
+        source admit_start.sh
         ./test_admit1
 
 This test should take a few mins.

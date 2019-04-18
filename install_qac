@@ -8,6 +8,8 @@ if (! -e QAC) git clone https://github.com/teuben/QAC
 cd QAC/casa
 ./install_casa
 source casa_start.csh
+cp casa_start.csh casa_start.sh ../..
+
 cd ..
 
 casa-config --version

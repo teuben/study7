@@ -15,8 +15,18 @@ which conda
 which pip
 
 conda install -y ipython numpy scipy matplotlib notebook jupyter astropy
-pip install astroquery
 
-echo "set path = ($dir/bin "'$path); rehash'  >> $dir/python_start.csh
-echo "export PATH=${dir}/bin:"'$PATH'         >> $dir/python_start.sh
+echo "set path = ($dir/bin "'$path); rehash'  >> python_start.csh
+echo "export PATH=${dir}/bin:"'$PATH'         >> python_start.sh
 
+
+# pip install astroquery
+# conda -c astropy astroquery
+
+# install the latest (ALMA is broken in pip/conda, it's too old)
+if (1) then
+  source python_start.csh
+  git clone https://github.com/astropy/astroquery
+  cd astroquery
+  python setup.py install
+endif  
