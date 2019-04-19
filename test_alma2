@@ -1,0 +1,86 @@
+#! /usr/bin/env python
+#
+#   More examples
+# 
+#   tested with astroquery-0.3.10.dev5282-py3.7.egg on April 18,2019
+#
+#
+#   sometimes you see:
+#        RuntimeError: No recommended backend was available. Install a recommended 3rd party backend package; or, install the keyrings.alt package if you want to use the non-recommended backends. See https://pypi.org/project/keyring for details.
+#   just ignore, and try again (maybe few times), eventually it will magically work...
+#
+#   However, below there are some errors that I can't seem to resolve (bugs in AQ ?)
+#
+import os, sys, re
+import numpy as np
+from astroquery.alma import Alma
+
+pid = '2016.1.00324.L'
+pwd = os.getcwd() + '/data'
+
+os.system('mkdir -p %s' % pwd)
+
+alma = Alma()
+alma.cache_location = pwd
+data = alma.query(payload={'project_code':pid},public=True,science=True)
+uids = np.unique(data['Member ous id'])
+print("For project code %s found:" % pid)
+print(uids)
+nuids = len(uids)
+
+if True:
+    r1=re.compile('.*_of_.*tar$')
+    # somehow only the first time in this loop it works, after
+    # requests.exceptions.HTTPError: 500 Server Error: 500 for url: https://almascience.nrao.edu/rh/error?errorMessage=java.lang.IllegalArgumentException%3A+Invalid+UUID+string%3A+kjameson
+
+    for uid in uids[1:]:
+        print("Staging %s" % uid)
+        link_list = alma.stage_data(uid)            # <-- fails on 2nd attempt
+        url = link_list['URL']
+        url1 = [x for x in url if r1.match(x)]
+        print("Working on %s" % str(url1))
+        alma.download_files(url1)
+
+if False:
+    r1=re.compile('.*_of_.*tar$')
+    for i in range(nuids):
+        data = alma.query(payload={'project_code':pid},public=False,science=True)
+        uids = np.unique(data['Member ous id'])
+        print("Staging %s" % uids[i])
+        link_list = alma.stage_data(uids[i])        # <-- fails for 2nd attempt
+        url = link_list['URL']
+        url1 = [x for x in url if r1.match(x)]
+        print("Working on %s" % str(url1))
+        alma.download_files(url1)
+        
+
+if False:
+    link_list = alma.stage_data(uids[0])
+    # filelist = alma.download_and_extract_files(link_list['URL'], regex='.*fits*tar*')
+    filelist = alma.download_and_extract_files(link_list['URL'], regex='.*_of_.*tar$')
+    # -> ValueError: URLs should be links to tarballs. I found ...README.txt
+    # alma.download_files(link_list['URL'][0])
+    # -> MissingSchema: Invalid URL 'h': No schema supplied. Perhaps you meant http://h?
+    url = link_list['URL']
+    r1=re.compile('.*_of_.*tar$')              # e.g. 2018.1.01115.S_uid___A001_X133f_X196_001_of_001.tar
+    url1 = [x for x in url if r1.match(x)]
+
+if False:
+    link_list = alma.stage_data(uids)
+    print(link_list['size'].sum())
+    # -> 1022.468
+    alma.download_files(link_list, cache=True)
+    # -> TypeError: unhashable type: 'Row'
+
+    
+# ALL
+# alma.download_files(link_list, cache=True)
+# -> TypeError: unhashable type: 'Row'
+
+# ONE
+# alma.retrieve_data_from_uid(uids[0])
+# -> will also get the asdm
+
+#  Katherine Jameson: Request #1647986756662
+
+# raise ValueError("URLs should be links to tarballs.")
