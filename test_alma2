@@ -30,12 +30,9 @@ nuids = len(uids)
 
 if True:
     r1=re.compile('.*_of_.*tar$')
-    # somehow only the first time in this loop it works, after
-    # requests.exceptions.HTTPError: 500 Server Error: 500 for url: https://almascience.nrao.edu/rh/error?errorMessage=java.lang.IllegalArgumentException%3A+Invalid+UUID+string%3A+kjameson
-
-    for uid in uids[1:]:
+    for uid in uids:
         print("Staging %s" % uid)
-        link_list = alma.stage_data(uid)            # <-- fails on 2nd attempt
+        link_list = alma.stage_data(uid)         
         url = link_list['URL']
         url1 = [x for x in url if r1.match(x)]
         print("Working on %s" % str(url1))
