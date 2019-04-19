@@ -28,7 +28,8 @@ print("For project code %s found:" % pid)
 print(uids)
 nuids = len(uids)
 
-if True:
+if False:
+    # this works fine.
     r1=re.compile('.*_of_.*tar$')
     for uid in uids:
         print("Staging %s" % uid)
@@ -37,19 +38,6 @@ if True:
         url1 = [x for x in url if r1.match(x)]
         print("Working on %s" % str(url1))
         alma.download_files(url1)
-
-if False:
-    r1=re.compile('.*_of_.*tar$')
-    for i in range(nuids):
-        data = alma.query(payload={'project_code':pid},public=False,science=True)
-        uids = np.unique(data['Member ous id'])
-        print("Staging %s" % uids[i])
-        link_list = alma.stage_data(uids[i])        # <-- fails for 2nd attempt
-        url = link_list['URL']
-        url1 = [x for x in url if r1.match(x)]
-        print("Working on %s" % str(url1))
-        alma.download_files(url1)
-        
 
 if False:
     link_list = alma.stage_data(uids[0])
