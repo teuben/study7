@@ -24,11 +24,16 @@ echo "export PATH=${dir}/bin:"'$PATH'         >> python_start.sh
 # conda -c astropy astroquery
 
 # install the latest (ALMA is broken in pip/conda, it's too old)
-if (0) then
+if (-d astroquery) then
+  source python_start.csh
+  cd astroquery
+  python setup.py install
+else if (1) then
   source python_start.csh
   git clone https://github.com/astropy/astroquery
   cd astroquery
   python setup.py install
 else
+  python setup.py install
   pip install --upgrade --pre astroquery
 endif  
