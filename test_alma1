@@ -5,19 +5,24 @@ import os, sys
 import numpy as np
 from astroquery.alma import Alma
 
-pid = '2016.1.00324.L'
-pwd = os.getcwd() + '/data'
 
+pid = '2016.1.00324.L'
+usr = None
+if len(sys.argv) > 1: pid = sys.argv[1]
+
+pwd = os.getcwd() + '/data'
 os.system('mkdir -p %s' % pwd)
 
-data = Alma.query(payload={'project_code':pid},science=True,public=True)
+alma = Alma()
+
+data = alma.query(payload={'project_code':pid},science=True,public=True)
+alma.cache_location = pwd
+if usr != None:
+    alma.login(usr,store_password=True)
 uids = np.unique(data['Member ous id'])
 print("For project code %s found:" % pid)
 print(uids)
-link_list = Alma.stage_data(uids)
+link_list = alma.stage_data(uids)
 print(link_list['size'].sum())
-myAlma = Alma()
-myAlma.cache_location = pwd
-myAlma.retrieve_data_from_uid(uids[0])
+alma.retrieve_data_from_uid(uids[0])
 
-# myAlma.download_files(link_list, cache=True)
