@@ -30,5 +30,5 @@ if ids != None:
     uids = [uids[ids]]
 link_list = alma.stage_data(uids)
 print(link_list['size'].sum())
-alma.retrieve_data_from_uid(uids[0])
+alma.retrieve_data_from_uid(uids)
 
