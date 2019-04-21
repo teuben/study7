@@ -1,0 +1,24 @@
+#! /bin/csh -f
+#
+
+
+
+set backup = tarfiles
+
+
+mkdir -p $backup
+
+foreach file ($*)
+    set ex = $file:e
+    echo $file
+    
+    if ($ex == tar) then
+      tar xf $file
+      mv $file $backup
+    else if ($ex == gz) then
+      tar zxf $file
+      mv $file $backup
+    else
+      echo Skipping
+    endif
+end
