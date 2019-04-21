@@ -1,14 +1,19 @@
 #! /usr/bin/env python
 #
+#
+#  Usage:  test_alma1 [project_code]
+#
+#  Warning: Gets all the data, including the potentially large asdm files
 
 import os, sys
 import numpy as np
 from astroquery.alma import Alma
 
 
-pid = '2016.1.00324.L'
-usr = None
+pid = '2016.1.00004.S'    # nice small project
+ids = None
 if len(sys.argv) > 1: pid = sys.argv[1]
+if len(sys.argv) > 2: ids = int(sys.argv[2])
 
 pwd = os.getcwd() + '/data'
 os.system('mkdir -p %s' % pwd)
@@ -17,11 +22,12 @@ alma = Alma()
 
 data = alma.query(payload={'project_code':pid},science=True,public=True)
 alma.cache_location = pwd
-if usr != None:
-    alma.login(usr,store_password=True)
 uids = np.unique(data['Member ous id'])
 print("For project code %s found:" % pid)
 print(uids)
+if ids != None:
+    print("Only using %s" % uids[ids])
+    uids = [uids[ids]]
 link_list = alma.stage_data(uids)
 print(link_list['size'].sum())
 alma.retrieve_data_from_uid(uids[0])
