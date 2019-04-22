@@ -18,25 +18,36 @@ import numpy as np
 from astroquery.alma import Alma
 
 pid = '2018.1.01115.S'
-pwd = os.getcwd() + '/data'
+usr = 'kjameson'
+ids = None
 
+if len(sys.argv) > 1: pid = sys.argv[1]
+if len(sys.argv) > 2: usr = sys.argv[2]
+if len(sys.argv) > 3: ids = int(sys.argv[3])
+
+
+pwd = os.getcwd() + '/data'
 os.system('mkdir -p %s' % pwd)
 
 alma = Alma()
-alma.login("kjameson",store_password=True)
+alma.login(usr,store_password=True)
 alma.cache_location = pwd
 data = alma.query(payload={'project_code':pid},public=False,science=True)
 uids = np.unique(data['Member ous id'])
 print("For project code %s found:" % pid)
 print(uids)
+if ids != None:
+    print("Only using %s" % uids[ids])
+    uids = [uids[ids]]
 nuids = len(uids)
 
-if False:
+
+if True:
     r1=re.compile('.*_of_.*tar$')
     # somehow only the first time in this loop it works, after
     # requests.exceptions.HTTPError: 500 Server Error: 500 for url: https://almascience.nrao.edu/rh/error?errorMessage=java.lang.IllegalArgumentException%3A+Invalid+UUID+string%3A+kjameson
 
-    for uid in uids[1:]:
+    for uid in uids:
         print("Staging %s" % uid)
         link_list = alma.stage_data(uid)            # <-- fails on 2nd attempt
         url = link_list['URL']
