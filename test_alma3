@@ -11,7 +11,11 @@
 #        RuntimeError: No recommended backend was available. Install a recommended 3rd party backend package; or, install the keyrings.alt package if you want to use the non-recommended backends. See https://pypi.org/project/keyring for details.
 #   just ignore, and try again (maybe few times), eventually it will magically work...
 #
+#   may need to 'pip install keyrings.alt' if it persists.
+#
 #   However, below there are some errors that I can't seem to resolve (bugs in AQ ?)
+#
+#   Info:   This SMC project has 15 fields (Tile*), in 7 by 15 fields.
 #
 import os, sys, re
 import numpy as np
@@ -79,7 +83,7 @@ if False:
     r1=re.compile('.*_of_.*tar$')              # e.g. 2018.1.01115.S_uid___A001_X133f_X196_001_of_001.tar
     url1 = [x for x in url if r1.match(x)]
 
-if True:
+if False:
     # this seems to take "forever" - the web interface is also slow (hours and hours) so perhaps this is also AQ
     link_list = alma.stage_data(uids)
     print(link_list['size'].sum())
