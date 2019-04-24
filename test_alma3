@@ -15,7 +15,7 @@
 #
 #   However, below there are some errors that I can't seem to resolve (bugs in AQ ?)
 #
-#   Info:   This SMC project has 15 fields (Tile*), in 7 by 15 fields.
+#   Info:   This SMC project has 105 fields (Tile*), in 7 by 15 fields, as well as 105 Ref* fields.
 #
 import os, sys, re
 import numpy as np
