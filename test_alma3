@@ -41,7 +41,7 @@ uids = np.unique(data['Member ous id'])
 print("For project code %s found:" % pid)
 print(uids)
 if ids != None:
-    print("Only using #%d UID= %s" % (ids,uids[ids]))
+    print("Only using #%d/%d UID= %s" % (ids,len(uids),uids[ids]))
     uids = [uids[ids]]
 nuids = len(uids)
 
