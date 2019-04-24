@@ -21,18 +21,21 @@ import os, sys, re
 import numpy as np
 from astroquery.alma import Alma
 
-pid = '2018.1.01115.S'
-usr = 'kjameson'
-ids = None
+# set defaults
+pid = '2018.1.01115.S'   # arg1:  your Project Code
+usr = 'kjameson'         # arg2:  your matching username (since we get non-public data here)
+ids = None               # arg3:  either get all (which fails for now), or just one (>=0)
 
+# poor mans' command line parser
 if len(sys.argv) > 1: pid = sys.argv[1]
 if len(sys.argv) > 2: usr = sys.argv[2]
 if len(sys.argv) > 3: ids = int(sys.argv[3])
 
-
+# always create a data/ directory locally that will stuff all the data
 pwd = os.getcwd() + '/data'
 os.system('mkdir -p %s' % pwd)
 
+# go ALMA !
 alma = Alma()
 alma.login(usr,store_password=True)
 alma.cache_location = pwd
@@ -45,6 +48,7 @@ if ids != None:
     uids = [uids[ids]]
 nuids = len(uids)
 
+#  the True/False here are to expose various issues I had 
 
 if True:
     r1=re.compile('.*_of_.*tar$')
@@ -96,7 +100,5 @@ if False:
 # ONE
 # alma.retrieve_data_from_uid(uids[0])
 # -> will also get the asdm
-
-#  Katherine Jameson: Request #1647986756662
 
 # raise ValueError("URLs should be links to tarballs.")
