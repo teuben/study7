@@ -1,35 +1,44 @@
 #! /usr/bin/env python
 #
+#
+#
+# uid://A001/X133f/X196 2018.1.01115.S_uid___A001_X133f_X196_001_of_001.tar -> science_goal.uid___A001_X133f_X194/
+# uid://A001/X133f/X19a 2018.1.01115.S_uid___A001_X133f_X19a_001_of_001.tar    science_goal.uid___A001_X133f_X198/
+# uid://A001/X133f/X19e 2018.1.01115.S_uid___A001_X133f_X19e_001_of_001.tar    science_goal.uid___A001_X133f_X19c/
+# uid://A001/X133f/X1a2 2018.1.01115.S_uid___A001_X133f_X1a2_001_of_001.tar    science_goal.uid___A001_X133f_X1a0/
+
 
 import os, sys, glob
 
 pid = '2018.1.01115.S'
-uid = 'uid://A001/X133f/X19c'
+pbcor = 'member.uid___*.Ref_*.spw16.cube.I.pbcor.fits' 
 
 if len(sys.argv) > 1: pid = sys.argv[1]
-if len(sys.argv) > 2: uid = sys.argv[2]
 
+print("Processing project code %s" % pid)
+print("Finding matching pbcor files with pattern '%s'" % pbcor)
 
-uida = uid.split('/')
-tar  = '%s_uid___%s_%s_%s_001_of_001.tar' % (pid, uida[2],uida[3],uida[4])
-sous = 'science_goal.uid___%s_%s_%s' % (uida[2],uida[3],uida[4])
+testdirs = '%s/science_goal.*/group.*/member.*' % (pid)
+test = glob.glob(testdirs)
 
-testdir = '%s/%s' % (pid,sous)
+pbcors = []
+for t in test:
+    testfile = '%s/product/%s' % (t,pbcor)
+    test2 = glob.glob(testfile)
+    for t2 in test2:
+        pbcors.append(t2)
 
-# if not exist
-#cmd = 'tar xf %s' % tar
-#os.system(cmd)
+print("Found %d directories, with %d matching pbcor.fits files for processing" % (len(test),len(pbcors)))
 
-# this better exist, our test case
+for p in pbcors:
+    # print(p)
+    pdir  = p[:p.rfind('/')]
+    pbcor = p[p.rfind('/')+1:]
+    # print('pdir: ',pdir)
+    # print('root: ',pbcor)
+    cmd = 'cd %s ; runa1 %s' % (pdir,pbcor)
+    print(cmd)
+    os.system(cmd)
 
-testfile = '%s/%s/*/*/product/member.uid___*.Ref_*.spw16.cube.I.pbcor.fits' % (pid,sous)
-
-
-test = glob.glob(testfile)
-
-if len(test) == 1:
-    pbcor = test[0]
-    pdir  = pbcor[:pbcor.rfind('/')]
-    print('pdir: ',pbcor)
-    print('root: ',pbcor[:-11])
+print("Finished processing %d pbcor.fits files" % (len(pbcors)))
     
