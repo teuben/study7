@@ -1,44 +1,79 @@
 #! /usr/bin/env python
 #
-#
+#     Example to untar and processing lots of SOUS directories in a PID
 #
 # uid://A001/X133f/X196 2018.1.01115.S_uid___A001_X133f_X196_001_of_001.tar -> science_goal.uid___A001_X133f_X194/
 # uid://A001/X133f/X19a 2018.1.01115.S_uid___A001_X133f_X19a_001_of_001.tar    science_goal.uid___A001_X133f_X198/
 # uid://A001/X133f/X19e 2018.1.01115.S_uid___A001_X133f_X19e_001_of_001.tar    science_goal.uid___A001_X133f_X19c/
 # uid://A001/X133f/X1a2 2018.1.01115.S_uid___A001_X133f_X1a2_001_of_001.tar    science_goal.uid___A001_X133f_X1a0/
+#
+# admit on the Ref files is about 3' per cube
+# admit on the Tile files is ....
 
 
 import os, sys, glob
 
-pid = '2018.1.01115.S'
+# example of defaults
+pid   = '2018.1.01115.S'
+pbcor = 'member.uid___*.Tile_*.spw??.cube.I.pbcor.fits' 
 pbcor = 'member.uid___*.Ref_*.spw16.cube.I.pbcor.fits' 
+pbcor = 'member.uid___*.Tile_*.spw16.cube.I.pbcor.fits' 
 
-if len(sys.argv) > 1: pid = sys.argv[1]
+
+if len(sys.argv) > 1: pid   = sys.argv[1]
+if len(sys.argv) > 2: pbcor = sys.argv[2]
 
 print("Processing project code %s" % pid)
 print("Finding matching pbcor files with pattern '%s'" % pbcor)
 
-testdirs = '%s/science_goal.*/group.*/member.*' % (pid)
-test = glob.glob(testdirs)
+def find_files(pid,pbcor):
+    """  for a given PID and pbcor pattern return all the (pbcor) files
+    matching that pattern. You can then loop over those files and work
+    on them.
+    """
 
-pbcors = []
-for t in test:
-    testfile = '%s/product/%s' % (t,pbcor)
-    test2 = glob.glob(testfile)
-    for t2 in test2:
-        pbcors.append(t2)
+    testdirs = '%s/science_goal.*/group.*/member.*' % (pid)
+    test = glob.glob(testdirs)
 
-print("Found %d directories, with %d matching pbcor.fits files for processing" % (len(test),len(pbcors)))
+    pbcors = []
+    for t in test:
+        testfile = '%s/product/%s' % (t,pbcor)
+        test2 = glob.glob(testfile)
+        for t2 in test2:
+            pbcors.append(t2)
 
-for p in pbcors:
-    # print(p)
+    print("Found %d directories, with %d matching pbcor.fits files for processing" % (len(test),len(pbcors)))
+    return pbcors
+
+# find the files
+pbcors = find_files(pid,pbcor)
+
+# loop over the files by going to its parent directory and doing some work on it on it's derived products
+for (p,i) in zip(pbcors,range(len(pbcors))):
+    print('=== Working on %d/%d ===' % (i+1,len(pbcors)))
     pdir  = p[:p.rfind('/')]
-    pbcor = p[p.rfind('/')+1:]
-    # print('pdir: ',pdir)
-    # print('root: ',pbcor)
-    cmd = 'cd %s ; runa1 %s' % (pdir,pbcor)
-    print(cmd)
-    os.system(cmd)
+    pfil = p[p.rfind('/')+1:]
+    root  = pfil[:-11]       #  11 = len('.pbcor.fits')
+    log   = '%s.log' % root
+    adir  = '%s.pbcor.admit' % root
+    kill  = False
+
+    if True:
+        cmd = 'cd %s ; runa1 %s' % (pdir,root)
+        print(cmd)
+        os.system(cmd)
+        kill = True
+
+    if True:
+        cmd = 'cd %s ; echo %s; grep REGRESSION %s' % (pdir, root, log)
+        print(cmd)
+        os.system(cmd)
+
+    if kill:
+        cmd = 'killall Xvfb'
+        print(cmd)
+        os.system(cmd)
+
 
 print("Finished processing %d pbcor.fits files" % (len(pbcors)))
     
