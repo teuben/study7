@@ -1,4 +1,4 @@
-#! /bin/csh -f
+#! /bin/bash
 #
 #   this may be a moving target as we find more things we need
 #
