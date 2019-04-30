@@ -6,7 +6,7 @@
 sudo apt update
 sudo apt install -y tcsh autoconf make emacs25-nox dot awscli nfs-common
 sudo apt install -y libxft2 libsm6 libxi6 libxrandr2 libxfixes3 libxcursor1 libxinerama1 libglvnd-dev x11-xkb-utils
-
+sudo apt install -u imagemagick
 
 
 
