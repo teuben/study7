@@ -4,13 +4,19 @@
 #  Usage:  test_alma1 [project_code]
 #
 #  Warning: Gets all the data, including the potentially large asdm files
+#           See test_alma2 for getting just the product tar files
+#
+#  Typical errors:
+#  requests.exceptions.ConnectionError: HTTPSConnectionPool(host='almascience.nrao.edu', port=443): Read timed out.
+#  urllib3.exceptions.ProtocolError: ('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))
+
 
 import os, sys
 import numpy as np
 from astroquery.alma import Alma
 
 
-pid = '2016.1.00004.S'    # nice small project
+pid = '2016.1.00004.S'    # nice smallish project
 ids = None
 if len(sys.argv) > 1: pid = sys.argv[1]
 if len(sys.argv) > 2: ids = int(sys.argv[2])
