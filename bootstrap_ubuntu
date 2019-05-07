@@ -2,6 +2,7 @@
 #
 #   this may be a moving target as we find more things we need
 #
+#   perhaps these too:  libgfortran3 (for casa6)
 
 sudo apt update
 sudo apt install -y tcsh autoconf make emacs25-nox dot awscli nfs-common
