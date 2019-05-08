@@ -1,5 +1,8 @@
 #! /bin/bash
 #
+#   If you have a very virgin ubuntu, you may need to ensure these packages are present
+#   for some of the study7 work.
+#
 #   this may be a moving target as we find more things we need
 #
 #   perhaps these too:  libgfortran3 (for casa6)
