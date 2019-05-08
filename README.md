@@ -18,8 +18,9 @@ Some tools for 'study7'. This will install self-contained versions of python3, c
         ./install_miniconda3
         source python_start.sh
         ./test_alma1
+	./test_casa6
 
-This test will download large amounts of data from the archive. control-C it once it starts, as it can take hours on a slow connection.
+This test will download large amounts of data from the archive. control-C it once it starts, as it can take hours on a slow connection.  If you are brave and want to try out casa6beta, add the "casa6=1" argument to this script.
 
 3. casa (via QAC)
 
@@ -27,7 +28,7 @@ This test will download large amounts of data from the archive. control-C it onc
         source casa_start.sh
         ./test_qac1
 
-This test should take a few mins.
+This test should take a few mins.  Note that this casa is (should be) orthogonal to the casa installed in the classic way.
 
 4. admit
 
@@ -39,7 +40,9 @@ This test should take a few mins.
 
 ## CASA 6
 
-An experimental CASA 6 is now available, from the CASA team:
+An experimental CASA 6 is now available, which you can install via our miniconda3 install.
+
+Notes from the CASA team:
 
 Users are welcome to try the new CASA 6 pip install to their own
 python environment. This is roughly analogous to using the current
@@ -64,13 +67,6 @@ RHEL7 terminal window):
             help(ct)
 	    
             exit()
-    # and now for something fun
-    pip install jupyter
-
-    # and also this:
-    git clone https://github.com/ipython/ipython
-    cd ipython
-    pip install .
    
     deactivate
 
@@ -84,7 +80,7 @@ environment with python in a tar file, is planned for July 2019. This
 will be based on the same science and functionality as the upcoming
 CASA 5.6 to be used in ALMA Cycle 7 processing.
 
-## Benchmark
+## Benchmarks
 
 
 
