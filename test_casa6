@@ -10,6 +10,9 @@ import casatasks as ct
 import casatools
 ia = casatools.image()
 
+#
+print("Testing casa6 with ia.maketestimage()")
+
 # ensure directory exists
 pwd = os.getcwd() + '/data'
 os.system('mkdir -p %s' % pwd)
@@ -17,5 +20,8 @@ os.system('mkdir -p %s' % pwd)
 # casa
 ia.maketestimage('data/test6.im',overwrite=True)
 ct.imhead('data/test6.im')
-ia.statistics()
+s0=ia.statistics()
 ia.close()
+
+#
+print(s0)
