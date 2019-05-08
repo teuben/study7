@@ -1,0 +1,21 @@
+#! /usr/bin/env python
+#
+
+# system
+import os, sys
+import numpy as np
+
+# casa
+import casatasks as ct
+import casatools
+ia = casatools.image()
+
+# ensure directory exists
+pwd = os.getcwd() + '/data'
+os.system('mkdir -p %s' % pwd)
+
+# casa
+ia.maketestimage('data/test6.im',overwrite=True)
+ct.imhead('data/test6.im')
+ia.statistics()
+ia.close()
