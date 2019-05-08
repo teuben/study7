@@ -1,23 +1,39 @@
 #! /bin/csh -f
 #
+#  Install a miniconda3 python for astroquery.alma, and optionally casa6beta
+#
 
+set mc3   = https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh
+set msh   = $mc3:t
+set dir   = `pwd`/miniconda3
+set casa6 = 0
 
-set mc3 = https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh
-set msh = $mc3:t
-set dir = `pwd`/miniconda3
+# you better know what you are doing here
+foreach arg ($*)
+  set $arg
+end
 
 if (! -e $msh) wget $mc3
 bash $msh -b -p $dir
 
 setenv PATH "$dir/bin:$PATH"
 
-which conda
-which pip
+conda update -y conda
+pip install --upgrade pip
 
-conda install -y ipython numpy scipy matplotlib notebook jupyter astropy
 
 echo "set path = ($dir/bin "'$path); rehash'  >> python_start.csh
 echo "export PATH=${dir}/bin:"'$PATH'         >> python_start.sh
+
+if ($casa6) conda install -y python=3.6.8
+
+conda install -y ipython numpy scipy matplotlib notebook jupyter astropy
+
+if ($casa6) then
+  echo "pip install casatools and casatasks... this will download 740MB"
+  pip install --extra-index-url https://casa-pip.nrao.edu:443/repository/pypi-group/simple casatools
+  pip install --extra-index-url https://casa-pip.nrao.edu:443/repository/pypi-group/simple casatasks
+endif
 
 
 # pip install astroquery
@@ -34,6 +50,5 @@ else if (1) then
   cd astroquery
   python setup.py install
 else
-  python setup.py install
   pip install --upgrade --pre astroquery
 endif  
