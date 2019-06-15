@@ -3,6 +3,7 @@
 #  Install a miniconda3 python for astroquery.alma, and optionally casa6beta
 #
 
+#           68MB
 set mc3   = https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh
 set msh   = $mc3:t
 set dir   = `pwd`/miniconda3
