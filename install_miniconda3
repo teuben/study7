@@ -22,6 +22,12 @@ setenv PATH "$dir/bin:$PATH"
 conda update -y conda
 pip install --upgrade pip
 
+if (1) then
+  # too many times my /tmp isn't big enough
+  mkdir tmp
+  export TMPDIR=`pwd`/tmp
+endif
+
 
 echo "set path = ($dir/bin "'$path); rehash'  >> python_start.csh
 echo "export PATH=${dir}/bin:"'$PATH'         >> python_start.sh
