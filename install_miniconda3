@@ -25,7 +25,7 @@ pip install --upgrade pip
 if (1) then
   # too many times my /tmp isn't big enough
   mkdir tmp
-  export TMPDIR=`pwd`/tmp
+  setenv TMPDIR `pwd`/tmp
 endif
 
 
