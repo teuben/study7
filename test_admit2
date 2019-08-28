@@ -12,3 +12,4 @@ cd testdata
 runa1 test253_spw3.fits
 runa2 test253_cont.fits
 
+echo See logfiles in `pwd`
