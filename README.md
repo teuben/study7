@@ -20,7 +20,8 @@ Some tools for 'study7'. This will install self-contained versions of python3, c
         ./test_alma1
 	./test_casa6
 
-This test will download large amounts of data from the archive. control-C it once it starts, as it can take hours on a slow connection.  If you are brave and want to try out casa6beta, add the "casa6=1" argument to this script.
+This test will download large amounts of data from the archive. control-C it once it starts, as it can take hours on a slow connection. These data are downloaded in the data subdirectory.
+If you are brave and want to try out casa6beta, add the "casa6=1" argument to the install_miniconda3 script.
 
 3. casa (via QAC)
 
@@ -40,7 +41,7 @@ This test should take a few mins.
 
 ## CASA 6
 
-An experimental CASA 6 is now available, which you can install via our miniconda3 install.
+An experimental CASA 6 is now available, which you can install via our miniconda3 install via the "casa6=1" optional command line argument.
 
 Notes from the CASA team:
 
