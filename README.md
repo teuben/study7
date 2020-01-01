@@ -15,12 +15,13 @@ Some tools for 'study7'. This will install self-contained versions of python3, c
 
 2. miniconda3 (mostly for astroquery things)
 
-        ./install_miniconda3
+        ./install_miniconda3     [casa6=1]
         source python_start.sh
         ./test_alma1
 	./test_casa6
 
-This test will download large amounts of data from the archive. control-C it once it starts, as it can take hours on a slow connection. These data are downloaded in the data subdirectory.
+This test will download large amounts of data from the archive. control-C it once it starts, as it can take
+hours on a slow connection. These data are downloaded in the data subdirectory.
 If you are brave and want to try out casa6beta, add the "casa6=1" argument to the install_miniconda3 script.
 
 3. casa (via QAC)
