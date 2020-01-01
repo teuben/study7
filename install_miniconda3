@@ -33,6 +33,11 @@ echo "set path = ($dir/bin "'$path); rehash'  >> python_start.csh
 echo "export PATH=${dir}/bin:"'$PATH'         >> python_start.sh
 
 if ($casa6) conda install -y python=3.6.8
+#  also recommended 
+if (0) then
+  python3 -m venv casa6_0
+  source casa6_0/bin/activate
+endif  
 
 conda install -y ipython numpy scipy matplotlib notebook jupyter astropy
 
