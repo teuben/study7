@@ -21,6 +21,14 @@ ids = None
 if len(sys.argv) > 1: pid = sys.argv[1]
 if len(sys.argv) > 2: ids = int(sys.argv[2])
 
+print("pid=%s" % pid)
+print("ids=%s" % repr(ids))
+print("")
+print("Once you see    Staging files... [astroquery.alma.core]")
+print("Followed by a line printing a . every now and then, abort this script, as it runs fine")
+print("")
+
+
 pwd = os.getcwd() + '/data'
 os.system('mkdir -p %s' % pwd)
 
