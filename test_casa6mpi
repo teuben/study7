@@ -1,0 +1,14 @@
+#! /usr/bin/env python
+#
+#  run this script via:
+#        mpirun -q -n 2 python test_casa6mpi
+#  and you should see twice the message 'working? True'
+#
+
+from casampi.MPIEnvironment import MPIEnvironment
+
+if MPIEnvironment.is_mpi_enabled:
+    print('working?', MPIEnvironment.is_mpi_enabled)
+else:
+    print('Warning: no MPI environment present')
+    print('You need to run this e.g. as:  mpirun -q -n 2 python test_casa6mpi')    
