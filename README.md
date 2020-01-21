@@ -31,7 +31,7 @@ If you are brave and want to try out casa6beta, add the "casa6=1" argument to th
 2b. Development of astroquery (optional)
 
         git clone https://github.com/teuben/astroquery
-	pip install -e astroquery
+        pip install -e astroquery
 
 3. casa (via QAC)
 
@@ -54,14 +54,9 @@ This test should take a few mins.
 See also https://casa.nrao.edu/casadocs/casa-5.6.0/introduction/casa6-installation-and-usage
 
 
-https://casa-pip.nrao.edu:443/repository/pypi-group/packages/casatools/6.1.0.37/casatools-6.1.0.37-cp36-cp36m-linux_x86_64.whl
 
-https://casa-pip.nrao.edu:443/repository/pypi-group/packages/casatasks/6.1.0.37/casatasks-6.1.0.37-py3-none-any.whl
-
-
-
-An experimental CASA 6 is now available, which you can install via our miniconda3 install via the "casa6=1" optional
-command line argument.
+An experimental CASA 6 is now available, which you can install via our
+miniconda3 install via the "casa6=1" optional command line argument.
 
 Notes from the CASA team:
 
@@ -114,7 +109,8 @@ will create a **casa6** profile, so you can simplify calling casa using
       ipython --profile=casa6
 
 where files in ~/.ipython/profile_casa6/startup are executed before
-the command prompt appears
+the command prompt appears. This is where you can place some conventient
+import commands, to make casa6 look like casa.
 
 ## Benchmarks
 
