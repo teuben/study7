@@ -9,7 +9,7 @@
 #  - no python in the prefix bin, only python3
 
 INSTALLOCATION=$PWD
-$PYTHONVERSION=3.6.10
+PYTHONVERSION=3.6.10
 
 # PYTHON
 wget https://www.python.org/ftp/python/$PYTHONVERSION/Python-$PYTHONVERSION.tgz
@@ -17,7 +17,7 @@ tar -xzvf Python-$PYTHONVERSION.tgz
 cd Python-$PYTHONVERSION
 
 prefix=$INSTALLOCATION/python-$PYTHONVERSION
-
+prefix=$INSTALLOCATION/Python-$PYTHONVERSION
 ./configure --prefix=$prefix
 make
 make install
