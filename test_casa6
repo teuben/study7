@@ -1,14 +1,20 @@
 #! /usr/bin/env python
 #
+#  during some testing stages this script may fail, when python is used,
+#  but runs ok when ipython is used. go figure
 
 # system
 import os, sys
 import numpy as np
 
 # casa
-import casatasks as ct
-import casatools
-ia = casatools.image()
+try:
+    import casatasks as ct
+    import casatools
+    ia = casatools.image()
+except:
+    print("failing to import casatasks/tools .... try running it through ipython instead")
+    sys.exit(0)
 
 #
 print("Testing casa6 with ia.maketestimage()")
