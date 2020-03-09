@@ -26,12 +26,13 @@ pip install --upgrade pip
 echo "set path = ($dir/bin "'$path); rehash'  >> python_start.csh
 echo "export PATH=${dir}/bin:"'$PATH'         >> python_start.sh
 
-if ($casa6) conda install -y python=3.6.8
-
+# https://casa.nrao.edu/casadocs/casa-5.6.0/introduction/casa6-installation-and-usage
 if ($casa6) then
   echo "pip install casatools and casatasks... this will download 740MB"
-  pip install --extra-index-url https://casa-pip.nrao.edu:443/repository/pypi-group/simple casatools
-  pip install --extra-index-url https://casa-pip.nrao.edu:443/repository/pypi-group/simple casatasks
+  echo "  conda install -y python=3.6.8  "
+  conda install -y python=3.6.8
+  pip install --extra-index-url https://casa-pip.nrao.edu/repository/pypi-casa-release/simple casatools
+  pip install --extra-index-url https://casa-pip.nrao.edu/repository/pypi-casa-release/simple casatasks
 endif
 
 
