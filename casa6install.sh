@@ -12,12 +12,13 @@ INSTALLOCATION=$PWD
 PYTHONVERSION=3.6.10
 
 # PYTHON
-wget https://www.python.org/ftp/python/$PYTHONVERSION/Python-$PYTHONVERSION.tgz
+if [ ! -f Python-$PYTHONVERSION.tgz ]; then
+    wget https://www.python.org/ftp/python/$PYTHONVERSION/Python-$PYTHONVERSION.tgz
+fi
 tar -xzvf Python-$PYTHONVERSION.tgz
 cd Python-$PYTHONVERSION
 
-prefix=$INSTALLOCATION/python-$PYTHONVERSION
-prefix=$INSTALLOCATION/Python-$PYTHONVERSION
+prefix=$INSTALLOCATION/python3
 ./configure --prefix=$prefix
 make
 make install
@@ -42,3 +43,5 @@ $prefix/bin/pip3 install --extra-index-url https://casa-pip.nrao.edu/repository/
 # ASTROPY PACKAGE TEMPLATE
 $prefix/bin/pip3 install cookiecutter gitpython
 
+echo "set path = ($PWD/python3/bin \$path); rehash" >> python_start.csh
+echo "export PATH=$PWD/python3/bin:\$PATH"          >> python_start.sh
