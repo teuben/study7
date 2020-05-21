@@ -23,18 +23,36 @@ setenv PATH "$dir/bin:$PATH"
 conda update -y conda
 pip install --upgrade pip
 
-
 echo "set path = ($dir/bin "'$path); rehash'  >> python_start.csh
 echo "export PATH=${dir}/bin:"'$PATH'         >> python_start.sh
 
 # https://casa.nrao.edu/casadocs/casa-5.6.0/introduction/casa6-installation-and-usage
 if ($casa6) then
   echo "pip install casatools and casatasks... this will download 740MB"
-  echo "  conda install -y python=3.6.8  "
-  conda install -y python=3.6.8
-  pip install --extra-index-url https://casa-pip.nrao.edu/repository/pypi-casa-release/simple casatools
-  pip install --extra-index-url https://casa-pip.nrao.edu/repository/pypi-casa-release/simple casatasks
+  echo "  conda install -y python=3.6.x  (make sure it's the latest)"
+  if (1) then
+    #conda install -y python=3.6.8
+    conda install -y python=3.6.10
+  else
+    # From gpopping (worked for him)
+    conda create --name python36 python=3.6 -y
+    #conda activate python36
+    # this claimed i needed to "conda init bash" but this screws up my .bashrc file, i'm not happy
+    source activate python36
+  endif
+  if (0) then
+    echo CASA6: standard released version
+    pip install --extra-index-url https://casa-pip.nrao.edu/repository/pypi-casa-release/simple casatools
+    pip install --extra-index-url https://casa-pip.nrao.edu/repository/pypi-casa-release/simple casatasks
+  else
+    echo CASA6: pre-release versions
+    pip install --extra-index-url https://casa-pip.nrao.edu:443/repository/pypi-group/simple casatools
+    pip install --extra-index-url https://casa-pip.nrao.edu:443/repository/pypi-group/simple casatasks
+  endif
+  
 endif
+
+exit 0
 
 
 # pip install astroquery
