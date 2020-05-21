@@ -25,7 +25,7 @@ This test will download large amounts of data from the archive. control-C it onc
 hours on a slow connection. These data are downloaded in the data subdirectory. Remove these, since it can
 go fast on a good connection.
 
-If you are brave and want to try out casa6beta, add the "casa6=1" argument to the install_miniconda3 script.
+If you are brave and want to try out CASA6, add the "casa6=1" argument to the install_miniconda3 script.
 
 
 2b. Development of astroquery (optional)
@@ -97,6 +97,16 @@ The first official release of CASA 6, including an all inclusive
 environment with python in a tar file, is planned for July 2019. This
 will be based on the same science and functionality as the upcoming
 CASA 5.6 to be used in ALMA Cycle 7 processing.
+
+### Shared Libraries
+
+This install worked for me in Ubuntu 18, because they happen to overlap version
+of the shared libraries with the CASA6 developers.   In Ubuntu 20 this failed for
+me because they got updated (now libgfortran3 became libgfortran5 and libtinfo5 became
+libtinfo6). I happen to have both mounted, so this did the trick for me (YMMV):
+
+      sudo cp -a  /a6/usr/lib/x86_64-linux-gnu/libgfortran.so.3* /usr/lib/x86_64-linux-gnu/
+      sudo cp -a  /a6/lib/x86_64-linux-gnu/libtinfo.so.5* /lib/x86_64-linux-gnu
 
 ### ipython profiles
 
