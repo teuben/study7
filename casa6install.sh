@@ -43,5 +43,5 @@ $prefix/bin/pip3 install --extra-index-url https://casa-pip.nrao.edu/repository/
 # ASTROPY PACKAGE TEMPLATE
 $prefix/bin/pip3 install cookiecutter gitpython
 
-echo "set path = ($PWD/python3/bin \$path); rehash" >> python_start.csh
-echo "export PATH=$PWD/python3/bin:\$PATH"          >> python_start.sh
+echo "set path = ($INSTALLOCATION/python3/bin \$path); rehash" >> python_start.csh
+echo "export PATH=$INSTALLOCATION/python3/bin:\$PATH"          >> python_start.sh
