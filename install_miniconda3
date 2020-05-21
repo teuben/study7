@@ -1,6 +1,6 @@
 #! /bin/csh -f
 #
-#  Install a miniconda3 python for astroquery.alma, and optionally casa6beta
+#  Install a miniconda3 python for astroquery.alma, and optionally casa6
 #
 
 #           68MB
@@ -39,12 +39,20 @@ if ($casa6) then
   #    python3 -m venv casa6_0
   #    source casa6_0/bin/activate
   echo "pip install casatools and casatasks... this will download 740MB"
-  pip install --extra-index-url https://casa-pip.nrao.edu:443/repository/pypi-group/simple casatools
-  pip install --extra-index-url https://casa-pip.nrao.edu:443/repository/pypi-group/simple casatasks
+  if (1) then
+    echo CASA6: standard released version
+    pip install --extra-index-url https://casa-pip.nrao.edu/repository/pypi-casa-release/simple casatools
+    pip install --extra-index-url https://casa-pip.nrao.edu/repository/pypi-casa-release/simple casatasks
+  else
+    echo CASA6: pre-release versions
+    pip install --extra-index-url https://casa-pip.nrao.edu:443/repository/pypi-group/simple casatools
+    pip install --extra-index-url https://casa-pip.nrao.edu:443/repository/pypi-group/simple casatasks
+  endif
 else  
   conda install -y ipython numpy scipy matplotlib notebook jupyter astropy  
 endif
 
+exit 0
 
 # pip install astroquery
 # conda -c astropy astroquery
