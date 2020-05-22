@@ -76,6 +76,8 @@ RHEL7 terminal window):
 
     pip install --extra-index-url https://casa-pip.nrao.edu/repository/pypi-casa-release/simple casampi
 
+
+
     #sanity check
     
             python
@@ -111,6 +113,16 @@ will create a **casa6** profile, so you can simplify calling casa using
 where files in ~/.ipython/profile_casa6/startup are executed before
 the command prompt appears. This is where you can place some conventient
 import commands, to make casa6 look like casa.
+
+Mine are in ~/.ipython/profile_casa6/startup/10-import.py
+
+     import numpy as np
+     import os
+     import sys
+
+and ~/.ipython/profile_casa6/startup/60-casa.py
+
+
 
 ## Benchmarks
 
