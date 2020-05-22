@@ -49,56 +49,29 @@ This test should take a few mins.  Note that this casa is (should be) orthogonal
 
 This test should take a few mins.
 
-## CASA 6
+## CASA 6: currently a moving target
 
 See also https://casa.nrao.edu/casadocs/casa-5.6.0/introduction/casa6-installation-and-usage
-
 
 
 An experimental CASA 6 is now available, which you can install via our
 miniconda3 install via the "casa6=1" optional command line argument.
 
-Notes from the CASA team:
+Within study7 we have experimented with several python3 environments:
 
-Users are welcome to try the new CASA 6 pip install to their own
-python environment. This is roughly analogous to using the current
-pre-release builds of CASA 5.x as it is coming from the unreleased
-master branch of the repository.  Instructions are as follows (from a
-RHEL7 terminal window):
+* miniconda3
+* anaconda3
+* raw python3 build
+* virtual environment (the CASA team recommended way)
 
-    python3 -m venv casa6beta
-    
-    source casa6beta/bin/activate
-    
-    pip install --extra-index-url https://casa-pip.nrao.edu:443/repository/pypi-group/simple casatools
-    
-    pip install --extra-index-url https://casa-pip.nrao.edu:443/repository/pypi-group/simple casatasks
-
-    pip install --extra-index-url https://casa-pip.nrao.edu/repository/pypi-casa-release/simple casampi
-
-
-
-    #sanity check
-    
-            python
-	    
-            import casatasks as ct
-	    
-            help(ct)
-	    
-            exit()
-   
-    deactivate
-
-Note that you need python 3.6 installed and may also need
-libgfortran3. The use of python3 venv is a simple built-in method of
-containerizing the pip install such that multiple versions of CASA 6.x
-can be kept on a single machine in different environments.
+The important constraint is that Python 3.6 is needed, as well
+as libgfortran3.
 
 The first official release of CASA 6, including an all inclusive
 environment with python in a tar file, is planned for July 2019. This
 will be based on the same science and functionality as the upcoming
-CASA 5.6 to be used in ALMA Cycle 7 processing.
+CASA 5.6 to be used in ALMA Cycle 7 processing.  CASA 6.1 is a more
+full traditional environment, and will be available June/July 2020.
 
 ### Shared Libraries
 
