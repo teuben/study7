@@ -6,13 +6,20 @@
 #
 #  note:
 #  - Python vs. python 
-#  - no python in the prefix bin, only python3
 #
 # Dependencies:  on ubuntu-20 you will need at least:  libssl-dev libsqlite3-dev
+#   maybe also: libreadline-gplv2-dev libncursesw5-dev tk-dev libgdbm-dev libc6-dev libbz2-dev
 
 INSTALLOCATION=$PWD
 PYTHONVERSION=3.6.10
 REL=0
+ADMIT=1
+
+# key=val COMMAND LINE PARSING
+for arg in $*; do
+  export $arg
+done
+
 
 # PYTHON
 if [ ! -f Python-$PYTHONVERSION.tgz ]; then
@@ -38,18 +45,34 @@ $prefix/bin/pip3 install bokeh phantomjs selenium
 # ASTROPY, NUMPY
 $prefix/bin/pip3 install astropy
 
-# CASA release
+# CASA
 if [ $REL = 1 ]; then
-  $prefix/bin/pip3 install --extra-index-url https://casa-pip.nrao.edu/repository/pypi-casa-release/simple casatools
-  $prefix/bin/pip3 install --extra-index-url https://casa-pip.nrao.edu/repository/pypi-casa-release/simple casatasks
+    # release
+    $prefix/bin/pip3 install --extra-index-url https://casa-pip.nrao.edu/repository/pypi-casa-release/simple casatools
+    $prefix/bin/pip3 install --extra-index-url https://casa-pip.nrao.edu/repository/pypi-casa-release/simple casatasks
 else  
-  # CASA pre-release
-  $prefix/bin/pip3 install --extra-index-url https://casa-pip.nrao.edu:443/repository/pypi-group/simple casatools
-  $prefix/bin/pip3 install --extra-index-url https://casa-pip.nrao.edu:443/repository/pypi-group/simple casatasks
+    # pre-release
+    $prefix/bin/pip3 install --extra-index-url https://casa-pip.nrao.edu:443/repository/pypi-group/simple casatools
+    $prefix/bin/pip3 install --extra-index-url https://casa-pip.nrao.edu:443/repository/pypi-group/simple casatasks
 fi  
 # Only for development
 # ASTROPY PACKAGE TEMPLATE
 $prefix/bin/pip3 install cookiecutter gitpython
 
+# LN - provide a default python here as well (they do pip and ipython, why not python)
+ln -s $prefix/bin/python3 $prefix/bin/python
+
+cd ..
+
 echo "set path = ($INSTALLOCATION/python3/bin \$path); rehash" >> python_start.csh
 echo "export PATH=$INSTALLOCATION/python3/bin:\$PATH"          >> python_start.sh
+
+# ADMIT
+if [ $ADMIT = 1 ]; then
+    source python_start.sh
+    rm -rf admit3
+    git clone https://github.com/astroumd/admit admit3
+    cd admit3
+    git co python3
+    pip3 install -e .
+fi    
