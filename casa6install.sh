@@ -7,9 +7,11 @@
 #  note:
 #  - Python vs. python 
 #
-# Dependencies:  on ubuntu-20 you will need at least:  libssl-dev libsqlite3-dev
-#   maybe also: libreadline-gplv2-dev libncursesw5-dev tk-dev libgdbm-dev libc6-dev libbz2-dev
-
+# Dependencies:
+#   on ubuntu-20 you will need at least:  libssl-dev libsqlite3-dev
+#                maybe also: libreadline-gplv2-dev libncursesw5-dev tk-dev libgdbm-dev libc6-dev libbz2-dev
+#   on centos:   zlib-devel openssl-devel sqlite-devel
+#                
 INSTALLOCATION=$PWD
 PYTHONVERSION=3.6.10
 REL=0
