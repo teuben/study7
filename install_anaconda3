@@ -1,6 +1,6 @@
 #! /bin/csh -f
 #
-#  Install an anaconda3 python for astroquery.alma, and optionally casa6beta
+#  Install an anaconda3 python for astroquery.alma, and optionally casa6
 #
 
             # 670MB
