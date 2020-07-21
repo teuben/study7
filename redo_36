@@ -1,0 +1,16 @@
+#! /usr/bin/env bash
+#
+
+rm -rf admit36
+
+git clone https://github.com/astroumd/admit admit36
+cd admit36
+git checkout python3
+
+git clone https://github.com/teuben/study7
+study7/install_anaconda3  casa6=1  wget=wgetc
+
+source python_start.sh
+pip install -e .
+
+make bench36

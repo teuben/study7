@@ -1,0 +1,18 @@
+#! /usr/bin/env bash
+#
+
+rm -rf admit360
+
+git clone https://github.com/astroumd/admit admit360
+cd admit360
+git checkout python3
+
+# could also use .. if local build
+../casa6install.sh REL=1 ADMIT=0
+#git clone https://github.com/teuben/study7
+#study7/casa6install.sh REL=0 ADMIT=0
+
+source python_start.sh
+pip install -e .
+
+make bench36
