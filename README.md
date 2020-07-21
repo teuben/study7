@@ -1,6 +1,6 @@
-# study7
+# STUDY7
 
-Some tools for 'study7'. This will install self-contained versions of python3, casa (V6 optional),
+These are tools for 'study7'. This will install self-contained versions of python3, casa (V6 optional),
 QAC and admit. Only tested on Linux.
 
 ## Branches:
@@ -112,8 +112,14 @@ and ~/.ipython/profile_casa6/startup/60-casa.py
 
 ## Testing different versions of ADMIT
 
-Best is to look at the redo_* scripts, and pick your poison. Each, for sanity, will work within a fresh admitNNN directory.
+Best is to look at the redo_\* scripts, and pick your poison. Each, for sanity, will work within a fresh admitNNN directory.
+The **wgetc** script referenced is useful to keep a cache, otherwise replace it with **wgetc**
 
 
+* redo_2 - classic admit w/ casa5
+* redo_35 - new admit3 w/ casa6
+* redo_36 - new admit3 w/ anaconda3
+* redo_360 - new admit3 w/ python 3.6.10 and casa60
+* redo_361 - new admit3 w/ python 3.6.10 and casa61
 
 
