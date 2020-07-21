@@ -1,7 +1,13 @@
 # study7
 
 Some tools for 'study7'. This will install self-contained versions of python3, casa (V6 optional),
-QAC and admit. Only tested on Linux. 
+QAC and admit. Only tested on Linux.
+
+## Branches:
+
+The master branch of ADMIT is still the classic python2 version that should work with casa 5.x.
+The python3 branch of ADMIT will work with casa 5.x, and is working with a pip installed version of CASA6.
+Very soon an official version of 
 
 ## Installation
 
@@ -17,7 +23,6 @@ QAC and admit. Only tested on Linux.
 2. miniconda3 (or anaconda3) for our controlled python envirment
 
         ./install_miniconda3       casa6=1
-        source python_start.sh
         ./test_alma1
         ./test_casa6
 
@@ -105,9 +110,9 @@ Mine are in ~/.ipython/profile_casa6/startup/10-import.py
 
 and ~/.ipython/profile_casa6/startup/60-casa.py
 
+## Testing different versions of ADMIT
 
-
-## Benchmarks
+Best is to look at the redo_* scripts, and pick your poison. Each, for sanity, will work within a fresh admitNNN directory.
 
 
 
