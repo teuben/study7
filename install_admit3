@@ -1,0 +1,8 @@
+#! /bin/csh -f
+#
+
+rm -rf admit3
+git clone https://github.com/astroumd/admit admit3
+cd admit3
+git co python3
+pip3 install -e .

@@ -8,6 +8,7 @@ set mc3   = https://repo.anaconda.com/archive/Anaconda3-2019.10-Linux-x86_64.sh
 set mc3   = https://repo.anaconda.com/archive/Anaconda3-2020.02-Linux-x86_64.sh
 set msh   = $mc3:t
 set dir   = `pwd`/anaconda3
+set wget  = wget
 set casa6 = 0
 
 # you better know what you are doing here
@@ -15,7 +16,7 @@ foreach arg ($*)
   set $arg
 end
 
-if (! -e $msh) wget $mc3
+if (! -e $msh) $wget $mc3
 bash $msh -b -p $dir
 
 setenv PATH "$dir/bin:$PATH"
