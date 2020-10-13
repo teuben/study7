@@ -1,0 +1,51 @@
+#! /usr/bin/env python
+#
+#
+
+
+import sys
+import numpy as np
+
+
+fn1 = 'project_mous_source_redshift_line_linefreq.txt'
+fn2 = 'project_mous_source_redshift_line.txt'
+
+fn = fn2
+
+source = sys.argv[1]
+
+lines = open(fn,"r").readlines()
+print("Opened %s with %d lines" % (fn,len(lines)))
+
+c = 299792.458
+
+
+"""
+2015.1.00126.S|uid://A001/X5a4/X37|NGC1097|uid://A001/X5a4/X37.source.NGC1097.spw.29|0.00421801503678|BB3_HCN_4_3_(ID=3735282)|BB3_HCN_4_3_(ID=3735282)|3735282:|3735282:258:HCN v=0:Hydrogen Cyanide:354505.473:J=      4        -   3:35.64538958:17.4:42.53436069:1:1:1:1:1:1:1:1
+2015.1.00126.S|uid://A001/X5a4/X37|NGC1097|uid://A001/X5a4/X37.source.NGC1097.spw.25|0.00421801503678|BB1_CO_3_2_(ID=3768104)|BB1_CO_3_2_(ID=3768104)|3768104:|3768104:204:CO v=0:Carbon Monoxide:345795.99: 3- 2:0.036372636:70:33.19169181:1:1:1:1:1:1:1:1
+2015.1.00126.S|uid://A001/X5a4/X37|NGC1097|uid://A001/X5a4/X37.source.NGC1097.spw.31|0.00421801503678|BB4_HCO__4_3_(ID=3736995)|BB4_HCO__4_3_(ID=3736995)|3736995:|3736995:15:HCO+ v=0:Formylium:356734.242:      4        -   3:60.84:17.4:42.80246621:1:1:1:1:1:1:1:1
+2015.1.00126.S|uid://A001/X5a4/X37|NGC1097|uid://A001/X5a4/X37.source.NGC1097.spw.27|0.00421801503678|BB2_Continuum_LSB_(ID=0)|
+2015.1.00126.S|uid://A001/X5a4/X37|NGC1097|uid://A001/X5a4/X37.source.NGC1097.spw.29|0.00421801503678|BB3_HCN_4_3_(ID=3735282)|
+2015.1.00126.S|uid://A001/X5a4/X37|NGC1097|uid://A001/X5a4/X37.source.NGC1097.spw.25|0.00421801503678|BB1_CO_3_2_(ID=3768104)|
+2015.1.00126.S|uid://A001/X5a4/X37|NGC1097|uid://A001/X5a4/X37.source.NGC1097.spw.31|0.00421801503678|BB4_HCO__4_3_(ID=3736995)|
+"""
+
+# source z lookup table
+sf = {}
+ns = 0
+
+for line in lines:
+    w = line.split('|')
+    s = w[2]
+    z = float(w[4])
+    if s == source:
+        ns = ns + 1
+        if s not in sf:
+            sf[s] = []
+        sf[s].append(z)            
+
+print("Found %d matches" % ns)
+
+z = np.array(list(set(sf[source])))
+print(source,z)
+print(source,z*c)
