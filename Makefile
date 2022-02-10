@@ -1,6 +1,8 @@
 #
 #
 
+URL1 = https://github.com/astropy/astroquery
+URL2 = https://github.com/astropy/pyvo
 
 help:
 	@echo Targets:
@@ -21,3 +23,13 @@ install:
 	./install_miniconda3
 	./install_qac
 	./install_admit
+
+
+git2: astroquery pyvo
+
+astropy:
+	git clone $(URL1)
+
+pyvo:
+	git clone $(URL2)
+
