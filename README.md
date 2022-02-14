@@ -127,6 +127,6 @@ The **wgetc** script referenced is useful to keep a cache, otherwise replace it 
 
 * casa: https://casa.nrao.edu/index.shtml
 * astroquery: https://astroquery.readthedocs.io/en/latest/
-* astroquery: https://github.com/teuben/astroquery
+* astroquery: https://github.com/teuben/astroquery   (branch: admit)
 * pyvo:  https://pyvo.readthedocs.io/en/latest/
 
