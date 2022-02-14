@@ -28,7 +28,6 @@ if (1) then
   setenv TMPDIR `pwd`/tmp
 endif
 
-
 echo "set path = ($dir/bin "'$path); rehash'  >> python_start.csh
 echo "export PATH=${dir}/bin:"'$PATH'         >> python_start.sh
 
@@ -39,7 +38,7 @@ if ($casa6) then
   #    python3 -m venv casa6_0
   #    source casa6_0/bin/activate
   echo "pip install casatools and casatasks... this will download 740MB"
-  if (1) then
+  if (0) then
     echo CASA6: standard released version
     pip install --extra-index-url https://casa-pip.nrao.edu/repository/pypi-casa-release/simple casatools
     pip install --extra-index-url https://casa-pip.nrao.edu/repository/pypi-casa-release/simple casatasks
