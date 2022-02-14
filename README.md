@@ -1,13 +1,12 @@
 # STUDY7
 
-These are tools for 'study7'. This will install self-contained versions of python3, casa (V6 optional),
+These are some tools for 'study7'. This will install self-contained versions of python3, casa (V6 optional),
 QAC and admit. Only tested on Linux.
 
 ## Branches:
 
 The master branch of ADMIT is still the classic python2 version that should work with casa 5.x.
 The python3 branch of ADMIT will work with casa 5.x, and is working with a pip installed version of CASA6.
-Very soon an official version of 
 
 ## Installation
 
@@ -16,7 +15,8 @@ Very soon an official version of
         git clone https://github.com/teuben/study7
         cd study7
          
-1. bootstrap your OS (ubuntu for now) with system tools we need down the line (useful for AWS or other virgin Ubuntu systems)
+1. bootstrap your OS (ubuntu for now) with system tools we need down
+   the line (useful for AWS or other virgin Ubuntu systems)
 
         ./bootstrap_ubuntu
 
@@ -31,7 +31,7 @@ hours on a slow connection. These data are downloaded in the data subdirectory. 
 go fast on a good connection.
 
 If you are brave and want to try out CASA6, add the "casa6=1" argument to the install_miniconda3 script.
-
+This has not been tested recently.
 
 2b. Development of astroquery (optional)
 
@@ -122,4 +122,11 @@ The **wgetc** script referenced is useful to keep a cache, otherwise replace it 
 * redo_360 - new admit3 w/ python 3.6.10 and casa60
 * redo_361 - new admit3 w/ python 3.6.10 and casa61
 
+
+## Software used:
+
+* casa: https://casa.nrao.edu/index.shtml
+* astroquery: https://astroquery.readthedocs.io/en/latest/
+* astroquery: https://github.com/teuben/astroquery
+* pyvo:  https://pyvo.readthedocs.io/en/latest/
 
