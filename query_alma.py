@@ -5,15 +5,16 @@
 #
 
 
-mode = 1
+mode = 3
 
 q1 = "SELECT * FROM ivoa.obscore"
 q2 = "SELECT * FROM ivoa.obscore WHERE target_name = 'NGC3504'"
 q3 = "NGC3504"
 
-query = q1
+query = q2
 
 if mode == 1:
+    print("pyvo",query)
     
     import pyvo
 
@@ -24,6 +25,7 @@ if mode == 1:
     print('Wrote alma.pickle')
     
 elif mode == 2:
+    print("aq query_tap",query)
     
     from astroquery.alma import Alma
 
@@ -34,5 +36,18 @@ elif mode == 2:
     
 
 elif mode == 3:
+    print("aq query_object",q3) 
+
+    from astroquery.alma import Alma
 
     r3 = Alma.query_object(q3)
+
+
+#
+
+
+
+import pickle
+
+a = pickle.load(open('alma.pickle','rb'))
+print("read pickly into",type(a),a)
