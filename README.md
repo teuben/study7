@@ -130,3 +130,6 @@ The **wgetc** script referenced is useful to keep a cache, otherwise replace it 
 * astroquery: https://github.com/teuben/astroquery   (branch: admit)
 * pyvo:  https://pyvo.readthedocs.io/en/latest/
 
+## References
+
+* https://almascience.eso.org/alma-data/archive/archive-notebooks
