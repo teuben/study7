@@ -37,6 +37,15 @@ def create_table(conn, create_table_sql):
     except Error as e:
         print(e)
 
+# --------------------------------------------------------------------------------
+#  if a new field is added to a table:
+#     1. CREATE TABLE needs new one
+#     2. create_XXX() needs new INSERT line
+#     3. where create_XXX() is called, needs a new one
+#
+
+# --------------------------------------------------------------------------------
+
 alma_table = """
 CREATE TABLE IF NOT EXISTS alma (
 	id integer PRIMARY KEY,
@@ -60,6 +69,22 @@ def create_alma(conn, entry):
     cur.execute(sql, entry)
     conn.commit()
     return cur.lastrowid
+
+def add_alma(conn, entry):
+    """
+    Create a new project into the projects table
+    :param conn:
+    :param project:
+    :return: project id
+    """
+    sql = ''' INSERT INTO alma(proposal_id,object,ra,dec)
+                        VALUES(?,          ?,     ?, ?) '''
+    cur = conn.cursor()
+    cur.execute(sql, entry)
+    conn.commit()
+    return cur.lastrowid
+
+# --------------------------------------------------------------------------------
 
 spw_table = """
 CREATE TABLE IF NOT EXISTS spw (
@@ -86,6 +111,8 @@ def create_spw(conn, entry):
     conn.commit()
     return cur.lastrowid
 
+# --------------------------------------------------------------------------------
+
 
 lines_table = """
 CREATE TABLE IF NOT EXISTS lines (
@@ -102,7 +129,7 @@ CREATE TABLE IF NOT EXISTS lines (
 
 def create_lines(conn, entry):
     """
-    Create a new project into the projects table
+    Create a new project into the lines table
     :param conn:
     :param project:
     :return: project id
@@ -114,6 +141,7 @@ def create_lines(conn, entry):
     conn.commit()
     return cur.lastrowid
 
+# --------------------------------------------------------------------------------
 
 sources_table = """
 CREATE TABLE IF NOT EXISTS sources (
@@ -131,7 +159,7 @@ CREATE TABLE IF NOT EXISTS sources (
 
 def create_sources(conn, entry):
     """
-    Create a new project into the projects table
+    Create a new project into the sources table
     :param conn:
     :param project:
     :return: project id
@@ -194,8 +222,18 @@ def work():
             elif mode==4:
                 print(mode,'>>',line)
                 id = create_sources(conn,  (int(w[0]), int(w[1]), float(w[2]), float(w[3]), float(w[4]), float(w[5]), float(w[6]), float(w[7])))
+def work2():
+    """ now insert some more data in db
+    """
+    database = "mockdata.db"
+
+    # create a database connection
+    conn = create_connection(database)
+    id = add_alma(conn, ("2022.3.0001.A",   "NGC5678",    20.0,  -20.0))
+    print('new',id)
                                     
 
 if __name__ == '__main__':
     main()
     work()
+    work2()
