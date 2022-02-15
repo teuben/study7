@@ -1,5 +1,5 @@
 ##    mock data to fill the study7 db
-##    first column is always the id in that table
+##    first column is always the id in that table, enforced!
 ##    a line beginning with a single '#' gives the table name
 # alma
 ##    project       source     ra     dec        spw
