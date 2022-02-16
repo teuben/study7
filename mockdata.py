@@ -1,49 +1,18 @@
 #! /usr/bin/env python
 #
 #
+#  import some mockdata into a MockData
+#  see mocktable.txt for a sample
+#
 
 import sqlite3
 from sqlite3 import Error
-
-
-
-
-def create_connection(db_file):
-    
-    """ create a database connection to the SQLite database
-        specified by db_file
-    :param db_file: database file
-    :return: Connection object or None
-    """
-    conn = None
-    try:
-        conn = sqlite3.connect(db_file)
-        return conn
-    except Error as e:
-        print(e)
-
-    return conn
-
-
-def create_table(conn, create_table_sql):
-    """ create a table from the create_table_sql statement
-    :param conn: Connection object
-    :param create_table_sql: a CREATE TABLE statement
-    :return:
-    """
-    try:
-        c = conn.cursor()
-        c.execute(create_table_sql)
-    except Error as e:
-        print(e)
 
 # --------------------------------------------------------------------------------
 #  if a new field is added to a table:
 #     1. CREATE TABLE needs new one
 #     2. create_XXX() needs new INSERT line
 #     3. where create_XXX() is called, needs a new one
-#
-
 # --------------------------------------------------------------------------------
 
 alma_table = """
@@ -56,36 +25,6 @@ CREATE TABLE IF NOT EXISTS alma (
 );
 """
 
-def create_alma(conn, entry):
-    """
-    Create a new project into the projects table
-    :param conn:
-    :param project:
-    :return: project id
-    """
-    sql = ''' INSERT INTO alma(id,proposal_id,object,ra,dec)
-                        VALUES(?, ?,          ?,     ?, ?) '''
-    cur = conn.cursor()
-    cur.execute(sql, entry)
-    conn.commit()
-    return cur.lastrowid
-
-def add_alma(conn, entry):
-    """
-    Create a new project into the projects table
-    :param conn:
-    :param project:
-    :return: project id
-    """
-    sql = ''' INSERT INTO alma(proposal_id,object,ra,dec)
-                        VALUES(?,          ?,     ?, ?) '''
-    cur = conn.cursor()
-    cur.execute(sql, entry)
-    conn.commit()
-    return cur.lastrowid
-
-# --------------------------------------------------------------------------------
-
 spw_table = """
 CREATE TABLE IF NOT EXISTS spw (
 	id integer PRIMARY KEY,
@@ -96,23 +35,6 @@ CREATE TABLE IF NOT EXISTS spw (
 	FOREIGN KEY (alma_id) REFERENCES alma (id)
 );
 """
-
-def create_spw(conn, entry):
-    """
-    Create a new project into the projects table
-    :param conn:
-    :param project:
-    :return: project id
-    """
-    sql = ''' INSERT INTO spw(id, alma_id, spw, nlines, nchan)
-                       VALUES(?,  ?,       ?,   ?,      ?) '''
-    cur = conn.cursor()
-    cur.execute(sql, entry)
-    conn.commit()
-    return cur.lastrowid
-
-# --------------------------------------------------------------------------------
-
 
 lines_table = """
 CREATE TABLE IF NOT EXISTS lines (
@@ -126,22 +48,6 @@ CREATE TABLE IF NOT EXISTS lines (
 	FOREIGN KEY (spw_id) REFERENCES spw (id)
 );
 """
-
-def create_lines(conn, entry):
-    """
-    Create a new project into the lines table
-    :param conn:
-    :param project:
-    :return: project id
-    """
-    sql = ''' INSERT INTO lines(id, spw_id, transition, velocity, start_chan, end_chan, nsources)
-                         VALUES(?,  ?,      ?,          ?,        ?,          ?,        ?) '''
-    cur = conn.cursor()
-    cur.execute(sql, entry)
-    conn.commit()
-    return cur.lastrowid
-
-# --------------------------------------------------------------------------------
 
 sources_table = """
 CREATE TABLE IF NOT EXISTS sources (
@@ -157,83 +63,159 @@ CREATE TABLE IF NOT EXISTS sources (
 );
 """
 
-def create_sources(conn, entry):
+
+class MockData(object):
     """
-    Create a new project into the sources table
-    :param conn:
-    :param project:
-    :return: project id
+    This is a simplified A-W-L-S table design for study7
     """
-    sql = ''' INSERT INTO sources(id, lines_id, ra, dec, size, peak, flux, snr)
-                           VALUES(?,  ?,        ?,  ?,   ?,    ?,    ?,    ?) '''
-    cur = conn.cursor()
-    cur.execute(sql, entry)
-    conn.commit()
-    return cur.lastrowid
+    def __init__(self, db_file):
+        self.db   = db_file
+        self.conn = None
 
-def main():
-    database = "mockdata.db"
+        # create_connection
+        try:
+            self.conn = sqlite3.connect(db_file)
+        except Error as e:
+            print(e)
 
-    # create a database connection
-    conn = create_connection(database)
+        # create tables
+        if self.conn is not None:
+            self.create_table(   alma_table)
+            self.create_table(    spw_table)
+            self.create_table(  lines_table)
+            self.create_table(sources_table)
+        else:
+            print("Error! cannot create the database connection.")
+            
 
-    # create tables
-    if conn is not None:
-        create_table(conn,    alma_table)
-        create_table(conn,     spw_table)
-        create_table(conn,   lines_table)
-        create_table(conn, sources_table)
-    else:
-        print("Error! cannot create the database connection.")
+    def create_table(self, create_table_sql):
+        """
+        create a table from the create_table_sql statement
+        :param create_table_sql: a CREATE TABLE statement
+        :return:
+        """
+        try:
+            c = self.conn.cursor()
+            c.execute(create_table_sql)
+        except Error as e:
+            print(e)
 
-def work():
-    """ now insert some data in db
-    """
-    database = "mockdata.db"
 
-    # create a database connection
-    conn = create_connection(database)
-    with conn:
-        # mode: 0=unknown   1=alma  2=spw  3=lines 4=sources
-        mode = 0
-        lines = open('mockdata.txt').readlines()
-        print("Found %d lines" % len(lines))
-        for line in lines:
-            line = line.strip()
-            if line[:2] == '##': continue
-            w = line.split()
-            if w[0] == '#':
-                if   w[1] == 'alma':     mode=1
-                elif w[1] == 'spw':      mode=2
-                elif w[1] == 'lines':    mode=3
-                elif w[1] == 'sources':  mode=4
-                else:
-                    print("mode %s not supported" % w[1])
-                continue
-            if mode==1:
-                print(mode,'>>',line)
-                id = create_alma(conn,  (int(w[0]), w[1], w[2], float(w[3]), float(w[4])))
-            elif mode==2:
-                print(mode,'>>',line)
-                id = create_spw(conn,  (int(w[0]), int(w[1]), int(w[2]), int(w[3]), int(w[4])))                
-            elif mode==3:
-                print(mode,'>>',line)
-                id = create_lines(conn,  (int(w[0]), int(w[1]), w[2], float(w[3]), int(w[4]), int(w[5]), int(w[6])))
-            elif mode==4:
-                print(mode,'>>',line)
-                id = create_sources(conn,  (int(w[0]), int(w[1]), float(w[2]), float(w[3]), float(w[4]), float(w[5]), float(w[6]), float(w[7])))
-def work2():
-    """ now insert some more data in db
-    """
-    database = "mockdata.db"
+    def create_alma(self, entry):
+        """
+        Create a new project into the alma table
+        :param project:
+        :return: project id
+        """
+        sql = ''' INSERT INTO alma(id,proposal_id,object,ra,dec)
+                            VALUES(?, ?,          ?,     ?, ?) '''
+        cur = self.conn.cursor()
+        cur.execute(sql, entry)
+        self.conn.commit()
+        return cur.lastrowid
 
-    # create a database connection
-    conn = create_connection(database)
-    id = add_alma(conn, ("2022.3.0001.A",   "NGC5678",    20.0,  -20.0))
-    print('new',id)
+    def add_alma(self, entry):
+        """
+        Add a new project into the alma table
+        :param project:
+        :return: project id
+        """
+        sql = ''' INSERT INTO alma(proposal_id,object,ra,dec)
+                            VALUES(?,          ?,     ?, ?) '''
+        cur = self.conn.cursor()
+        cur.execute(sql, entry)
+        self.conn.commit()
+        return cur.lastrowid
+
+
+
+    def create_spw(self, entry):
+        """
+        Create a new project into the spw table
+        :param project:
+        :return: project id
+        """
+        sql = ''' INSERT INTO spw(id, alma_id, spw, nlines, nchan)
+                           VALUES(?,  ?,       ?,   ?,      ?) '''
+        cur = self.conn.cursor()
+        cur.execute(sql, entry)
+        self.conn.commit()
+        return cur.lastrowid
+
+
+
+    def create_lines(self, entry):
+        """
+        Create a new project into the lines table
+        :param project:
+        :return: project id
+        """
+        sql = ''' INSERT INTO lines(id, spw_id, transition, velocity, start_chan, end_chan, nsources)
+                             VALUES(?,  ?,      ?,          ?,        ?,          ?,        ?) '''
+        cur = self.conn.cursor()
+        cur.execute(sql, entry)
+        self.conn.commit()
+        return cur.lastrowid
+
+
+    def create_sources(self, entry):
+        """
+        Create a new project into the sources table
+        :param project:
+        :return: project id
+        """
+        sql = ''' INSERT INTO sources(id, lines_id, ra, dec, size, peak, flux, snr)
+                               VALUES(?,  ?,        ?,  ?,   ?,    ?,    ?,    ?) '''
+        cur = self.conn.cursor()
+        cur.execute(sql, entry)
+        self.conn.commit()
+        return cur.lastrowid
+
+
+    def work1(self, txt_file):
+        """
+        now insert some data in db from a mock txt_file
+        """
+        with self.conn:
+            # mode: 0=unknown   1=alma  2=spw  3=lines 4=sources
+            mode = 0
+            lines = open(txt_file).readlines()
+            print("Found %d lines" % len(lines))
+            for line in lines:
+                line = line.strip()
+                if line[:2] == '##': continue
+                w = line.split()
+                if w[0] == '#':
+                    if   w[1] == 'alma':     mode=1
+                    elif w[1] == 'spw':      mode=2
+                    elif w[1] == 'lines':    mode=3
+                    elif w[1] == 'sources':  mode=4
+                    else:
+                        print("mode %s not supported" % w[1])
+                    continue
+                if mode==1:
+                    print(mode,'>>',line)
+                    id = self.create_alma((int(w[0]), w[1], w[2], float(w[3]), float(w[4])))
+                elif mode==2:
+                    print(mode,'>>',line)
+                    id = self.create_spw((int(w[0]), int(w[1]), int(w[2]), int(w[3]), int(w[4])))                
+                elif mode==3:
+                    print(mode,'>>',line)
+                    id = self.create_lines((int(w[0]), int(w[1]), w[2], float(w[3]), int(w[4]), int(w[5]), int(w[6])))
+                elif mode==4:
+                    print(mode,'>>',line)
+                    id = self.create_sources((int(w[0]), int(w[1]), float(w[2]), float(w[3]), float(w[4]), float(w[5]), float(w[6]), float(w[7])))
+
+
+    def work2(self):
+        """ now add some new data in the db
+        """
+
+        id = self.add_alma(("2022.3.0001.A",   "NGC5678",    20.0,  -20.0))
+        print('new',id)
                                     
 
 if __name__ == '__main__':
-    main()
-    work()
-    work2()
+    md = MockData('mockdata.db')
+    md.work1('mockdata.txt')
+    md.work2()
