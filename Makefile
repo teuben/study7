@@ -4,6 +4,7 @@
 URL0 = https://github.com/astropy/astroquery
 URL1 = https://github.com/teuben/astroquery
 URL2 = https://github.com/astropy/pyvo
+URL3 = https://github.com/emerge-erc/ALminer
 
 help:
 	@echo Targets:
@@ -41,3 +42,8 @@ pyvo:
 	@echo "It is recommended to install that using:    pip3 install -e pyvo"
 	@echo "but feel free to use your own method"
 
+ALminer:
+	git clone $(URL3)
+	@echo ""
+	@echo "It is recommended to install that using:    pip3 install -e Alminer"
+	@echo "but feel free to use your own method"
