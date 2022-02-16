@@ -4,6 +4,7 @@
 #  import some mockdata into a MockData
 #  see mocktable.txt for a sample
 #
+#  Warning:  there isn't a lot of sanity checking if that data is properly structured
 
 import sqlite3
 from sqlite3 import Error
@@ -18,7 +19,7 @@ from sqlite3 import Error
 alma_table = """
 CREATE TABLE IF NOT EXISTS alma (
 	id integer PRIMARY KEY,
-        proposal_id text NOT NULL,
+        proposal text NOT NULL,
         object text NOT NULL,
         ra FLOAT,
         dec FLOAT
@@ -31,6 +32,7 @@ CREATE TABLE IF NOT EXISTS spw (
 	alma_id INTEGER NOT NULL,
 	spw INTEGER,
 	nlines INTEGER,
+	nsources INTEGER,
         nchan INTEGER,
 	FOREIGN KEY (alma_id) REFERENCES alma (id)
 );
@@ -44,7 +46,6 @@ CREATE TABLE IF NOT EXISTS lines (
         velocity FLOAT,
         start_chan INTEGER,
         end_chan INTEGER,
-        nsources INTEGER,
 	FOREIGN KEY (spw_id) REFERENCES spw (id)
 );
 """
@@ -52,13 +53,12 @@ CREATE TABLE IF NOT EXISTS lines (
 sources_table = """
 CREATE TABLE IF NOT EXISTS sources (
 	id integer PRIMARY KEY,
-        lines_id INTEGER NOT NULL,
+        spw_id INTEGER NOT NULL,
+        lines_id INTEGER,
         ra FLOAT,
         dec FLOAT,
-        size FLOAT,
-        peak FLOAT,
         flux FLOAT,
-        snr FLOAT,
+	FOREIGN KEY (spw_id) REFERENCES spw (id)
 	FOREIGN KEY (lines_id) REFERENCES lines (id)
 );
 """
@@ -107,8 +107,8 @@ class MockData(object):
         :param project:
         :return: project id
         """
-        sql = ''' INSERT INTO alma(id,proposal_id,object,ra,dec)
-                            VALUES(?, ?,          ?,     ?, ?) '''
+        sql = ''' INSERT INTO alma(proposal,object,ra,dec)
+                            VALUES(?,       ?,     ?, ?) '''
         cur = self.conn.cursor()
         cur.execute(sql, entry)
         self.conn.commit()
@@ -120,8 +120,8 @@ class MockData(object):
         :param project:
         :return: project id
         """
-        sql = ''' INSERT INTO alma(proposal_id,object,ra,dec)
-                            VALUES(?,          ?,     ?, ?) '''
+        sql = ''' INSERT INTO alma(proposal,object,ra,dec)
+                            VALUES(?,       ?,     ?, ?) '''
         cur = self.conn.cursor()
         cur.execute(sql, entry)
         self.conn.commit()
@@ -135,8 +135,8 @@ class MockData(object):
         :param project:
         :return: project id
         """
-        sql = ''' INSERT INTO spw(id, alma_id, spw, nlines, nchan)
-                           VALUES(?,  ?,       ?,   ?,      ?) '''
+        sql = ''' INSERT INTO spw(alma_id, spw, nlines, nsources, nchan)
+                           VALUES(?,       ?,   ?,      ?,        ?) '''
         cur = self.conn.cursor()
         cur.execute(sql, entry)
         self.conn.commit()
@@ -150,8 +150,8 @@ class MockData(object):
         :param project:
         :return: project id
         """
-        sql = ''' INSERT INTO lines(id, spw_id, transition, velocity, start_chan, end_chan, nsources)
-                             VALUES(?,  ?,      ?,          ?,        ?,          ?,        ?) '''
+        sql = ''' INSERT INTO lines(spw_id, transition, velocity, start_chan, end_chan)
+                             VALUES(?,      ?,          ?,        ?,          ?) '''
         cur = self.conn.cursor()
         cur.execute(sql, entry)
         self.conn.commit()
@@ -164,59 +164,65 @@ class MockData(object):
         :param project:
         :return: project id
         """
-        sql = ''' INSERT INTO sources(id, lines_id, ra, dec, size, peak, flux, snr)
-                               VALUES(?,  ?,        ?,  ?,   ?,    ?,    ?,    ?) '''
+        sql = ''' INSERT INTO sources(spw_id, lines_id, ra, dec, flux)
+                               VALUES(?,      ?,        ?,  ?,   ?) '''
         cur = self.conn.cursor()
         cur.execute(sql, entry)
         self.conn.commit()
         return cur.lastrowid
 
 
-    def work1(self, txt_file):
+    def mock(self, txt_file, dryrun=False):
         """
         now insert some data in db from a mock txt_file
+        this is V2 of the mock format
+
+        @todo   dryrun should be run first to ensure the data are consistent
         """
         with self.conn:
-            # mode: 0=unknown   1=alma  2=spw  3=lines 4=sources
             mode = 0
+            s_stack = []
             lines = open(txt_file).readlines()
             print("Found %d lines" % len(lines))
             for line in lines:
                 line = line.strip()
-                if line[:2] == '##': continue
+                if len(line) == 0: continue
+                if line[0] == '#': continue
                 w = line.split()
-                if w[0] == '#':
-                    if   w[1] == 'alma':     mode=1
-                    elif w[1] == 'spw':      mode=2
-                    elif w[1] == 'lines':    mode=3
-                    elif w[1] == 'sources':  mode=4
-                    else:
-                        print("mode %s not supported" % w[1])
+                print('>>',line)
+                
+                if   w[0] == 'A': mode=1
+                elif w[0] == 'W': mode=2
+                elif w[0] == 'L': mode=3
+                elif w[0] == 'S': mode=4
+                else:
+                    print("mode %s not supported - skipping line" % w[0])
                     continue
+
                 if mode==1:
-                    print(mode,'>>',line)
-                    id = self.create_alma((int(w[0]), w[1], w[2], float(w[3]), float(w[4])))
+                    if len(s_stack) > 0:
+                        print("there is a source stack left")
+                    a_id = self.create_alma((w[1], w[2], float(w[3]), float(w[4])))
+                    w_id = l_id = s_id = 0
                 elif mode==2:
-                    print(mode,'>>',line)
-                    id = self.create_spw((int(w[0]), int(w[1]), int(w[2]), int(w[3]), int(w[4])))                
+                    nl = int(w[2])
+                    ns = int(w[3])
+                    w_id = self.create_spw((a_id, int(w[1]), nl, ns, int(w[4])))
+                    s_stack = []
+                    for i in range(ns):  s_stack.append(0)
                 elif mode==3:
-                    print(mode,'>>',line)
-                    id = self.create_lines((int(w[0]), int(w[1]), w[2], float(w[3]), int(w[4]), int(w[5]), int(w[6])))
+                    l_id = self.create_lines((w_id, w[1], float(w[2]), int(w[3]), int(w[4])))
+                    for i in range(ns):  s_stack.append(l_id)
                 elif mode==4:
-                    print(mode,'>>',line)
-                    id = self.create_sources((int(w[0]), int(w[1]), float(w[2]), float(w[3]), float(w[4]), float(w[5]), float(w[6]), float(w[7])))
-
-
-    def work2(self):
-        """ now add some new data in the db
-        """
-
-        id = self.add_alma(("2022.3.0001.A",   "NGC5678",    20.0,  -20.0))
-        print('new',id)
-                                    
+                    if len(s_stack) > 0:
+                        l_id = s_stack.pop(0)
+                        s_id = self.create_sources((w_id, l_id, float(w[1]), float(w[2]), float(w[3])))
+                    else:
+                        print("no stack left for another source; skipping")
+                else:
+                    print("should never get here")
 
 if __name__ == '__main__':
     md = MockData('mockdata.db')
-    md.work1('mockdata.txt')
-    md.work2()
+    md.mock('mockdata.txt')
     print("Wrote mockdata.db")

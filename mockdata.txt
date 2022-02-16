@@ -1,31 +1,48 @@
-##    mock data to fill the study7 db
-##    first column is always the id in that table, enforced!
-##    a line beginning with a single '#' gives the table name
-# alma
-##    project       source     ra     dec        spw
-1 2022.1.0001.A    CenA      12.00   30.00     23,25,27,29
-2 2022.2.0001.A    NGC1234   18.00   60.00     1,2,3,4,5,6
-# spw
-## alma_id spw  nlines  nchan 
-1 1        23   4     1024
-2 1        25   1     2048
-3 2        2    1     1024
-# lines
-## spw_id  transition vel  start_chan end_chan  nsources
-1 1        CO       60.1  100  120       2
-2 1        N2H+     60.1  200  230       2
-3 1        H2O      60.1  400  420       1
-4 1        H2CO     60.1  600  625       1
-5 2        HI       60.1  1400 1450      1
-6 3        CO      200.0  500  600       2
-# sources
-## line_id ra dec size peak flux snr
-1 1  12   30      0.1  1.0   1.0 10
-2 1  12.5 30.5    0.2  1.0   1.0 10
-3 2  12   30      0.1  1.0   1.0 10
-4 2  12.5 30.5    0.2  1.0   1.0 10
-5 3  12   30      0.1  1.0   1.0 10
-6 4  12.5 30.5    0.1  1.0   1.0 10
-7 5  12   30      0.1  1.0   1.0 10
-8 6  18   60      0.5  1.0   1.0 10
-9 6  18.5 60.5    0.5  1.0   1.0 10
+# mock data (v2) to fill the study7 admit db
+#
+
+
+# table references:  A=alma W=spw L=lines S=sources
+#
+# A (alma):    project     source     ra     dec   spw
+# W (spw):     spw  nlines  nsources   nchan 
+# L (lines):   transition vel  start_chan end_chan  
+# S (sources): ra dec flux
+
+X this is a future table
+
+
+A 2022.2.0001.A    NGC1234   18.00   60.00     1,2,3,4,5,6
+#  no info yet on this project
+
+
+
+A 2022.1.0001.A    CenA      12.00   30.00     19,21,23,25
+
+#  spw19 is cont, and has 1 source
+W    19   0     2    1
+S    12   30    1.0
+
+#  we're skipping 21
+
+# spw25 has 1 line, and one source
+W   25    1     1       2048
+L   CO      60.1  100  120    
+S   12  30    1.0
+
+#  spw23 has 3 lines, and 2 sources
+W    23   3     2    1024
+
+L     CO       60.1  100  120      
+L     N2H+     60.1  200  230      
+L     H2O      60.1  400  420
+
+S   12   30      10    # S1
+S   12.5 30.5     1    # S2
+S   12   30       8    # S1(L1)
+S   12.5 30.5     0.5  # S2(L1)
+S   12   30       1.1  # S1(L2)
+S   12.5 30.5     0.3  # S2(L2)
+S   12   30       0.9  # S1(L3)
+S   12.5 30.5     0.2  # S2(L3)
+
