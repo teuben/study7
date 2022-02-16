@@ -219,3 +219,4 @@ if __name__ == '__main__':
     md = MockData('mockdata.db')
     md.work1('mockdata.txt')
     md.work2()
+    print("Wrote mockdata.db")
