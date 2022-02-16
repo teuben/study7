@@ -42,8 +42,8 @@ pyvo:
 	@echo "It is recommended to install that using:    pip3 install -e pyvo"
 	@echo "but feel free to use your own method"
 
-ALminer:
-	git clone $(URL3)
+alminer:
+	git clone $(URL3) alminer
 	@echo ""
-	@echo "It is recommended to install that using:    pip3 install -e Alminer"
+	@echo "It is recommended to install that using:    pip3 install -e alminer"
 	@echo "but feel free to use your own method"
