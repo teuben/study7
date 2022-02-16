@@ -1,7 +1,7 @@
 # STUDY7
 
 These are some tools for 'study7'. This will install self-contained versions of python3, casa (V6 optional),
-QAC and admit. Only tested on Linux.
+and admit. Only tested on Linux.
 
 ## Branches:
 
@@ -35,8 +35,8 @@ This has not been tested recently.
 
 2b. Development of astroquery (optional)
 
-        git clone https://github.com/teuben/astroquery
-        pip install -e astroquery
+        git clone -b admit https://github.com/teuben/astroquery
+        pip3 install -e astroquery
 
 3. casa (via QAC)
 
@@ -78,7 +78,7 @@ will be based on the same science and functionality as the upcoming
 CASA 5.6 to be used in ALMA Cycle 7 processing.  CASA 6.1 is a more
 full traditional environment, and will be available June/July 2020.
 
-### Shared Libraries
+### Shared Libraries nightmares?
 
 This install worked for me in Ubuntu 18, because they happen to overlap version
 of the shared libraries with the CASA6 developers.   In Ubuntu 20 this failed for
@@ -125,10 +125,13 @@ The **wgetc** script referenced is useful to keep a cache, otherwise replace it 
 
 ## Software used:
 
+* study7 (this repo): https://github.com/teuben/study7
 * casa: https://casa.nrao.edu/index.shtml
+* admit:  https://github.com/astroumd/admit
 * astroquery: https://astroquery.readthedocs.io/en/latest/
 * astroquery: https://github.com/teuben/astroquery   (branch: admit)
 * pyvo:  https://pyvo.readthedocs.io/en/latest/
+* alminer: https://alminer.readthedocs.io/en/latest/?badge=latest
 
 ## References
 
