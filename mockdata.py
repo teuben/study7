@@ -237,3 +237,4 @@ if __name__ == '__main__':
     main()
     work()
     work2()
+    print("Wrote mockdata.db")
