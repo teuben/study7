@@ -31,7 +31,7 @@ In the mockdata universe we have alma.db and admit.db.
 
 There are four tables for ADMIT:   spw (W), cont (C), source (S) and lines (L).
 
-1. The "Admit After Pipeline" process has a pattern of detecting pipeline products,
+1. The "Admit After Pipeline" (AAP) script has a pattern of detecting pipeline products,
    and will run ADMIT on those "cube" or "mfs" products.  We store them in the same
    "spw" table with nchan > 1 differentiating between "cube" and "mfs".
    
@@ -45,7 +45,7 @@ There are four tables for ADMIT:   spw (W), cont (C), source (S) and lines (L).
 3. The pipeline also records a combined continuum from all the mfs maps. We
    normally ignore those. Unlike the alma row, which has a 1-to-1 relationship
    to our spw table. We do have a "cont" table set aside for this, but we're
-   not using it yet.
+   not using it (yet).
    
 4. Compared to the original design, where we assigned sources independantly to
    each LineCube, we decided in this final design to assign sources in the CubeSum,
