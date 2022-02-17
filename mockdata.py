@@ -16,6 +16,15 @@ from sqlite3 import Error
 #     3. where create_XXX() is called, needs a new one
 # --------------------------------------------------------------------------------
 
+header_table = """
+CREATE TABLE IF NOT EXISTS header (
+	id integer PRIMARY KEY,
+        key text NOT NULL,
+        val text NOT NULL
+);
+"""
+
+
 alma_table = """
 CREATE TABLE IF NOT EXISTS alma (
 	id integer PRIMARY KEY,
@@ -88,6 +97,7 @@ class MockData(object):
 
         # create tables
         if self.conn is not None:
+            self.create_table( header_table)
             self.create_table(   alma_table)
             self.create_table(    spw_table)
             self.create_table(   cont_table)
@@ -109,6 +119,19 @@ class MockData(object):
         except Error as e:
             print(e)
 
+
+    def create_header(self, entry):
+        """
+        Create a new project into the header table
+        :param project:
+        :return: project id
+        """
+        sql = ''' INSERT INTO header(key,val)
+                              VALUES(?,  ?)'''
+        cur = self.conn.cursor()
+        cur.execute(sql, entry)
+        self.conn.commit()
+        return cur.lastrowid
 
     def create_alma(self, entry):
         """
@@ -201,6 +224,7 @@ class MockData(object):
                 elif w[0] == 'L': mode=3
                 elif w[0] == 'S': mode=4
                 elif w[0] == 'C': mode=5
+                elif w[0] == 'H': mode=6
                 else:
                     print("mode %s not supported - skipping line" % w[0])
                     continue
@@ -228,6 +252,8 @@ class MockData(object):
                 elif mode==5:
                     c_id = self.create_cont((a_id, w[1], int(w[2])))
                     # @todo   note we have no method to add sources to a cont map
+                elif mode==6:
+                    h_id = self.create_header((w[1], w[2]))
                 else:
                     print("should never get here")
 
