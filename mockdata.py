@@ -253,7 +253,7 @@ class MockData(object):
                     c_id = self.create_cont((a_id, w[1], int(w[2])))
                     # @todo   note we have no method to add sources to a cont map
                 elif mode==6:
-                    h_id = self.create_header((w[1], w[2]))
+                    h_id = self.create_header((w[1], ' '.join(w[2:])))
                 else:
                     print("should never get here")
 
