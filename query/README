@@ -1,0 +1,15 @@
+This is where alma.db and admit.db live.
+
+astroquery.admit expect $ADMIT/query to exist where these files live.
+
+e.g.
+
+   export ADMIT=~/study7
+
+
+## Files:
+
+1. ngc3504.pickle - example of a small alma.pickle.
+2. datasetid_ra_dec_redshift_resolvername.txt - rdz resolver
+3. admit.db - 
+4.
