@@ -27,7 +27,7 @@ First test the mockdata:
 	  
 if you want to test queries, try this
 
-      cp mockdata.db query
+      cp mockdata.db query/admit.db
 	  export ADMIT=`pwd`
 	  ./check1.py
       
