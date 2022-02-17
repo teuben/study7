@@ -1,6 +1,10 @@
 # mock data (v2) to fill the study7 admit db
 #
 
+H name    mockdata
+H version 2.1
+H author  Peter Teuben
+H origin  
 
 # table references:  A=alma W=spw L=lines S=sources
 #
@@ -45,4 +49,17 @@ S   12   30       1.1  # S1(L2)
 S   12.5 30.5     0.3  # S2(L2)
 S   12   30       0.9  # S1(L3)
 S   12.5 30.5     0.2  # S2(L3)
+
+#  a continuum, we're not using it in ADMIT?  x
+C   19_21_23_25    0
+XS   12.1  30.1    100        # no method to add sources for continuum maps yet
+
+
+A 2022.1.0003.A    NGC5888   12.00   30.00     19,21,23,25
+C   19_21_23_25    0
+XS   12.1  30.1    100        # no method to add sources for continuum maps yet
+
+
+
+
 
