@@ -30,5 +30,7 @@ if you want to test queries, try this
       cp mockdata.db query/admit.db
 	  export ADMIT=`pwd`
 	  ./check1.py
-      
+
+The $ADMIT may look really weird, but eventually $ADMIT/query will
+contain the data. This can then be solved with a symlink.
       
