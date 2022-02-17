@@ -37,6 +37,15 @@ CREATE TABLE IF NOT EXISTS spw (
 	FOREIGN KEY (alma_id) REFERENCES alma (id)
 );
 """
+cont_table = """
+CREATE TABLE IF NOT EXISTS cont (
+	id integer PRIMARY KEY,
+	alma_id INTEGER NOT NULL,
+	cont text NOT NULL,
+	nsources INTEGER,
+	FOREIGN KEY (alma_id) REFERENCES alma (id)
+);
+"""
 
 lines_table = """
 CREATE TABLE IF NOT EXISTS lines (
@@ -63,7 +72,6 @@ CREATE TABLE IF NOT EXISTS sources (
 );
 """
 
-
 class MockData(object):
     """
     This is a simplified A-W-L-S table design for study7
@@ -82,6 +90,7 @@ class MockData(object):
         if self.conn is not None:
             self.create_table(   alma_table)
             self.create_table(    spw_table)
+            self.create_table(   cont_table)
             self.create_table(  lines_table)
             self.create_table(sources_table)
         else:
@@ -114,21 +123,6 @@ class MockData(object):
         self.conn.commit()
         return cur.lastrowid
 
-    def add_alma(self, entry):
-        """
-        Add a new project into the alma table
-        :param project:
-        :return: project id
-        """
-        sql = ''' INSERT INTO alma(proposal,object,ra,dec)
-                            VALUES(?,       ?,     ?, ?) '''
-        cur = self.conn.cursor()
-        cur.execute(sql, entry)
-        self.conn.commit()
-        return cur.lastrowid
-
-
-
     def create_spw(self, entry):
         """
         Create a new project into the spw table
@@ -142,7 +136,18 @@ class MockData(object):
         self.conn.commit()
         return cur.lastrowid
 
-
+    def create_cont(self, entry):
+        """
+        Create a new project into the cont table
+        :param project:
+        :return: project id
+        """
+        sql = ''' INSERT INTO cont(alma_id, cont, nsources)
+                           VALUES(?,       ?,    ?) '''
+        cur = self.conn.cursor()
+        cur.execute(sql, entry)
+        self.conn.commit()
+        return cur.lastrowid
 
     def create_lines(self, entry):
         """
@@ -195,6 +200,7 @@ class MockData(object):
                 elif w[0] == 'W': mode=2
                 elif w[0] == 'L': mode=3
                 elif w[0] == 'S': mode=4
+                elif w[0] == 'C': mode=5
                 else:
                     print("mode %s not supported - skipping line" % w[0])
                     continue
@@ -219,6 +225,9 @@ class MockData(object):
                         s_id = self.create_sources((w_id, l_id, float(w[1]), float(w[2]), float(w[3])))
                     else:
                         print("no stack left for another source; skipping")
+                elif mode==5:
+                    c_id = self.create_cont((a_id, w[1], int(w[2])))
+                    # @todo   note we have no method to add sources to a cont map
                 else:
                     print("should never get here")
 
