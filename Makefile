@@ -47,3 +47,11 @@ alminer:
 	@echo ""
 	@echo "It is recommended to install that using:    pip3 install -e alminer"
 	@echo "but feel free to use your own method"
+
+
+# a few often used tests
+
+
+mock:
+	rm -f mockdata.db
+	python mockdata.py
