@@ -5,13 +5,13 @@
 #
 
 
-mode = 3
+mode = 1
 
 q1 = "SELECT * FROM ivoa.obscore"
 q2 = "SELECT * FROM ivoa.obscore WHERE target_name = 'NGC3504'"
 q3 = "NGC3504"
 
-query = q2
+query = q1
 
 if mode == 1:
     print("pyvo",query)
