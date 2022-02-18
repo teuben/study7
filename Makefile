@@ -6,7 +6,7 @@ URL1 = https://github.com/teuben/astroquery
 URL2 = https://github.com/astropy/pyvo
 URL3 = https://github.com/emerge-erc/ALminer
 
-REPOS = astroquery pyvo alminer
+REPOS = . astroquery pyvo alminer
 
 help:
 	@echo Targets:
