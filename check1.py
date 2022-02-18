@@ -3,6 +3,10 @@
 
 from astroquery.admit import ADMIT
 
+if True:
+    import pickle
+    a = pickle.load(open('alma.pickle','rb'))
+
 a = ADMIT()
 a.query()
 a.check()
