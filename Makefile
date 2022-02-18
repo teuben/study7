@@ -6,34 +6,35 @@ URL1 = https://github.com/teuben/astroquery
 URL2 = https://github.com/astropy/pyvo
 URL3 = https://github.com/emerge-erc/ALminer
 
-REPOS = . astroquery pyvo alminer
+REPOS = astroquery pyvo alminer
 
 help:
 	@echo Targets:
-	@echo "   git     pull this and all derived"
-	@echo "   git2    associated repos that are needed"
+	@echo "   git     clone repos needed"
+	@echo "   pull    pull the needed repos"
+	@echo "   mock    make new mockdata"
 
-git:
+git2:
 	(cd admit ; git pull)
 	(cd QAC   ; git pull)
 	git pull
 
-start:
+start2:
 	cat miniconda3/python_start.sh  QAC/casa/casa_start.sh  admit/admit_start.sh  > study7_start.sh
 	cat miniconda3/python_start.csh QAC/casa/casa_start.csh admit/admit_start.csh > study7_start.csh
 
 
-#       needs to source ...
-install:
+#       optionals
+install2:
 	./install_miniconda3
 	./install_qac
 	./install_admit
 
 
-git2: astroquery pyvo
+git: $(REPOS)
 
 pull:
-	for r in $(REPOS); do\
+	for r in . $(REPOS); do\
 	   (cd $$r; git pull);\
 	done
 
@@ -62,3 +63,5 @@ alminer:
 mock:
 	rm -f mockdata.db
 	python mockdata.py
+
+
