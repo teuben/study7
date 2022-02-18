@@ -231,7 +231,7 @@ class MockData(object):
                     print("mode %s not supported - skipping line" % w[0])
                     continue
 
-                if mode==1:
+                if mode==1:  
                     if len(s_stack) > 0:
                         print("there is a source stack left")
                     a_id = self.create_alma((w[1], w[2], float(w[3]), float(w[4]), float(w[5])))
@@ -243,9 +243,11 @@ class MockData(object):
                     s_stack = []
                     for i in range(ns):  s_stack.append(0)
                 elif mode==3:
+                    print("PJT-3",s_stack)
                     l_id = self.create_lines((w_id, w[1], float(w[2]), int(w[3]), int(w[4])))
                     for i in range(ns):  s_stack.append(l_id)
                 elif mode==4:
+                    print("PJT-4",s_stack)
                     if len(s_stack) > 0:
                         l_id = s_stack.pop(0)
                         s_id = self.create_sources((w_id, l_id, float(w[1]), float(w[2]), float(w[3])))
