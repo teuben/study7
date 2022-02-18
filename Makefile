@@ -6,6 +6,8 @@ URL1 = https://github.com/teuben/astroquery
 URL2 = https://github.com/astropy/pyvo
 URL3 = https://github.com/emerge-erc/ALminer
 
+REPOS = astroquery pyvo ALminer
+
 help:
 	@echo Targets:
 	@echo "   git     pull this and all derived"
@@ -29,6 +31,11 @@ install:
 
 
 git2: astroquery pyvo
+
+pull:
+	for r in $(REPOS); do\
+	   (cd $$r; git pull);\
+	done
 
 astroquery:
 	git clone -b admit $(URL1)
