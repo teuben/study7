@@ -189,7 +189,7 @@ class MockData(object):
         return cur.lastrowid
 
 
-3   def create_sources(self, entry):
+    def create_sources(self, entry):
         """
         Create a new project into the sources table
         :param project:
