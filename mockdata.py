@@ -28,10 +28,11 @@ CREATE TABLE IF NOT EXISTS header (
 alma_table = """
 CREATE TABLE IF NOT EXISTS alma (
 	id integer PRIMARY KEY,
-        proposal text NOT NULL,
-        object text NOT NULL,
-        ra FLOAT,
-        dec FLOAT
+        obs_id text NOT NULL,
+        target_name text NOT NULL,
+        s_ra FLOAT,
+        s_dec FLOAT,
+        frequency FLOAT
 );
 """
 
@@ -138,9 +139,10 @@ class MockData(object):
         Create a new project into the alma table
         :param project:
         :return: project id
+        obs_id == member_ous_uid
         """
-        sql = ''' INSERT INTO alma(proposal,object,ra,dec)
-                            VALUES(?,       ?,     ?, ?) '''
+        sql = ''' INSERT INTO alma(obs_id, target_name, s_ra, s_dec, frequency)
+                            VALUES(?,      ?,           ?,    ?,     ?) '''
         cur = self.conn.cursor()
         cur.execute(sql, entry)
         self.conn.commit()
@@ -232,7 +234,7 @@ class MockData(object):
                 if mode==1:
                     if len(s_stack) > 0:
                         print("there is a source stack left")
-                    a_id = self.create_alma((w[1], w[2], float(w[3]), float(w[4])))
+                    a_id = self.create_alma((w[1], w[2], float(w[3]), float(w[4]), float(w[5])))
                     w_id = l_id = s_id = 0
                 elif mode==2:
                     nl = int(w[2])

@@ -1,10 +1,12 @@
 # mock data (v2) to fill the study7 admit db
 #
 
+# some header items. Keep one deliberately without value
 H name    mockdata
-H version 2.1
+H version 2.2
 H author  Peter Teuben
-H origin  
+H history fake alma matching real alma table
+H none
 
 # table references:  A=alma W=spw L=lines S=sources
 #
@@ -16,12 +18,12 @@ H origin
 X this is a future table
 
 
-A 2022.2.0001.A    NGC1234   18.00   60.00     1,2,3,4,5,6
+A 2022.2.0001.A    NGC1234   18.00   60.00   115.0  1,2,3,4,5,6
 #  no info yet on this project
 
 
 
-A 2022.1.0001.A    CenA      12.00   30.00     19,21,23,25
+A 2022.1.0001.A    CenA      12.00   30.00   115.0  19,21,23,25
 
 #  spw19 is cont, and has 1 source
 W    19   0     2    1
@@ -52,14 +54,15 @@ S   12.5 30.5     0.2  # S2(L3)
 
 #  a continuum, we're not using it in ADMIT?  x
 C   19_21_23_25    0
-XS   12.1  30.1    100        # no method to add sources for continuum maps yet
+#S   12.1  30.1    100        # no method to add sources for continuum maps yet
 
 
-A 2022.1.0003.A    NGC5888   12.00   30.00     19,21,23,25
+A 2022.1.0003.A    NGC5888   12.00   30.00     115.0  19,21,23,25
 C   19_21_23_25    0
-XS   12.1  30.1    100        # no method to add sources for continuum maps yet
+#S   12.1  30.1    100        # no method to add sources for continuum maps yet
 
 
 
 
-
+# now some real entries that should match
+#A uid://A001/X1288/Xba6 NGC3504
