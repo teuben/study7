@@ -18,7 +18,7 @@ from sqlite3 import Error
 
 header_table = """
 CREATE TABLE IF NOT EXISTS header (
-	id integer PRIMARY KEY,
+    id integer PRIMARY KEY,
         key text NOT NULL,
         val text NOT NULL
 );
@@ -27,7 +27,7 @@ CREATE TABLE IF NOT EXISTS header (
 
 alma_table = """
 CREATE TABLE IF NOT EXISTS alma (
-	id integer PRIMARY KEY,
+    id integer PRIMARY KEY,
         obs_id text NOT NULL,
         target_name text NOT NULL,
         s_ra FLOAT,
@@ -38,47 +38,48 @@ CREATE TABLE IF NOT EXISTS alma (
 
 spw_table = """
 CREATE TABLE IF NOT EXISTS spw (
-	id integer PRIMARY KEY,
-	alma_id INTEGER NOT NULL,
-	spw INTEGER,
-	nlines INTEGER,
-	nsources INTEGER,
-        nchan INTEGER,
-	FOREIGN KEY (alma_id) REFERENCES alma (id)
+    id integer PRIMARY KEY,
+    alma_id INTEGER NOT NULL,
+    spw INTEGER,
+    nlines INTEGER,
+    nsources INTEGER,
+    nchan INTEGER,
+    rms FLOAT,
+    FOREIGN KEY (alma_id) REFERENCES alma (id)
 );
 """
 cont_table = """
 CREATE TABLE IF NOT EXISTS cont (
-	id integer PRIMARY KEY,
-	alma_id INTEGER NOT NULL,
-	cont text NOT NULL,
-	nsources INTEGER,
-	FOREIGN KEY (alma_id) REFERENCES alma (id)
+    id integer PRIMARY KEY,
+    alma_id INTEGER NOT NULL,
+    cont text NOT NULL,
+    nsources INTEGER,
+    FOREIGN KEY (alma_id) REFERENCES alma (id)
 );
 """
 
 lines_table = """
 CREATE TABLE IF NOT EXISTS lines (
-	id integer PRIMARY KEY,
+    id integer PRIMARY KEY,
         spw_id INTEGER NOT NULL,
         transition text NOT NULL,
         velocity FLOAT,
         start_chan INTEGER,
         end_chan INTEGER,
-	FOREIGN KEY (spw_id) REFERENCES spw (id)
+    FOREIGN KEY (spw_id) REFERENCES spw (id)
 );
 """
 
 sources_table = """
 CREATE TABLE IF NOT EXISTS sources (
-	id integer PRIMARY KEY,
+    id integer PRIMARY KEY,
         spw_id INTEGER NOT NULL,
         lines_id INTEGER,
         ra FLOAT,
         dec FLOAT,
         flux FLOAT,
-	FOREIGN KEY (spw_id) REFERENCES spw (id)
-	FOREIGN KEY (lines_id) REFERENCES lines (id)
+    FOREIGN KEY (spw_id) REFERENCES spw (id)
+    FOREIGN KEY (lines_id) REFERENCES lines (id)
 );
 """
 
@@ -154,8 +155,8 @@ class MockData(object):
         :param project:
         :return: project id
         """
-        sql = ''' INSERT INTO spw(alma_id, spw, nlines, nsources, nchan)
-                           VALUES(?,       ?,   ?,      ?,        ?) '''
+        sql = ''' INSERT INTO spw(alma_id, spw, nlines, nsources, nchan, rms)
+                           VALUES(?,       ?,   ?,      ?,        ?,     ?) '''
         cur = self.conn.cursor()
         cur.execute(sql, entry)
         self.conn.commit()
@@ -188,7 +189,7 @@ class MockData(object):
         return cur.lastrowid
 
 
-    def create_sources(self, entry):
+3   def create_sources(self, entry):
         """
         Create a new project into the sources table
         :param project:
@@ -239,7 +240,7 @@ class MockData(object):
                 elif mode==2:
                     nl = int(w[2])
                     ns = int(w[3])
-                    w_id = self.create_spw((a_id, int(w[1]), nl, ns, int(w[4])))
+                    w_id = self.create_spw((a_id, int(w[1]), nl, ns, int(w[4]), float(w[5])))
                     s_stack = []
                     for i in range(ns):  s_stack.append(0)
                 elif mode==3:

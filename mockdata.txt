@@ -3,7 +3,7 @@
 
 # some header items. Keep one deliberately without value
 H name    mockdata
-H version 2.2
+H version 2.3
 H author  Peter Teuben
 H history fake alma matching real alma table
 H none
@@ -11,7 +11,7 @@ H none
 # table references:  A=alma W=spw L=lines S=sources
 #
 # A (alma):    project     source     ra     dec   spw
-# W (spw):     spw  nlines  nsources   nchan 
+# W (spw):     spw  nlines  nsources   nchan  rms
 # L (lines):   transition vel  start_chan end_chan  
 # S (sources): ra dec flux
 
@@ -26,19 +26,20 @@ A 2022.2.0001.A    NGC1234   18.00   60.00   115.0  1,2,3,4,5,6
 A 2022.1.0001.A    CenA      12.00   30.00   115.0  19,21,23,25
 
 #  spw19 is cont, and has 1 source
-W    19   0     2    1
+W    19   0     2    1  0.123
 S    12   30    1.0
 
 #  we're skipping 21
 
 # spw25 has 1 line, and one source
-W   25    1     1       2048
-L   CO(2-1) 60.1  120  140
+
+W   25    1     1       2048  2.35
+L   CO(2-1) 60.1  120  140 2.35
 S   12  30    2.0     # S1
 S   12  30    2.0     # S1(L1)
 
 #  spw23 has 3 lines, and 2 sources
-W    23   3     2    1024
+W    23   3     2    1024   0.01
 
 L     CO       60.1  100  120      
 L     N2H+     60.1  200  230      
