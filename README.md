@@ -131,7 +131,7 @@ The **wgetc** script referenced is useful to keep a cache, otherwise replace it 
 * astroquery: https://astroquery.readthedocs.io/en/latest/
 * astroquery: https://github.com/teuben/astroquery   (branch: admit)
 * pyvo:  https://pyvo.readthedocs.io/en/latest/
-* alminer: https://alminer.readthedocs.io/en/latest/?badge=latest
+* alminer: https://alminer.readthedocs.io
 
 ## References
 
