@@ -65,3 +65,6 @@ mock:
 	python mockdata.py
 
 
+alma:
+	./query_alma.py
+	cp alma.pickle query/
