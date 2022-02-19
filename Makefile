@@ -38,6 +38,12 @@ pull:
 	   (cd $$r; git pull);\
 	done
 
+status:
+	for r in . $(REPOS); do\
+	   (cd $$r; git status -uno);\
+	done
+
+
 astroquery:
 	git clone -b admit $(URL1)
 	@echo ""
