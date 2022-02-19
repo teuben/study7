@@ -44,6 +44,11 @@ status:
 	done
 
 
+push:
+	for r in . $(REPOS); do\
+	   (cd $$r; git push);\
+	done
+
 astroquery:
 	git clone -b admit $(URL1)
 	@echo ""
