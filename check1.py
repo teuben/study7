@@ -23,6 +23,6 @@ if True:
     print(r1)
     q2 = 'SELECT * from  spw, sources, lines WHERE sources.flux > 7 AND sources.spw_id = spw.id  and sources.lines_id = lines.id and lines.spw_id = spw.id;'
     r2 = a.sql(q2)
-    print('Should find the 1 CO LineCubeC source, 8 Jy')    
+    print('Should find the 1 CO LineCube source, 8 Jy')    
     print(r2)
     
