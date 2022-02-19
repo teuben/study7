@@ -47,3 +47,7 @@ via the target_name.  If you really wanted to ensure a proper match, use the fre
 of 8 printed on the actual archive query.
 	
 	
+## mockdata.py
+
+This converts mockdata.txt into mockdata.db, such that our astroquery.admit modules can query this database.
+It was used for narrower tables to get the workflow going. Good for testing.
