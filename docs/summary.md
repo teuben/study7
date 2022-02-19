@@ -26,6 +26,11 @@ In the mockdata universe we have alma.db and admit.db.
         3. member.uid___A001_X1288_Xba8.NGC3504_sci.spw19_21_23_25.cont.I.pbcor.fits
 		
 	There are also manually run MOUS, but they may not match the pattern we use (see below)
+	
+4.  For uid://A001/X133f/X196 there	are 8 rows in the archive, 4 spw's are for the "Tile",
+    and 4 for the "Ref". This addressed a specific science question which makes our matching
+	of archive row to discovered fits file hard!  In the uid://A001/X133f/X196 matching up
+	with target_name (OBJECT in fits) would have resolved it.
 		
 ## Summary of ADMIT tables		
 
@@ -50,6 +55,7 @@ There are four tables for ADMIT:   spw (W), cont (C), source (S) and lines (L).
 4. Compared to the original design, where we assigned sources independantly to
    each LineCube, we decided in this final design to assign sources in the CubeSum,
    but carry them into the LineCube as a dependant.
+   
 
 ![Our Tables](tables.png)
 
@@ -126,3 +132,20 @@ Long keyword values are trimmed
     scientific_category            Galaxy evolution                        
     lastModified                   b'2022-02-14T16:53:42.403'              
 
+
+
+
+## APPENDIX:  ALMA obscore vs. FITS header
+
+
+Some of these obscore keyword can be "matched" with FITS header keywords.
+These are needed to make a match between the ALMA record and the ADMIT 
+record.
+
+
+    INSTRUME    instrument_name        ALMA                                    
+    FILNAM01    obs_id                 uid://A001/X1288/Xba6                   
+    FILNAM05    dataproduct_type       cube                                    
+    OBJECT      target_name            NGC3504                                 
+    DATE-OBS    t_min                  58050.543677                            
+    FILNAM01    member_ous_uid         uid://A001/X1288/Xba6                   
