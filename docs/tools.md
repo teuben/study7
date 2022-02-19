@@ -43,6 +43,7 @@ and
 	...
 	
 but given how ALMA observations are taken, the frequency matching may not be correct, and it needs to be checked
-via the target_name.
+via the target_name.  If you really wanted to ensure a proper match, use the frequency from the list
+of 8 printed on the actual archive query.
 	
 	
