@@ -12,6 +12,7 @@ a.check()
 payload = { "spw": 123, 
             "velocity": 88.0,
             "transition": 'CO*|H2O',
+            "sn": ">3",
           }
 a.query(payload)
 
