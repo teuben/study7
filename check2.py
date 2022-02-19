@@ -12,7 +12,8 @@ a = ADMIT()
 a.query()
 a.check()
 payload = { "spw": 123, 
-            "chan": (10,20),
+            "velocity": 88.0,
+            "transition": 'CO*|H2O',
           }
 print("PAYLOAD SQL",_gen_sql(payload))
 
