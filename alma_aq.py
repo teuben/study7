@@ -3,7 +3,7 @@
 #   get full record for given obs_id.  If mid freq given, the proper spw is returned
 #
 #   Problem, for uid___A001_X133f_X196 there appear 2 pairs of 4 spw's
-
+#
 import os
 import sys
 
@@ -25,11 +25,19 @@ if os.path.exists(val):
     from astropy.io import fits
     hdu = fits.open(val)
     h = hdu[0].header
-    # Look for 'uid___A001_X1288_Xba8' , make it uid://A001/X1288/Xba8
+    # Look for 'uid___A001_X1288_Xba8' in fits header or filename, make it uid://A001/X1288/Xba8
+    # Data from 2017.x seem ok
     if 'FILNAM01' not in h:
-        print("No FILNAM01 found in header, not an ALMA fits file?")
-        sys.exit(0)
-    uid = h['FILNAM01'].split('_')
+        print("No FILNAM01 found in header, not a recent enough ALMA fits file?")
+        #   sigh.... try deciphering the file name (<= 2016 projects?)
+        #   if e.g. member.uid___A001_X87a_X706.NGC3504_sci.spw25.cube.I.pbcor.fits
+        if val[0:13] == 'member.uid___':
+            uid=val.split('/')[-1].split('.')[1].split('_')
+        else:
+            print("No 'member.uid___' in filename. Giving up to find the obs_id")
+            sys.exit(0)
+    else:
+        uid = h['FILNAM01'].split('_')
     val = 'uid://%s/%s/%s' % (uid[3],uid[4],uid[5])
     # Find the mid frequency
     naxis3 =   int(h['NAXIS3'])
