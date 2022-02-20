@@ -12,6 +12,7 @@ admit=$2
 log=$admit/admit_aq.log
 
 echo "ALMA_AQ: $*"
+echo "ADMIT=$ADMIT"
 
 if [ ! -e "$fits" ]; then
     echo "first argument $fits does not exist"
@@ -26,7 +27,9 @@ fi
 if [ ! -e $log ]; then
     echo "ALMA_AQ: Writing $log"
     source $ADMIT/study7/python_start.sh
-    $ADMIT/study7/alma_aq.py $fits > $log &
+    echo "running alma_aq with: $(which python)"
+    # prevent our python to see CASA's pythonpath which we use in admit
+    PYTHONPATH= $ADMIT/study7/alma_aq.py $fits > $log &
 else
     echo "ALMA_AQ: $log already existed, not recreating"
 fi
