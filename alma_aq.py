@@ -8,10 +8,11 @@ import os
 import sys
 
 key   = 'member_ous_uid'
+key   = 'proposal_id'
 key   = 'obs_id'
 
 if len(sys.argv) == 1:
-    print("Usage: %s (obs_id|fits_file) [frequency]")
+    print("Usage: %s (%s|fits_file) [frequency]" % (sys.argv[0],key))
     print("Examples :")
     print("  uid://A001/X1288/Xba8     NGC3504 - has 4 entries")
     print("  uid://A001/X133f/X196     SMC Ref and Tile - has 8 entries")
