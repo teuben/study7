@@ -56,6 +56,14 @@ There are four tables for ADMIT:   spw (W), cont (C), source (S) and lines (L).
    each LineCube, we decided in this final design to assign sources in the CubeSum,
    but carry them into the LineCube as a dependant.
    
+   
+In shorthand notation the tables contain:
+
+    A  <the well known 63 colums listed below>
+    W  [a_id] freqc freqw nlines nsources nchan  rms vlsr bmaj bmin bpa
+    L  [w_id] formula transition restfreq  vmin vmax [ mom0flux mom1peak mom2peak ]
+    S  [w_id l_id ] ra dec peak flux smaj smin spa snr|rms
+
 
 ![Our Tables](tables.png)
 
