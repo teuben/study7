@@ -22,3 +22,9 @@ L CO 1-0 115.27120 -305.87 350.48
 fcoverage 0.34
 # linecube
 # x.CO_115.27120 11 37
+
+# for each linecube, the sources are now repeated, i.e.
+# S1(L1)
+# S2(L1)
+# S1(L2)
+# S2(L2) etc.
