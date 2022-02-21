@@ -1,0 +1,65 @@
+# obs_id=uid://A001/X133f/X196 mid frequency=230.4458518507
+# Found # 4 with 4.5256672649429674e-06 from 230.44585185073848 GHz
+obs_publisher_did              ADS/JAO.ALMA#2018.1.01115.S
+obs_collection                 ALMA
+facility_name                  JAO
+instrument_name                ALMA
+obs_id                         uid://A001/X133f/X196
+dataproduct_type               cube
+calib_level                    2
+target_name                    Ref_001_SMC_SWBar
+s_ra                           11.326333333334722
+s_dec                          -73.37911944444441
+s_fov                          0.012200913743606507
+s_region                       b'Circle ICRS 11.326333 -73.379119 0.006100'
+s_resolution                   6.64640326406866
+t_min                          58432.085876
+t_max                          58432.086343
+t_exptime                      40.32
+t_resolution                   40.32
+em_min                         0.0013005709987810277
+em_max                         0.001301276537412805
+em_res_power                   3774306.607841198
+pol_states                     /XX/YY/
+o_ucd                          phot.flux.density;phys.polarization
+access_url                     https://almascience.org/datalink/sync?ID=uid://A001/X133f/X196
+access_format                  applicati
+proposal_id                    2018.1.01115.S
+data_rights                    Public
+gal_longitude                  303.538884050536
+gal_latitude                   -43.7419527286577
+band_list                      6
+em_resolution                  18299306406918.094
+bandwidth                      125000000.0
+antenna_arrays                 J501:CM10 J502:CM02 J503:CM03 J504:CM12 J505:CM08 J506:CM05 N601:CM07 N602:CM01 N603:CM09 N604:CM11 N605:CM04 N606:CM06
+is_mosaic                      F
+obs_release_date               b'2019-11-16T19:10:32.000'
+spatial_resolution             6.64640326406866
+frequency_support              [219.22..219.72GHz,244.14kHz,32.8mJy/beam@10km/s,4mJy/beam@native, XX YY] U [220.25..220.37GHz,61.04kHz,44.7mJy/beam@10km/s,10.8mJy/beam@native, XX YY] U [230.38..230.51GHz,61.04kHz,40.6mJy/beam@10km/s,10.1mJy/beam@native, XX YY] U [233.31..235.31GHz,976.56kHz,35.1mJy/beam@10km/s,2.2mJy/beam@native, XX YY]
+frequency                      230.4458473250712
+velocity_resolution            79.429810333155
+obs_creator_name               Jameson, Katherine
+pub_title                      ALMACAL - VI. Molecular gas mass density across cosmic time via a blind search for intervening molecular absorbers
+first_author                   Klitsch, Anne
+authors                        Klitsch, Anne; Péroux, Céline; Zwaan, Martin A.; Smail, Ian; Nelson, Dylan; Popping, Gergö; Chen, Chian-Chou; Diemer, Benedikt; Ivison, R. J.; Allison, James R.; Muller, Sébastien; Swinbank, A. Mark; Hamanowicz, Aleksandra; Biggs, Andrew D.; Dutta, Rajeshwari
+pub_abstract                   We are just starting to understand the physical processes driving the dramatic change in cosmic star formation rate between z ̃ 2 and the present day. A quantity directly linked to star formation is the molecular gas density, which should be measured through independent methods to explore variations due to cosmic variance and systematic uncertainties. We use intervening CO absorption lines in the spectra of mm-bright background sources to provide a census of the molecular gas mass density of the Universe. The data used in this work are taken from ALMACAL, a wide and deep survey utilizing the ALMA calibrator archive. While we report multiple Galactic absorption lines and one intrinsic absorber, no extragalactic intervening molecular absorbers are detected. However, due to the large redshift path surveyed (∆z = 182), we provide constraints on the molecular column density distribution function beyond z ̃ 0. In addition, we probe column densities of N(H<SUB>2</SUB>) &gt; 10<SUP>16</SUP> atoms cm<SUP>-2</SUP>, 5 orders of magnitude lower than in previous studies. We use the cosmological hydrodynamical simulation IllustrisTNG to show that our upper limits of ρ (H_2)≲ 10^{8.3} M_{☉ } Mpc^{-3} at 0 &lt; z ≤ 1.7 already provide new constraints on current theoretical predictions of the cold molecular phase of the gas. These results are in agreement with recent CO emission-line surveys and are complementary to those studies. The combined constraints indicate that the present decrease of the cosmic star formation rate history is consistent with an increasing depletion of molecular gas in galaxies compared to z ̃ 2.
+publication_year               2019
+proposal_abstract              The Small Magellanic Cloud (SMC) is the only laboratory to study the low metallicity ISM at high spatial resolution, and yet we still do not know where the CO emission exists. We propose to use the ACA in standalone mode to map a 1.0 x 0.5 degree (1 kpc x 500 pc) region of the SW Bar of the SMC in 12CO, 13CO, C18O (2-1) covering a large fraction of the recent star formation, dust, and HI gas. With this new map we will be able to catalog CO clouds and clumps down to a mass of ~1000 solar masses and with a factor of ~15x increase in luminosity sensitivity over the existing large-scale single-dish APEX map. With only the ACA and the minimum integration time per pointing, we will produce a map of extragalactic CO with the greatest mass sensitivity and covering ~1.5 pc to 1 kpc scales. Once we have an accurate account of the CO-emitting gas we will be able to measure the CO luminosity function, the dynamical state, how CO brightness relates to environmental properties, and variations in X(CO). Further analysis of the data will allow us to understand the turbulence properties across all scales and how the CO emission relates to the HI gas at low metallicity.
+schedblock_name                Tile_001_a_06_7M
+proposal_authors               Federrath, Christoph; Bolatto, Alberto; Staveley-Smith, Lister; Onishi, Toshikazu; Dickey, John; Rubio, Monica; Meixner, Margaret; Hughes, Annie; Johnson, Lent; Krumholz, Mark; Tarantino, Elizabeth; Saldaño, Hugo; McClure-Griffiths, Naomi; Tachihara, Kengo; Kemper, Ciska; Galametz, Maud; Stanimirovic, Snezana; Leroy, Adam; Sandstrom, Karin; Kawamura, Akiko; Indebetouw, Remy; Roman-Duval, Julia;
+sensitivity_10kms              40.64288768451497
+cont_sensitivity_bandwidth     1.8602156226359357
+pwv                            1.8
+group_ous_uid                  uid://A001/X133f/X195
+member_ous_uid                 uid://A001/X133f/X196
+asdm_uid                       uid://A002/Xd4f832/X2b44
+obs_title                      A Large Unbiased and Complete Survey of CO in the Small Magellanic Cloud
+type                           S
+scan_intent                    TARGET
+science_observation            T
+spatial_scale_max              34.329192749042214
+qa2_passed                     T
+bib_reference                  2019MNRAS.490.1220K
+science_keyword                Inter-Stellar Medium (ISM)/Molecular clouds, Magellanic Clouds
+scientific_category            ISM and star formation
+lastModified                   b'2022-02-14T16:53:42.403'
