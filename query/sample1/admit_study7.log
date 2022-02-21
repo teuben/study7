@@ -1,0 +1,24 @@
+adir  test0.admit
+file  test0.fits
+# ingest
+FITS  /a7/teuben20/ADMIT/pto3/admit3/testdata/test0.fits
+nchan 50
+freqc 114.196137
+freqw 0.781302
+bmaj 0.0187666941818
+bmin 0.0123761479636
+bpa  52.9555168152
+# cubestats
+rms 0.00113133
+# cubesum
+# sfind2d
+nsources 2
+S 156.963449251 -43.905124412        244        667  11.458   7.535   43.6   94.6
+S 156.959348251 -43.906767576       45.4       36.8   5.000   5.000   90.0   17.6
+# lineid
+vlsr 2794.200000
+nlines 1
+L CO 1-0 115.27120 -305.87 350.48
+fcoverage 0.34
+# linecube
+# x.CO_115.27120 11 37
