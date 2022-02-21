@@ -45,13 +45,22 @@ if os.path.exists(val):
     cdelt3 = float(h['CDELT3'])
     crval3 = float(h['CRVAL3'])
     freq = (((naxis3+1)/2.0 - crpix3)*cdelt3 + crval3)/1e9
-    print("# obs_id=%s target_name=%s frequency=%.10f" % (val,freq))
+    print("# obs_id=%s frequency=%.10f" % (val,freq))
     # in case the query fails, we can add these
     a_obs_id = val
     a_target_name = h['OBJECT']
     a_ra = float(h['CRVAL1'])
     a_dec = float(h['CRVAL2'])
     a_frequency = freq
+    print("# <backup> values in case query fails")
+    print("obs_id      %s" % a_obs_id)
+    print("target_name %s" % a_target_name)
+    print("s_ra        %s" % a_ra)
+    print("s_dec       %s" % a_dec)
+    print("frequency   %s" % a_frequency)
+    print("# </backup>")
+else:
+    a_obs_id = None
     
 
 query = "SELECT * FROM ivoa.obscore WHERE %s = '%s'" % (key,val)
@@ -64,6 +73,8 @@ if len(sys.argv) > 2:
 
 query = query + " and science_observation = 'T'"
 query = query + " and scan_intent = 'TARGET'"
+
+print("# mode=%d url=%s" % (mode,url))
 
 if mode == 1:
     
@@ -106,6 +117,7 @@ if len(p) > 0:
         print("# Found #",imin,"with",dfmin,"from",freq,"GHz")
         for k in keys:
             print("%-30s %s" % (k,p[imin][k]))
+            
 else:
     print("# No records found for %s = %s" % (key,val))
         
