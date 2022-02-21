@@ -7,6 +7,8 @@
 import os
 import sys
 
+version = '21-feb-2022'
+
 key   = 'member_ous_uid'
 key   = 'proposal_id'
 key   = 'obs_id'
@@ -16,8 +18,11 @@ if len(sys.argv) == 1:
     print("Examples :")
     print("  uid://A001/X1288/Xba8     NGC3504 - has 4 entries")
     print("  uid://A001/X133f/X196     SMC Ref and Tile - has 8 entries")
+    print("This is version %s" % version)
     sys.exit(0)
 
+
+print("# alma_aq version %s" % version)
 
 val   = sys.argv[1]
 freq  = None
@@ -28,13 +33,13 @@ if os.path.exists(val):
     # Look for 'uid___A001_X1288_Xba8' in fits header or filename, make it uid://A001/X1288/Xba8
     # Data from 2017.x seem ok
     if 'FILNAM01' not in h:
-        print("No FILNAM01 found in header, not a recent enough ALMA fits file?")
+        print("# No FILNAM01 found in header, not a recent enough ALMA fits file?")
         #   sigh.... try deciphering the file name (<= 2016 projects?)
         #   if e.g. member.uid___A001_X87a_X706.NGC3504_sci.spw25.cube.I.pbcor.fits
         if val[0:13] == 'member.uid___':
             uid=val.split('/')[-1].split('.')[1].split('_')
         else:
-            print("No 'member.uid___' in filename. Giving up to find the obs_id")
+            print("# No 'member.uid___' in filename. Giving up to find the obs_id")
             sys.exit(0)
     else:
         uid = h['FILNAM01'].split('_')
