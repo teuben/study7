@@ -60,9 +60,9 @@ There are four tables for ADMIT:   spw (W), cont (C), source (S) and lines (L).
 In shorthand notation the tables contain:
 
     A  <the well known 63 colums listed below>
-    W  [a_id] freqc freqw nlines nsources nchan  rms vlsr bmaj bmin bpa
-    L  [w_id] formula transition restfreq  vmin vmax [ mom0flux mom1peak mom2peak ]
-    S  [w_id l_id ] ra dec peak flux smaj smin spa snr|rms
+    W  [a_id] freqc freqw vlsr nlines nsources nchan rms bmaj bmin bpa fcoverage
+    L  [w_id] formula transition restfreq  vmin vmax mom0flux mom1peak mom2peak
+    S  [w_id l_id ] ra dec peak flux rms smaj smin spa 
 
 
 ![Our Tables](tables.png)
