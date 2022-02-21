@@ -9,10 +9,14 @@ if True:
 
 a = ADMIT()
 a.check()
-payload = { "spw": 123, 
+payload = { 
+            "source_name_alma": "NGC 123",
+            "source_name_resolver": "M16",
             "velocity": 88.0,
             "transition": 'CO*|H2O',
-            "sn": ">3",
+            "pub_abstract": "*YSO* | *young stellar object*",
+            "snr": ">3",
+            "spatial_resolution": "<10",
           }
 a.query(payload)
 
