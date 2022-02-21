@@ -14,17 +14,20 @@ payload = {
             "source_name_alma": "NGC 123",
             "source_name_resolver": "M16",
             "velocity": 88.0,
-            "transition": 'CO*|H2O',
+            "formula": 'CO*|H2O',
             "pub_abstract": "*YSO* | *young stellar object*",
             "snr": ">3",
             "spatial_resolution": "<10",
           }
 a.query(**payload)
+
+# not allowed no keywords
 try :
     a.query()
 except Exception:
     print("correctly caught no keyword exception")
 
+# Example of using kw that doesn't exist
 a.query(foobar="nope")
 
 if False:
