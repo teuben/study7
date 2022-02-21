@@ -264,18 +264,13 @@ class AdmitData(object):
                 if x[0] == 'L':  L.append(x[1:])
                 if x[0] == 'S':  S.append(x[1:])
                     
-                # a_id = self.create_alma((w[1], w[2], float(w[3]), float(w[4]), float(w[5])))
-                # w_id = self.create_win((a_id, int(w[1]), nl, ns, int(w[4]), float(w[5])))
-                # l_id = self.create_lines((w_id, w[1], float(w[2]), int(w[3]), int(w[4])))
-                # s_id = self.create_sources((w_id, l_id, float(w[1]), float(w[2]), float(w[3])))
-                # c_id = self.create_cont((a_id, w[1], int(w[2])))
-                # @todo   note we have no method to add sources to a cont map
-                # h_id = self.create_header((w[1], ' '.join(w[2:])))
-
             print('admit',a)
-            a['nsources'] = len(S)
-            a['nlines']   = len(L)
+            nsources = int(a['nsources'])
+            nlines = int(a['nlines'])
 
+            if len(L) != nlines:
+                print("Warning: len(L),nlines = %d,%d not the same" % (nlines,len(L)))
+                
             w_id = self.create_win((a_id,
                                     float(a['freqc']),
                                     float(a['freqw']),
@@ -290,7 +285,8 @@ class AdmitData(object):
                                     float(a['fcoverage'])
             ))
 
-            for iL in range(len(L)):
+            l_stack = []
+            for iL in range(nlines):
                 l_id = self.create_lines((w_id,
                                           L[iL][0],
                                           L[iL][1],
@@ -300,11 +296,13 @@ class AdmitData(object):
                                           0.0,
                                           0.0,
                                           0.0
-            ))
+                ))
+                l_stack.append(l_id)
 
-            for iS in range(len(S)):
+            s_stack = []
+            for iS in range(nsources):
                 s_id = self.create_sources((w_id,
-                                            l_id,
+                                            0,
                                             float(S[iS][0]),
                                             float(S[iS][1]),
                                             float(S[iS][2]),
@@ -314,11 +312,21 @@ class AdmitData(object):
                                             float(S[iS][6]),
                                             float(S[iS][7])
                 ))
+                s_stack.append(s_id)
+            if len(S) < nsources:
+                print("Warning: not enough Sources from CubeSum - very unusual")
+            elif len(S) == nsources:
+                print("Warning: no LineCube sources given, it seems")
+            elif len(S) < nsources*(nlines+1):
+                print("Warning: not enough LineCube sources given, it seems")
+            elif len(S) > nsources*(nlines+1):
+                print("Warning: too many LineCube sources given, it seems")
+            
+                
 
 
 if __name__ == '__main__':
     md = AdmitData('admit.db')
     for dir in sys.argv[1:]:
         md.add_study7(dir)
-    print("Warning:  LineCube sources are not added yet")
     print("Warning:  Don't run on the same data twice")
