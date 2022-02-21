@@ -45,10 +45,18 @@ if os.path.exists(val):
     cdelt3 = float(h['CDELT3'])
     crval3 = float(h['CRVAL3'])
     freq = (((naxis3+1)/2.0 - crpix3)*cdelt3 + crval3)/1e9
-    print("# obs_id=%s mid frequency=%.10f" % (val,freq))
+    print("# obs_id=%s target_name=%s frequency=%.10f" % (val,freq))
+    # in case the query fails, we can add these
+    a_obs_id = val
+    a_target_name = h['OBJECT']
+    a_ra = float(h['CRVAL1'])
+    a_dec = float(h['CRVAL2'])
+    a_frequency = freq
+    
 
 query = "SELECT * FROM ivoa.obscore WHERE %s = '%s'" % (key,val)
 url   = "https://almascience.nrao.edu/tap"
+url   = "https://almascience.eso.org/tap"
 mode  = 1
 
 if len(sys.argv) > 2:
