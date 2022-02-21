@@ -230,13 +230,12 @@ class AdmitData(object):
         with self.conn:
             # read the "aq" log for A table
             lines = open(log_aq).readlines()
-            print("admit_aq: %d lines" % len(lines))
+            print("%d lines %s" % (len(lines),log_aq))
             a={}
             for line in lines:
                 if line[0] == '#': continue
                 x = line.split()
                 a[x[0]] = ' '.join(x[1:])
-            print("admit_aq: %d columns" % len(a))
             a_id = self.create_alma((a['obs_id'], a['target_name'], float(a['s_ra']), float(a['s_dec']), float(a['frequency'])))
             alma = a
             
@@ -246,7 +245,7 @@ class AdmitData(object):
             mode = 0
             s_stack = []
             lines = open(log_study7).readlines()
-            print("Found %d lines" % len(lines))
+            print("%d lines %s" % (len(lines),log_study7))
             S=[]
             L=[]
             for line in lines:
@@ -254,17 +253,14 @@ class AdmitData(object):
                 if len(line) == 0: continue
                 if line[0] == '#': continue
                 x = line.split()
-                print('>>',line)
 
                 if len(x[0]) > 1:
-                    print("adding %s" % x[0])
                     a[x[0]] = x[1]
                     continue
 
                 if x[0] == 'L':  L.append(x[1:])
                 if x[0] == 'S':  S.append(x[1:])
                     
-            print('admit',a)
             nsources = int(a['nsources'])
             nlines = int(a['nlines'])
 
@@ -326,7 +322,13 @@ class AdmitData(object):
 
 
 if __name__ == '__main__':
-    md = AdmitData('admit.db')
+    db_name = 'admit.db'
+    if len(sys.argv) == 1:
+        print("Usage: %s admit_dir(s)" % sys.argv[0])
+        print("Will write/append to %s" % db_name)
+        sys.exit(0)
+    md = AdmitData(db_name)
     for dir in sys.argv[1:]:
         md.add_study7(dir)
     print("Warning:  Don't run on the same data twice")
+    print("Data written/appended to %s" % db_name)

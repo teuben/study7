@@ -20,7 +20,6 @@ In the mockdata universe we have alma.db and admit.db.
 3. Each spw is disected by the ALMA pipeline in a 'cube'(line) and 'mfs' (continuum), 
    but often a comination 'cont' is also created. We normally ignore those in ADMIT.
 
-
         1. member.uid___A001_X1288_Xba8.NGC3504_sci.spw25.mfs.I.pbcor.fits
         2. member.uid___A001_X1288_Xba8.NGC3504_sci.spw25.cube.I.pbcor.fits
         3. member.uid___A001_X1288_Xba8.NGC3504_sci.spw19_21_23_25.cont.I.pbcor.fits
@@ -32,6 +31,7 @@ In the mockdata universe we have alma.db and admit.db.
 	of archive row to discovered fits file hard!  In the uid://A001/X133f/X196 matching up
 	with target_name (OBJECT in fits) would have resolved it.
 		
+
 ## Summary of ADMIT tables		
 
 There are four tables for ADMIT:   spw (W), cont (C), source (S) and lines (L).
