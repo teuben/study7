@@ -9,6 +9,7 @@ if True:
 
 a = ADMIT()
 a.check()
+print("AVAILABLE KEYS ",a.keys)
 payload = { 
             "source_name_alma": "NGC 123",
             "source_name_resolver": "M16",
@@ -18,9 +19,14 @@ payload = {
             "snr": ">3",
             "spatial_resolution": "<10",
           }
-a.query(payload)
+a.query(**payload)
+try :
+    a.query()
+except Exception:
+    print("correctly caught no keyword exception")
 
+a.query(foobar="nope")
 
 if False:
-    r = a.sql("SELECT * from spw")
+    r = a.sql("SELECT * from win")
     print(len(r),r)
