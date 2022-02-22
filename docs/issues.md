@@ -25,6 +25,8 @@ Things we should clarify or fix.
 
 12. example cone searching in an area around ra/dec
 
+13. sources only have 2D information;  no <vmean> and sigma and shape
+
 
 
 
