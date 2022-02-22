@@ -120,9 +120,9 @@ class AdmitData(object):
             self.create_table( header_table)
             self.create_table(   alma_table)
             self.create_table(    win_table)
-            self.create_table(   cont_table)
             self.create_table(  lines_table)
             self.create_table(sources_table)
+            # self.create_table(   cont_table)
         else:
             print("Error! cannot create the database connection.")
             
@@ -239,8 +239,12 @@ class AdmitData(object):
                 if line[0] == '#': continue
                 x = line.split()
                 a[x[0]] = ' '.join(x[1:])
-            a_id = self.create_alma((a['obs_id'], a['target_name'], float(a['s_ra']),
+            if 'obs_id' in a:
+                a_id = self.create_alma((a['obs_id'], a['target_name'], float(a['s_ra']),
                                      float(a['s_dec']), float(a['frequency']), float(a['t_min'])))
+            else:
+                print("Warning: entering a dummy alma record")
+                a_id = self.create_alma(('dummy', 'dummy', 0.0, 0.0, 10.0, 5000.0))
             alma = a
 
             a = {}
@@ -330,9 +334,27 @@ class AdmitData(object):
                 print("Warning: not enough LineCube sources given, it seems")
             elif len(S) > nsources*(nlines+1):
                 print("Warning: too many LineCube sources given, it seems")
-            
-                
 
+            print("Found %s sources in CubeSum and %d lines in Cube" % (nsources,nlines))
+            print("Found %d sources in CubeSum and LineCube's" % len(S))
+            print("Should find: %d" % (nsources*(nlines+1)))
+
+            for iL in range(nlines):
+                l_id = l_stack.pop(0)
+                for iS in range(nsources):
+                    iSL = iS + (iL+1)*nsources
+                    s_id = self.create_sources((w_id,
+                                                l_id,
+                                                float(S[iSL][0]),
+                                                float(S[iSL][1]),
+                                                float(S[iSL][2]),
+                                                float(S[iSL][3]),
+                                                float(S[iSL][4]),
+                                                float(S[iSL][5]),
+                                                float(S[iSL][6]),
+                                                float(S[iSL][7])
+                    ))
+            
 
 if __name__ == '__main__':
     db_name = 'admit.db'
