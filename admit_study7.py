@@ -33,7 +33,8 @@ CREATE TABLE IF NOT EXISTS alma (
         target_name text NOT NULL,
         s_ra FLOAT,
         s_dec FLOAT,
-        frequency FLOAT
+        frequency FLOAT,
+        t_min FLOAT
 );
 """
 
@@ -160,8 +161,8 @@ class AdmitData(object):
         :return: project id
         obs_id == member_ous_uid
         """
-        sql = ''' INSERT INTO alma(obs_id, target_name, s_ra, s_dec, frequency)
-                            VALUES(?,      ?,           ?,    ?,     ?) '''
+        sql = ''' INSERT INTO alma(obs_id, target_name, s_ra, s_dec, frequency, t_min)
+                            VALUES(?,      ?,           ?,    ?,     ?,         ?) '''
         cur = self.conn.cursor()
         cur.execute(sql, entry)
         self.conn.commit()
@@ -238,7 +239,8 @@ class AdmitData(object):
                 if line[0] == '#': continue
                 x = line.split()
                 a[x[0]] = ' '.join(x[1:])
-            a_id = self.create_alma((a['obs_id'], a['target_name'], float(a['s_ra']), float(a['s_dec']), float(a['frequency'])))
+            a_id = self.create_alma((a['obs_id'], a['target_name'], float(a['s_ra']),
+                                     float(a['s_dec']), float(a['frequency']), float(a['t_min'])))
             alma = a
 
             a = {}
