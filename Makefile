@@ -84,3 +84,8 @@ mock:
 alma:
 	./query_alma.py
 	cp alma.pickle query/
+
+# create a new admit.db with the A-W-L-S tables
+admit.db:
+	./admit_study7.py data/product_member*latest/*sci*cube*admit
+	./admit_study7.py data/product_member*latest/*sci*mfs*admit
