@@ -120,9 +120,9 @@ class AdmitData(object):
             self.create_table( header_table)
             self.create_table(   alma_table)
             self.create_table(    win_table)
-            self.create_table(   cont_table)
             self.create_table(  lines_table)
             self.create_table(sources_table)
+            # self.create_table(   cont_table)
         else:
             print("Error! cannot create the database connection.")
             
