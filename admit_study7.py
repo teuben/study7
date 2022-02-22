@@ -26,15 +26,21 @@ CREATE TABLE IF NOT EXISTS header (
 );
 """
 
+
 alma_table = """
 CREATE TABLE IF NOT EXISTS alma (
     id integer PRIMARY KEY,
-        obs_id text NOT NULL,
-        target_name text NOT NULL,
-        s_ra FLOAT,
-        s_dec FLOAT,
-        frequency FLOAT,
-        t_min FLOAT
+        obs_id              text NOT NULL,
+        target_name         text NOT NULL,
+        s_ra                FLOAT,
+        s_dec               FLOAT,
+        frequency           FLOAT,
+        t_min               FLOAT, 
+        proposal_abstract   text NOT NULL,
+        obs_title           text NOT NULL,
+        science_keyword     text NOT NULL,
+        scientific_category text NOT NULL,
+        proposal_authors    text NOT NULL
 );
 """
 
@@ -70,15 +76,15 @@ CREATE TABLE IF NOT EXISTS cont (
 lines_table = """
 CREATE TABLE IF NOT EXISTS lines (
     id integer PRIMARY KEY,
-    w_id INTEGER NOT NULL,
-    formula text NOT NULL,
-    transition text NOT NULL,
-    restfreq FLOAT, 
-    vmin FLOAT,
-    vmax FLOAT,
-    mom0flux FLOAT,
-    mom1peak FLOAT,
-    mom2peak FLOAT,
+    w_id          INTEGER NOT NULL,
+    formula       text NOT NULL,
+    transition    text NOT NULL,
+    restfreq      FLOAT, 
+    vmin          FLOAT,
+    vmax          FLOAT,
+    mom0flux      FLOAT,
+    mom1peak      FLOAT,
+    mom2peak      FLOAT,
     FOREIGN KEY (w_id) REFERENCES win (id)
 );
 """
@@ -152,7 +158,7 @@ class AdmitData(object):
         cur.execute(sql, entry)
         self.conn.commit()
         return cur.lastrowid
-    
+ 
 
     def create_alma(self, entry):
         """
@@ -161,9 +167,10 @@ class AdmitData(object):
         :return: project id
         obs_id == member_ous_uid
         """
-        sql = ''' INSERT INTO alma(obs_id, target_name, s_ra, s_dec, frequency, t_min)
-                            VALUES(?,      ?,           ?,    ?,     ?,         ?) '''
+        sql = ''' INSERT INTO alma(obs_id, target_name, s_ra, s_dec, frequency, t_min, proposal_abstract, obs_title, science_keyword, scientific_category,  proposal_authors)
+                            VALUES(?,      ?,           ?,    ?,     ?,         ?,     ?,                 ?,         ?,               ?,                    ?) '''
         cur = self.conn.cursor()
+        print("PJT", entry)
         cur.execute(sql, entry)
         self.conn.commit()
         return cur.lastrowid
@@ -241,10 +248,12 @@ class AdmitData(object):
                 a[x[0]] = ' '.join(x[1:])
             if 'obs_id' in a:
                 a_id = self.create_alma((a['obs_id'], a['target_name'], float(a['s_ra']),
-                                     float(a['s_dec']), float(a['frequency']), float(a['t_min'])))
+                                         float(a['s_dec']), float(a['frequency']), float(a['t_min']),
+                                         a['proposal_abstract'], a['obs_title'], a['science_keyword'],
+                                         a['scientific_category'], a['proposal_authors']))
             else:
                 print("Warning: entering a dummy alma record")
-                a_id = self.create_alma(('dummy', 'dummy', 0.0, 0.0, 10.0, 5000.0))
+                a_id = self.create_alma(('dummy', 'dummy', 0.0, 0.0, 10.0, 5000.0, 'dummy', 'dummy', 'dummy', 'dummy', 'dummy'))
             alma = a
 
             a = {}
