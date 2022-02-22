@@ -5,6 +5,7 @@ URL0 = https://github.com/astropy/astroquery
 URL1 = https://github.com/teuben/astroquery
 URL2 = https://github.com/astropy/pyvo
 URL3 = https://github.com/emerge-erc/ALminer
+URL4 = https://github.com/astroumd/admit
 
 REPOS = astroquery pyvo alminer
 
@@ -66,6 +67,10 @@ alminer:
 	@echo ""
 	@echo "It is recommended to install that using:    pip3 install -e alminer"
 	@echo "but feel free to use your own method"
+
+# not required here, but you could
+admit7:
+	git clone -b study7 $(URL4) admit7
 
 
 # a few often used tests
