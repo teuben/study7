@@ -237,12 +237,10 @@ class AdmitData(object):
                 if len(line) == 0: continue
                 if line[0] == '#': continue
                 x = line.split()
-                print('LINE: ',line,x)
                 a[x[0]] = ' '.join(x[1:])
             a_id = self.create_alma((a['obs_id'], a['target_name'], float(a['s_ra']), float(a['s_dec']), float(a['frequency'])))
             alma = a
-            
-            
+
             a = {}
             # read the "study7" log for the W/L/S
             mode = 0
@@ -287,13 +285,10 @@ class AdmitData(object):
             l_stack = []
             for iL in range(nlines):
                 mom_key = 'L_%s_%s' % (L[iL][0],L[iL][2])
-                print("PJT ",mom_key)
                 if mom_key in a:
-                    print('PJT - ',a[mom_key])
                     mom0flux = a[mom_key].split()[0]
                     mom1peak = a[mom_key].split()[1]
                     mom2peak = a[mom_key].split()[2]
-                    print("PJT - ", mom_key, mom0flux, mom1peak, mom2peak)
                 else:
                     mom0flux = 0.0
                     mom1peak = 0.0
