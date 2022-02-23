@@ -16,9 +16,9 @@ payload = {
 #           "source_name_resolver": "M16",
             "vlsr": 88.0,
             "formula": 'CO*|H2O',
-            "proposal_abstract": "*YSO* | *young stellar object*",
+            "project_abstract": "*YSO* | *young stellar object*",
             "source_snr": ">3",
-            "spatial_resolution": "<10",
+#            "spatial_resolution": "<10",
           }
 a.query(**payload)
 
