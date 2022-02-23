@@ -56,6 +56,7 @@ CREATE TABLE IF NOT EXISTS win (
     nlines INTEGER,
     nsources INTEGER,
     nchan INTEGER,
+    peak FLOAT,
     rms FLOAT,
     bmaj FLOAT,
     bmin FLOAT,
@@ -183,8 +184,8 @@ class AdmitData(object):
         :param project:
         :return: project id
         """
-        sql = ''' INSERT INTO win(a_id,freqc,freqw,vlsr,nlines,nsources,nchan,rms,bmaj,bmin,bpa,fcoverage)
-                           VALUES(?,   ?,    ?,    ?,   ?,     ?,       ?,    ?,  ?,   ?,   ?,  ?) '''
+        sql = ''' INSERT INTO win(a_id,freqc,freqw,vlsr,nlines,nsources,nchan,peak, rms,bmaj,bmin,bpa,fcoverage)
+                           VALUES(?,   ?,    ?,    ?,   ?,     ?,       ?,    ?,    ?,  ?,   ?,   ?,  ?) '''
         cur = self.conn.cursor()
         cur.execute(sql, entry)
         self.conn.commit()
@@ -295,6 +296,7 @@ class AdmitData(object):
                                     int(a['nlines']),
                                     int(a['nsources']),
                                     int(a['nchan']),
+                                    float(a['peak']),
                                     float(a['rms']),
                                     float(a['bmaj']),
                                     float(a['bmin']),
