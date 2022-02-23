@@ -16,7 +16,7 @@ payload = {
             "velocity": 88.0,
             "formula": 'CO*|H2O',
             "pub_abstract": "*YSO* | *young stellar object*",
-            "snr": ">3",
+            "source_snr": ">3",
             "spatial_resolution": "<10",
           }
 a.query(**payload)
