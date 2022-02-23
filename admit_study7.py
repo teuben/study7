@@ -56,8 +56,8 @@ CREATE TABLE IF NOT EXISTS win (
     nlines INTEGER,
     nsources INTEGER,
     nchan INTEGER,
-    peak FLOAT,
-    rms FLOAT,
+    peak_w FLOAT,
+    rms_w FLOAT,
     bmaj FLOAT,
     bmin FLOAT,
     bpa FLOAT,
@@ -99,12 +99,12 @@ CREATE TABLE IF NOT EXISTS sources (
     l_id INTEGER,
     ra FLOAT,
     dec FLOAT,
-    peak FLOAT,
+    peak_s FLOAT,
     flux FLOAT,
     smaj FLOAT,
     smin FLOAT,
     spa FLOAT,
-    snr FLOAT,
+    snr_s FLOAT,
     FOREIGN KEY (w_id) REFERENCES win (id),
     FOREIGN KEY (l_id) REFERENCES lines (id)
 );
@@ -184,8 +184,8 @@ class AdmitData(object):
         :param project:
         :return: project id
         """
-        sql = ''' INSERT INTO win(a_id,freqc,freqw,vlsr,nlines,nsources,nchan,peak, rms,bmaj,bmin,bpa,fcoverage)
-                           VALUES(?,   ?,    ?,    ?,   ?,     ?,       ?,    ?,    ?,  ?,   ?,   ?,  ?) '''
+        sql = ''' INSERT INTO win(a_id,freqc,freqw,vlsr,nlines,nsources,nchan,peak_w, rms_w,bmaj,bmin,bpa,fcoverage)
+                           VALUES(?,   ?,    ?,    ?,   ?,     ?,       ?,    ?,      ?,  ?,   ?,   ?,  ?) '''
         cur = self.conn.cursor()
         cur.execute(sql, entry)
         self.conn.commit()
@@ -211,8 +211,8 @@ class AdmitData(object):
         :param project:
         :return: project id
         """
-        sql = ''' INSERT INTO sources(w_id,l_id,ra,dec,peak,flux,smaj,smin,spa,snr)
-                               VALUES(?,   ?,   ?, ?,  ?,   ?,   ?,   ?,   ?,  ?) '''
+        sql = ''' INSERT INTO sources(w_id,l_id,ra,dec,peak_s,flux,smaj,smin,spa,snr_s)
+                               VALUES(?,   ?,   ?, ?,  ?,     ?,   ?,   ?,   ?,  ?) '''
         cur = self.conn.cursor()
         cur.execute(sql, entry)
         self.conn.commit()
