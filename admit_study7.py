@@ -38,7 +38,7 @@ CREATE TABLE IF NOT EXISTS alma (
         s_dec               FLOAT,
         frequency           FLOAT,
         t_min               FLOAT, 
-        project_abstract   text NOT NULL,
+        project_abstract    text NOT NULL,
         obs_title           text NOT NULL,
         science_keyword     text NOT NULL,
         scientific_category text NOT NULL,
@@ -254,7 +254,7 @@ class AdmitData(object):
             if 'obs_id' in a:
                 a_id = self.create_alma((a['obs_id'], a['target_name'], float(a['s_ra']),
                                          float(a['s_dec']), float(a['frequency']), float(a['t_min']),
-                                         a['project_abstract'], a['obs_title'], a['science_keyword'],
+                                         a['proposal_abstract'], a['obs_title'], a['science_keyword'],
                                          a['scientific_category'], a['proposal_authors']))
             else:
                 print("Warning: entering a dummy alma record")
