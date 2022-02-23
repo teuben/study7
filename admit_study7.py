@@ -11,6 +11,8 @@ import os, sys
 import sqlite3
 from sqlite3 import Error
 
+version = '23-feb-2022'
+
 # --------------------------------------------------------------------------------
 #  if a new field is added to a table:
 #     1. CREATE TABLE needs new one
@@ -216,7 +218,7 @@ class AdmitData(object):
         return cur.lastrowid
 
 
-    def add_study7(self, dir_name, dryrun=False):
+    def add_study7(self, dir_name, dryrun=False, debug=False):
         """
         now insert some data in db from 
 
@@ -228,16 +230,19 @@ class AdmitData(object):
         log_aq     = dir_name + '/admit_aq.log'
         if not os.path.exists(log_study7):
             print("Warning: no %s" % log_study7)
-            return 
+            return 0
         if not os.path.exists(log_aq):
             print("Warning: no %s" % log_aq)
-            return
+            return 0
 
         
         with self.conn:
+            # write some history
+            h_id = self.create_header(('version',version))
             # read the "aq" log for A table
             lines = open(log_aq).readlines()
-            print("%d lines %s" % (len(lines),log_aq))
+            if len(lines) < 10:
+                print("short %d lines %s" % (len(lines),log_aq))
             a={}
             for line in lines:
                 line = line.strip()
@@ -260,7 +265,8 @@ class AdmitData(object):
             mode = 0
             s_stack = []
             lines = open(log_study7).readlines()
-            print("%d lines %s" % (len(lines),log_study7))
+            if len(lines) < 10:
+                print("short %d lines %s" % (len(lines),log_study7))
             S=[]
             L=[]
             for line in lines:
@@ -336,16 +342,10 @@ class AdmitData(object):
                 s_stack.append(s_id)
             if len(S) < nsources:
                 print("Warning: not enough Sources from CubeSum - very unusual")
-            elif len(S) == nsources:
-                print("Warning: no LineCube sources given, it seems")
-            elif len(S) < nsources*(nlines+1):
-                print("Warning: not enough LineCube sources given, it seems")
-            elif len(S) > nsources*(nlines+1):
-                print("Warning: too many LineCube sources given, it seems")
 
-            print("Found %s sources in CubeSum and %d lines in Cube" % (nsources,nlines))
-            print("Found %d sources in CubeSum and LineCube's" % len(S))
-            print("Should find: %d" % (nsources*(nlines+1)))
+            if debug:
+                print("Found %s sources in CubeSum and %d lines in Cube" % (nsources,nlines))
+                print("Found %d sources in CubeSum and LineCube's" % len(S))
 
             if len(S) == nsources*(nlines+1):
                 for iL in range(nlines):
@@ -363,7 +363,10 @@ class AdmitData(object):
                                                     float(S[iSL][6]),
                                                     float(S[iSL][7])
                         ))
-            
+            else:
+                print("Warning: not the right number of sources")
+            return 1
+                        
 
 if __name__ == '__main__':
     db_name = 'admit.db'
@@ -372,7 +375,7 @@ if __name__ == '__main__':
         print("Will write/append to %s" % db_name)
         sys.exit(0)
     md = AdmitData(db_name)
+    nadd = 0
     for dir in sys.argv[1:]:
-        md.add_study7(dir)
-    print("Warning:  Don't run on the same data twice")
-    print("Data written/appended to %s" % db_name)
+        nadd = nadd + md.add_study7(dir)
+    print("Added %d / %d admit results" % (nadd,len(sys.argv[1:])))
