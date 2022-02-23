@@ -9,10 +9,9 @@ a.check()
 print("AVAILABLE KEYS ",a.keys)
 payload = { 
             "source_name_alma": "NGC3504",
-            "source_name_resolver": "M16",
-            "velocity": 88.0,
+            "vlsr": 88.0,
             "formula": 'CO*|H2O',
-            "pub_abstract": "*YSO* | *young stellar object*",
+            "project_abstract": "*YSO* | *young stellar object*",
             "source_snr": ">3",
             "spatial_resolution": "<10",
           }
