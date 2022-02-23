@@ -2,15 +2,19 @@
 
 Things we should clarify or fix.
 
-1.  vmin and vmax are w.r.t. vlsr.
+0. Units Units Units!
+
+1. vmin and vmax are w.r.t. vlsr.
 
 3. LineCube sources missing (MapSources unfinished code)
 
-2.  some mom0,1,2 are 0.0 - is that because the line lookup failed due to roundoff?
+2. some mom0,1,2 are 0.0 - is that because the line lookup failed due to roundoff?
 
 4. sanitize product tree:   the "iter1" fits files cannot be used. aap.py doesn't skip them. Solution: manually remove the fits files
 
 4. in addition to the 'mfs' and 'cube', the current aap also does 'cont'. do we care?
+
+4. the LineCube "S" has a slightly different coordinate from the CubeSum "S"
 
 
 5. there is an admit failure in the _ph and _bp calibration files.  are they useful for another experiment, e.g.
@@ -41,6 +45,23 @@ Things we should clarify or fix.
 
 18. need to do a sanity check on the rms in the cube, and the one used in SFind2D
 
+19. if you ever see a "dummy" entry in the alma table, it means that the "admit_aq" query didn't
+    work and/or the fits file wasn't a recent enough ALMA fits file with good headers, and to
+	prevent it from failing, just added a dummy entry
+	
+30. There are some questions for the ALMA db team about some peculiarities of the ALMA columns:
+    1. why is there obs_id and member_ous_uid. they seem the same
+	2. how come that s_fov < s_resolution
+	
+	
+31. textual searches are case sensitive in abstract etc.   How about NGC vs. ngc in object name?
+
+32. table(s) are not normalized
+
+33. sample3 : how can there be a line, and no source  member.uid___A001_X1288_Xbbe.NGC4414_sci.spw23.cube.I.pbcor.fits
+
+34. Fluxes/Peaks are reported, but they are in noise flat data, thye've not been PB corrected??
+
 ## query
 
 
@@ -48,3 +69,8 @@ Things we should clarify or fix.
 2. astroquery needs some Config method?
 
 
+
+
+https://almascience.eso.org/alma-data/lp/MAPS
+2018.1.01055.L   2.3TB
+http://alma-maps.info/.
