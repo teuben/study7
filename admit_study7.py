@@ -11,6 +11,8 @@ import os, sys
 import sqlite3
 from sqlite3 import Error
 
+version = '22-feb-2022'
+
 # --------------------------------------------------------------------------------
 #  if a new field is added to a table:
 #     1. CREATE TABLE needs new one
@@ -236,6 +238,8 @@ class AdmitData(object):
 
         
         with self.conn:
+            # write some history
+            h_id = self.create_header(('version',version))
             # read the "aq" log for A table
             lines = open(log_aq).readlines()
             print("%d lines %s" % (len(lines),log_aq))
@@ -348,6 +352,7 @@ class AdmitData(object):
             print("Found %d sources in CubeSum and LineCube's" % len(S))
             print("Should find: %d" % (nsources*(nlines+1)))
 
+
             for iL in range(nlines):
                 l_id = l_stack.pop(0)
                 for iS in range(nsources):
@@ -363,6 +368,7 @@ class AdmitData(object):
                                                 float(S[iSL][6]),
                                                 float(S[iSL][7])
                     ))
+                    
             
 
 if __name__ == '__main__':
