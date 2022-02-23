@@ -170,7 +170,6 @@ class AdmitData(object):
         sql = ''' INSERT INTO alma(obs_id, target_name, s_ra, s_dec, frequency, t_min, proposal_abstract, obs_title, science_keyword, scientific_category,  proposal_authors)
                             VALUES(?,      ?,           ?,    ?,     ?,         ?,     ?,                 ?,         ?,               ?,                    ?) '''
         cur = self.conn.cursor()
-        print("PJT", entry)
         cur.execute(sql, entry)
         self.conn.commit()
         return cur.lastrowid
@@ -348,21 +347,22 @@ class AdmitData(object):
             print("Found %d sources in CubeSum and LineCube's" % len(S))
             print("Should find: %d" % (nsources*(nlines+1)))
 
-            for iL in range(nlines):
-                l_id = l_stack.pop(0)
-                for iS in range(nsources):
-                    iSL = iS + (iL+1)*nsources
-                    s_id = self.create_sources((w_id,
-                                                l_id,
-                                                float(S[iSL][0]),
-                                                float(S[iSL][1]),
-                                                float(S[iSL][2]),
-                                                float(S[iSL][3]),
-                                                float(S[iSL][4]),
-                                                float(S[iSL][5]),
-                                                float(S[iSL][6]),
-                                                float(S[iSL][7])
-                    ))
+            if len(S) == nsources*(nlines+1):
+                for iL in range(nlines):
+                    l_id = l_stack.pop(0)
+                    for iS in range(nsources):
+                        iSL = iS + (iL+1)*nsources
+                        s_id = self.create_sources((w_id,
+                                                    l_id,
+                                                    float(S[iSL][0]),
+                                                    float(S[iSL][1]),
+                                                    float(S[iSL][2]),
+                                                    float(S[iSL][3]),
+                                                    float(S[iSL][4]),
+                                                    float(S[iSL][5]),
+                                                    float(S[iSL][6]),
+                                                    float(S[iSL][7])
+                        ))
             
 
 if __name__ == '__main__':
