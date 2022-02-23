@@ -38,7 +38,7 @@ CREATE TABLE IF NOT EXISTS alma (
         s_dec               FLOAT,
         frequency           FLOAT,
         t_min               FLOAT, 
-        project_abstract   text NOT NULL,
+        project_abstract    text NOT NULL,
         obs_title           text NOT NULL,
         science_keyword     text NOT NULL,
         scientific_category text NOT NULL,
@@ -56,8 +56,8 @@ CREATE TABLE IF NOT EXISTS win (
     nlines INTEGER,
     nsources INTEGER,
     nchan INTEGER,
-    peak FLOAT,
-    rms FLOAT,
+    peak_w FLOAT,
+    rms_w FLOAT,
     bmaj FLOAT,
     bmin FLOAT,
     bpa FLOAT,
@@ -99,12 +99,12 @@ CREATE TABLE IF NOT EXISTS sources (
     l_id INTEGER,
     ra FLOAT,
     dec FLOAT,
-    peak FLOAT,
+    peak_s FLOAT,
     flux FLOAT,
     smaj FLOAT,
     smin FLOAT,
     spa FLOAT,
-    snr FLOAT,
+    snr_s FLOAT,
     FOREIGN KEY (w_id) REFERENCES win (id),
     FOREIGN KEY (l_id) REFERENCES lines (id)
 );
@@ -184,8 +184,8 @@ class AdmitData(object):
         :param project:
         :return: project id
         """
-        sql = ''' INSERT INTO win(a_id,freqc,freqw,vlsr,nlines,nsources,nchan,peak, rms,bmaj,bmin,bpa,fcoverage)
-                           VALUES(?,   ?,    ?,    ?,   ?,     ?,       ?,    ?,    ?,  ?,   ?,   ?,  ?) '''
+        sql = ''' INSERT INTO win(a_id,freqc,freqw,vlsr,nlines,nsources,nchan,peak_w,rms_w,bmaj,bmin,bpa,fcoverage)
+                           VALUES(?,   ?,    ?,    ?,   ?,     ?,       ?,    ?,     ?,    ?,   ?,   ?,  ?) '''
         cur = self.conn.cursor()
         cur.execute(sql, entry)
         self.conn.commit()
@@ -211,8 +211,8 @@ class AdmitData(object):
         :param project:
         :return: project id
         """
-        sql = ''' INSERT INTO sources(w_id,l_id,ra,dec,peak,flux,smaj,smin,spa,snr)
-                               VALUES(?,   ?,   ?, ?,  ?,   ?,   ?,   ?,   ?,  ?) '''
+        sql = ''' INSERT INTO sources(w_id,l_id,ra,dec,peak_s,flux,smaj,smin,spa,snr_s)
+                               VALUES(?,   ?,   ?, ?,  ?,     ?,   ?,   ?,   ?,  ?) '''
         cur = self.conn.cursor()
         cur.execute(sql, entry)
         self.conn.commit()
@@ -254,7 +254,7 @@ class AdmitData(object):
             if 'obs_id' in a:
                 a_id = self.create_alma((a['obs_id'], a['target_name'], float(a['s_ra']),
                                          float(a['s_dec']), float(a['frequency']), float(a['t_min']),
-                                         a['project_abstract'], a['obs_title'], a['science_keyword'],
+                                         a['proposal_abstract'], a['obs_title'], a['science_keyword'],
                                          a['scientific_category'], a['proposal_authors']))
             else:
                 print("Warning: entering a dummy alma record")
