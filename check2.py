@@ -12,12 +12,13 @@ a.check()
 print("AVAILABLE KEYS ",a.keys)
 payload = { 
             "source_name_alma": "NGC 123",
-            "source_name_resolver": "M16",
-            "velocity": 88.0,
+# needs s_region to work.
+#           "source_name_resolver": "M16",
+            "vlsr": 88.0,
             "formula": 'CO*|H2O',
-            "pub_abstract": "*YSO* | *young stellar object*",
-            "snr": ">3",
-            "spatial_resolution": "<10",
+            "project_abstract": "*YSO* | *young stellar object*",
+            "source_snr": ">3",
+#            "spatial_resolution": "<10",
           }
 a.query(**payload)
 

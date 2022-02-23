@@ -38,7 +38,7 @@ CREATE TABLE IF NOT EXISTS alma (
         s_dec               FLOAT,
         frequency           FLOAT,
         t_min               FLOAT, 
-        proposal_abstract   text NOT NULL,
+        project_abstract   text NOT NULL,
         obs_title           text NOT NULL,
         science_keyword     text NOT NULL,
         scientific_category text NOT NULL,
@@ -170,7 +170,7 @@ class AdmitData(object):
         :return: project id
         obs_id == member_ous_uid
         """
-        sql = ''' INSERT INTO alma(obs_id, target_name, s_ra, s_dec, frequency, t_min, proposal_abstract, obs_title, science_keyword, scientific_category,  proposal_authors)
+        sql = ''' INSERT INTO alma(obs_id, target_name, s_ra, s_dec, frequency, t_min, project_abstract, obs_title, science_keyword, scientific_category,  proposal_authors)
                             VALUES(?,      ?,           ?,    ?,     ?,         ?,     ?,                 ?,         ?,               ?,                    ?) '''
         cur = self.conn.cursor()
         cur.execute(sql, entry)
@@ -254,7 +254,7 @@ class AdmitData(object):
             if 'obs_id' in a:
                 a_id = self.create_alma((a['obs_id'], a['target_name'], float(a['s_ra']),
                                          float(a['s_dec']), float(a['frequency']), float(a['t_min']),
-                                         a['proposal_abstract'], a['obs_title'], a['science_keyword'],
+                                         a['project_abstract'], a['obs_title'], a['science_keyword'],
                                          a['scientific_category'], a['proposal_authors']))
             else:
                 print("Warning: entering a dummy alma record")
