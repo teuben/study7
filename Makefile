@@ -86,6 +86,17 @@ alma:
 	cp alma.pickle query/
 
 # create a new admit.db with the A-W-L-S tables
+
+NEW = admit_cal.db admit.db admit.tar.gz
+new:
+	rm -f $(NEW)
+	$(MAKE) $(NEW)
+
 admit.db:
-	./admit_study7.py data/product_member*latest/*sci*cube*admit
-	./admit_study7.py data/product_member*latest/*sci*mfs*admit
+	./admit_study7.py -d admit.db    data/product_member*latest/*sci*cube*admit      data/product_member*latest/*sci*mfs*admit
+
+admit_cal.db:
+	./admit_study7.py -c -d admit_cal.db    data/product_member*latest/*_ph*mfs*admit      data/product_member*latest/*_bp*mfs*admit
+
+admit.tar.gz:
+	tar zcf admit.tar.gz data/product_member*latest/*admit/*.log data/product_member*latest/*admit/*.log

@@ -10,8 +10,10 @@
 import os, sys
 import sqlite3
 from sqlite3 import Error
+from astropy.time import Time
+import argparse as ap
 
-version = '23-feb-2022'
+version = '24-feb-2022'
 
 # --------------------------------------------------------------------------------
 #  if a new field is added to a table:
@@ -50,6 +52,7 @@ win_table = """
 CREATE TABLE IF NOT EXISTS win (
     id integer PRIMARY KEY,
     a_id INTEGER NOT NULL,
+    spw TEXT,
     freqc FLOAT,
     freqw FLOAT,
     vlsr FLOAT,
@@ -184,8 +187,8 @@ class AdmitData(object):
         :param project:
         :return: project id
         """
-        sql = ''' INSERT INTO win(a_id,freqc,freqw,vlsr,nlines,nsources,nchan,peak_w,rms_w,bmaj,bmin,bpa,fcoverage)
-                           VALUES(?,   ?,    ?,    ?,   ?,     ?,       ?,    ?,     ?,    ?,   ?,   ?,  ?) '''
+        sql = ''' INSERT INTO win(a_id,spw,freqc,freqw,vlsr,nlines,nsources,nchan,peak_w,rms_w,bmaj,bmin,bpa,fcoverage)
+                           VALUES(?,   ?,  ?,    ?,    ?,   ?,     ?,       ?,    ?,     ?,    ?,   ?,   ?,  ?) '''
         cur = self.conn.cursor()
         cur.execute(sql, entry)
         self.conn.commit()
@@ -219,7 +222,7 @@ class AdmitData(object):
         return cur.lastrowid
 
 
-    def add_study7(self, dir_name, dryrun=False, debug=False):
+    def add_study7(self, dir_name, dryrun=False, aq=True, debug=False):
         """
         now insert some data in db from 
 
@@ -242,12 +245,25 @@ class AdmitData(object):
             h_id = self.create_header(('version',version))
             # read the "aq" log for A table
             lines = open(log_aq).readlines()
-            if len(lines) < 10:
+            if len(lines) < 20:
                 print("short %d lines %s" % (len(lines),log_aq))
             a={}
             for line in lines:
                 line = line.strip()
                 if len(line) == 0: continue
+                if not aq and line[:11] == '# </backup>':
+                    # @todo   not supported yet;  t_min is needed, and it's not in the backup
+                    #         remaining keywords also not in backup
+                    # date_obs    2018-01-05T10:02:40.272001
+                    # t_min       58123.420166 - 58123.445496
+                    t = Time(a['date_obs'])
+                    a['t_min'] = t.mjd
+                    a['proposal_abstract'] = '-'
+                    a['obs_title'] = '-'
+                    a['science_keyword'] = 'cal'
+                    a['scientific_category'] = 'cal'
+                    a['proposal_authors'] = 'cal'
+                    break
                 if line[0] == '#': continue
                 x = line.split()
                 a[x[0]] = ' '.join(x[1:])
@@ -259,6 +275,12 @@ class AdmitData(object):
             else:
                 print("Warning: entering a dummy alma record")
                 a_id = self.create_alma(('dummy', 'dummy', 0.0, 0.0, 10.0, 5000.0, 'dummy', 'dummy', 'dummy', 'dummy', 'dummy'))
+
+            # big cheat
+            if 'spw' in a:
+                spw = a['spw']
+            else:
+                spw = '???'
             alma = a
 
             a = {}
@@ -266,7 +288,7 @@ class AdmitData(object):
             mode = 0
             s_stack = []
             lines = open(log_study7).readlines()
-            if len(lines) < 10:
+            if len(lines) < 20:
                 print("short %d lines %s" % (len(lines),log_study7))
             S=[]
             L=[]
@@ -290,6 +312,7 @@ class AdmitData(object):
                 print("Warning: len(L),nlines = %d,%d not the same" % (nlines,len(L)))
                 
             w_id = self.create_win((a_id,
+                                    spw,
                                     float(a['freqc']),
                                     float(a['freqw']),
                                     float(a['vlsr']),
@@ -368,16 +391,37 @@ class AdmitData(object):
             else:
                 print("Warning: not the right number of sources")
             return 1
-                        
+
+
+# @todo need an option to ignore the admit_aq, e.g. for calibrators it overwrites target_name, s_ra, s_dec        
+
+#
+#   -d db_name
+#   -c            treat like calibrator
+#
 
 if __name__ == '__main__':
     db_name = 'admit.db'
-    if len(sys.argv) == 1:
-        print("Usage: %s admit_dir(s)" % sys.argv[0])
-        print("Will write/append to %s" % db_name)
-        sys.exit(0)
+    qa = True
+
+    parser = ap.ArgumentParser(description='Ingest study7 admit projects in a A/W/L/S database')
+    parser.add_argument('-d','--db_name'  ,nargs=1, help='Database file [admit.db]')
+    parser.add_argument('-c','--cal'      ,action='store_true', help='Special cheat for calibrators')
+    parser.add_argument('--version', action='version', version='%(prog)s ' + version)
+    parser.add_argument('admit_dirs', nargs='*')
+    try:
+        args = vars(parser.parse_args())
+    except:
+        sys.exit(1)
+
+    db_name = args['db_name'][0]
+    aq = not args['cal']
+    if not aq:
+        print("Warning: special calibrator treatment for %s" % db_name)
+
+    
     md = AdmitData(db_name)
     nadd = 0
-    for dir in sys.argv[1:]:
-        nadd = nadd + md.add_study7(dir)
-    print("Added %d / %d admit results" % (nadd,len(sys.argv[1:])))
+    for ddir in args['admit_dirs']:
+        nadd = nadd + md.add_study7(ddir, aq=aq)
+    print("Added %d / %d admit results" % (nadd,len(args['admit_dirs'])))

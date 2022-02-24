@@ -7,7 +7,7 @@
 import os
 import sys
 
-version = '21-feb-2022'
+version = '23-feb-2022'
 
 key   = 'member_ous_uid'
 key   = 'proposal_id'
@@ -32,6 +32,7 @@ if os.path.exists(val):
     h = hdu[0].header
     # Look for 'uid___A001_X1288_Xba8' in fits header or filename, make it uid://A001/X1288/Xba8
     # Data from 2017.x seem ok
+    spw = '???'
     if 'FILNAM01' not in h:
         print("# No FILNAM01 found in header, not a recent enough ALMA fits file?")
         #   sigh.... try deciphering the file name (<= 2016 projects?)
@@ -43,6 +44,7 @@ if os.path.exists(val):
             sys.exit(0)
     else:
         uid = h['FILNAM01'].split('_')
+        spw = h['FILNAM04']
     val = 'uid://%s/%s/%s' % (uid[3],uid[4],uid[5])
     # Find the mid frequency
     naxis3 =   int(h['NAXIS3'])
@@ -57,12 +59,15 @@ if os.path.exists(val):
     a_ra = float(h['CRVAL1'])
     a_dec = float(h['CRVAL2'])
     a_frequency = freq
+    a_date_obs = h['DATE-OBS']
     print("# <backup> values in case query fails")
     print("obs_id      %s" % a_obs_id)
     print("target_name %s" % a_target_name)
     print("s_ra        %s" % a_ra)
     print("s_dec       %s" % a_dec)
     print("frequency   %s" % a_frequency)
+    print("spw         %s" % spw)
+    print("date_obs    %s" % a_date_obs)
     print("# </backup>")
 else:
     a_obs_id = None
