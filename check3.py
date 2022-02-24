@@ -16,6 +16,12 @@ payload = {
             "spatial_resolution": "<10",
           }
 
+#  to note:   there should be no space (or wrong case?) in the source name
+
+p0 = { 
+    "source_name_alma": "NGC3504",
+    }
+
 p1 = { 
     "source_name_alma": "NGC3504",
     "formula": 'CO',
