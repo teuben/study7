@@ -29,8 +29,7 @@ except Exception:
     print("correctly caught no keyword exception")
 
 # Example of using kw that doesn't exist
-a.query(foobar="nope")
-
-if False:
-    r = a.sql("SELECT * from win")
-    print(len(r),r)
+try:
+    a.query(foobar="nope")
+except Exception as e:
+    print(f"Correctly caught bad keyword. {e}")
