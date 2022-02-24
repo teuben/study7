@@ -8,15 +8,15 @@ if True:
     a = pickle.load(open('alma.pickle','rb'))
 
 a = ADMIT()
-a.query()
+a.query(source_name_alma="NGC3504")
 a.check()
 
 
 if False:
-    r = a.sql("SELECT * from spw")
+    r = a.sql("SELECT * from win")
     print(len(r),r)
 
-if True:
+if False:
     q1 = 'SELECT * from  spw, sources WHERE sources.flux > 9 and sources.spw_id = spw.id and sources.lines_id = 0;'
     r1 = a.sql(q1)
     print('Should find the 1 CubeSum source, 10 Jy')
