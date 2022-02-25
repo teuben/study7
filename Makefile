@@ -100,3 +100,6 @@ admit_cal.db:
 
 admit.tar.gz:
 	tar zcf admit.tar.gz data/product_member*latest/*admit/*.log data/product_member*latest/*admit/*.log
+
+admit_maps.db:
+	./admit_study7.py -d admit_maps.db    data/MAPS/product_member*latest/*sci*cube*admit      data/MAPS/product_member*latest/*sci*mfs*admit
