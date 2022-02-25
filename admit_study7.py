@@ -15,6 +15,46 @@ import argparse as ap
 
 version = '24-feb-2022'
 
+
+# from ADMIT:   admit/util/utils.py
+def admit_util_getplain(formula):
+    """ Method to make a chemical formula more readable for embedding in filenames
+        Examples:
+
+        CH3COOHv=0     -> CH3COOH
+
+        g-CH3CH2OH     -> CH3CH2OH
+
+        (CH3)2COv=0    -> (CH3)2CO
+
+        cis-CH2OHCHOv= -> CH2OHCHO
+
+        g'Ga-(CH2OH)2  -> (CH2OH)2
+
+        Parameters
+        ----------
+        formula : str
+            The chemical formula to process
+
+        Returns
+        -------
+        String of the more readable formula
+    """
+    pos = formula.find("-")
+    if pos != -1:
+        if not(-1 < formula.find("C") < pos or -1 < formula.find("N") < pos \
+           or -1 < formula.find("O") < pos or -1 < formula.find("H") < pos):
+            formula = formula[pos + 1:]
+    pos = formula.find("v")
+    if pos != -1:
+        formula = formula[:pos]
+    pos = formula.find("&Sigma")
+    if pos != -1:
+        return formula[:pos]
+    formula = formula.replace(";","")
+    return formula.replace("&","-")
+
+
 # --------------------------------------------------------------------------------
 #  if a new field is added to a table:
 #     1. CREATE TABLE needs new one
@@ -298,18 +338,41 @@ class AdmitData(object):
                 if line[0] == '#': continue
                 x = line.split()
 
+                # long keywords are stuck in dictionary 
                 if len(x[0]) > 1:
                     a[x[0]] = ' '.join(x[1:])
                     continue
 
-                if x[0] == 'L':  L.append(x[1:])
-                if x[0] == 'S':  S.append(x[1:])
+                # short special ones (L, S) here need special treatment
+                if x[0] == 'L':
+                    if True:
+                        # a hack, we have the LINEID and need a sanitized admit_util_getplain() version, if different....
+                        xs = admit_util_getplain(x[1])
+                        x[1] = xs
+                    L.append(x[1:])
+                        
+                if x[0] == 'S':
+                    S.append(x[1:])
                     
             nsources = int(a['nsources'])
             nlines = int(a['nlines'])
 
             if len(L) != nlines:
                 print("Warning: len(L),nlines = %d,%d not the same" % (nlines,len(L)))
+
+            # big hack, assume the same sigma applies to linecubes
+            if nsources > 0:
+                sigma = list(range(nsources))
+                for i in range(nsources):
+                    s = S[i]
+                    peak_i = float(s[2])
+                    snr_i  = float(s[7])
+                    if snr_i == 0:
+                        sigma[i] = 0.0
+                    else:
+                        sigma[i] = peak_i/snr_i
+                #print("sigma:",sigma)
+                sigma  = sigma[0]
                 
             w_id = self.create_win((a_id,
                                     spw,
@@ -372,11 +435,21 @@ class AdmitData(object):
                 print("Found %s sources in CubeSum and %d lines in Cube" % (nsources,nlines))
                 print("Found %d sources in CubeSum and LineCube's" % len(S))
 
+            # recall there are cases where nlines>0 and nsources=0
             if len(S) == nsources*(nlines+1):
                 for iL in range(nlines):
                     l_id = l_stack.pop(0)
                     for iS in range(nsources):
                         iSL = iS + (iL+1)*nsources
+                        snr_s = float(S[iSL][7])
+                        if snr_s < 0:
+                            if sigma == 0:
+                                snr_s = -1
+                            else:
+                                snr_s =float(S[iSL][2])/sigma 
+                        else:
+                            print("ODD, ",snr_s) # should never happen
+                            
                         s_id = self.create_sources((w_id,
                                                     l_id,
                                                     float(S[iSL][0]),
@@ -386,7 +459,7 @@ class AdmitData(object):
                                                     float(S[iSL][4]),
                                                     float(S[iSL][5]),
                                                     float(S[iSL][6]),
-                                                    float(S[iSL][7])
+                                                    snr_s,
                         ))
             else:
                 print("Warning: not the right number of sources")
