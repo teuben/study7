@@ -262,7 +262,7 @@ class AdmitData(object):
         return cur.lastrowid
 
 
-    def add_study7(self, dir_name, dryrun=False, aq=True, debug=False, verbose=False):
+    def add_study7(self, dir_name, dryrun=False, aq=True, debug=False, verbose=False, header=None):
         """
         now insert some data in db from 
 
@@ -281,8 +281,10 @@ class AdmitData(object):
 
         
         with self.conn:
-            # write some history
-            h_id = self.create_header(('version',version))
+            if header != None:
+                # write some history, usually only the first time
+                h_id = self.create_header(('version',version))
+                
             # read the "aq" log for A table
             lines = open(log_aq).readlines()
             if len(lines) < 20:
@@ -502,9 +504,11 @@ if __name__ == '__main__':
     
     md = AdmitData(db_name)
     nadd = 0
+    header = version
     try:
         for ddir in args['admit_dirs']:
-            nadd = nadd + md.add_study7(ddir, aq=aq, verbose=verbose)
+            nadd = nadd + md.add_study7(ddir, aq=aq, verbose=verbose, header=header)
+            header = None
         print("OK. Added %d / %d admit results" % (nadd,len(args['admit_dirs'])))
     except:
         print("*** Added %d / %d admit results" % (nadd,len(args['admit_dirs'])))
