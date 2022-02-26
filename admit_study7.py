@@ -13,7 +13,7 @@ from sqlite3 import Error
 from astropy.time import Time
 import argparse as ap
 
-version = '24-feb-2022'
+version = '25-feb-2022'
 
 
 # from ADMIT:   admit/util/utils.py
@@ -262,7 +262,7 @@ class AdmitData(object):
         return cur.lastrowid
 
 
-    def add_study7(self, dir_name, dryrun=False, aq=True, debug=False):
+    def add_study7(self, dir_name, dryrun=False, aq=True, debug=False, verbose=False, header=None):
         """
         now insert some data in db from 
 
@@ -281,12 +281,16 @@ class AdmitData(object):
 
         
         with self.conn:
-            # write some history
-            h_id = self.create_header(('version',version))
+            if header != None:
+                # write some history, usually only the first time
+                h_id = self.create_header(('version',version))
+                
             # read the "aq" log for A table
             lines = open(log_aq).readlines()
             if len(lines) < 20:
                 print("short %d lines %s" % (len(lines),log_aq))
+            if verbose:
+                print("%d lines %s" % (len(lines),log_aq))
             a={}
             for line in lines:
                 line = line.strip()
@@ -330,6 +334,8 @@ class AdmitData(object):
             lines = open(log_study7).readlines()
             if len(lines) < 20:
                 print("short %d lines %s" % (len(lines),log_study7))
+            if verbose:
+                print("%d lines %s" % (len(lines),log_study7))
             S=[]
             L=[]
             for line in lines:
@@ -480,7 +486,8 @@ if __name__ == '__main__':
     parser = ap.ArgumentParser(description='Ingest study7 admit projects in a A/W/L/S database')
     parser.add_argument('-d','--db_name'  ,nargs=1, help='Database file [admit.db]')
     parser.add_argument('-c','--cal'      ,action='store_true', help='Special cheat for calibrators')
-    parser.add_argument('--version', action='version', version='%(prog)s ' + version)
+    parser.add_argument('-v','--verbose'  ,action='store_true', help='Verbose logging')
+    parser.add_argument('--Version', action='version', version='%(prog)s ' + version)
     parser.add_argument('admit_dirs', nargs='*')
     try:
         args = vars(parser.parse_args())
@@ -489,12 +496,20 @@ if __name__ == '__main__':
 
     db_name = args['db_name'][0]
     aq = not args['cal']
+    verbose = args['verbose']
+
     if not aq:
         print("Warning: special calibrator treatment for %s" % db_name)
 
     
     md = AdmitData(db_name)
     nadd = 0
-    for ddir in args['admit_dirs']:
-        nadd = nadd + md.add_study7(ddir, aq=aq)
-    print("Added %d / %d admit results" % (nadd,len(args['admit_dirs'])))
+    header = version
+    try:
+        for ddir in args['admit_dirs']:
+            nadd = nadd + md.add_study7(ddir, aq=aq, verbose=verbose, header=header)
+            header = None
+        print("OK. Added %d / %d admit results" % (nadd,len(args['admit_dirs'])))
+    except:
+        print("*** Added %d / %d admit results" % (nadd,len(args['admit_dirs'])))
+        print("*** but failed at ",ddir)
