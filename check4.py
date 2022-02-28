@@ -7,10 +7,13 @@ import sys
 
 from astroquery.admit import ADMIT
 
-db = 'admit.db'
 
-if len(sys.argv) > 1:
-    db = sys.argv[1]
+if len(sys.argv) == 1:
+    print("Usage: %s admit.db" % sys.argv[0])
+    print("Will summarize data ")
+    sys.exit(0)
+
+db = sys.argv[1]
 
 
 a = ADMIT(db)
