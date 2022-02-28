@@ -7,6 +7,8 @@ URL2 = https://github.com/astropy/pyvo
 URL3 = https://github.com/emerge-erc/ALminer
 URL4 = https://github.com/astroumd/admit
 
+URL5 = https://almascience.org/alma-data/archive/archive-notebooks/alma-science-archive-notebooks.tgz
+
 REPOS = astroquery pyvo alminer
 
 help:
@@ -14,6 +16,9 @@ help:
 	@echo "   git     clone repos needed"
 	@echo "   pull    pull the needed repos"
 	@echo "   mock    make new mockdata"
+
+alma-science-archive-notebooks:
+	wget $(URL5) -O - | tar -xz
 
 git2:
 	(cd admit ; git pull)
