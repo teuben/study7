@@ -1,5 +1,10 @@
 #! /usr/bin/env python
 #
+#  This script ingests the ADMIT results (the textual ones, not XML) into a sqlite3 database
+#  to be queried with astroquery.admit
+#
+#  There is also an option to query the alma.db via a side door
+#
 #
 #  import admit_study7.log as "admit" (L/W/S)
 #  import admit_sq.log     as "alma"  (A)
@@ -13,7 +18,7 @@ from sqlite3 import Error
 from astropy.time import Time
 import argparse as ap
 
-version = '25-feb-2022'
+version = '27-feb-2022'
 
 
 # from ADMIT:   admit/util/utils.py
@@ -76,10 +81,12 @@ CREATE TABLE IF NOT EXISTS alma (
     id integer PRIMARY KEY,
         obs_id              text NOT NULL,
         target_name         text NOT NULL,
-        s_ra                FLOAT,
-        s_dec               FLOAT,
-        frequency           FLOAT,
-        t_min               FLOAT, 
+        s_ra                        FLOAT,
+        s_dec                       FLOAT,
+        frequency                   FLOAT,
+        t_min                       FLOAT, 
+        cont_sensitivity_bandwidth  FLOAT,
+        sensitivity_10kms           FLOAT,
         project_abstract    text NOT NULL,
         obs_title           text NOT NULL,
         science_keyword     text NOT NULL,
@@ -205,7 +212,6 @@ class AdmitData(object):
         self.conn.commit()
         return cur.lastrowid
  
-
     def create_alma(self, entry):
         """
         Create a new project into the alma table
@@ -213,8 +219,8 @@ class AdmitData(object):
         :return: project id
         obs_id == member_ous_uid
         """
-        sql = ''' INSERT INTO alma(obs_id, target_name, s_ra, s_dec, frequency, t_min, project_abstract, obs_title, science_keyword, scientific_category,  proposal_authors)
-                            VALUES(?,      ?,           ?,    ?,     ?,         ?,     ?,                 ?,         ?,               ?,                    ?) '''
+        sql = ''' INSERT INTO alma(obs_id, target_name, s_ra, s_dec, frequency, t_min, cont_sensitivity_bandwidth, sensitivity_10kms, project_abstract, obs_title, science_keyword, scientific_category,  proposal_authors)
+                            VALUES(?,      ?,           ?,    ?,     ?,         ?,     ?,                          ?,                 ?,                ?,         ?,               ?,                    ?) '''
         cur = self.conn.cursor()
         cur.execute(sql, entry)
         self.conn.commit()
@@ -302,6 +308,8 @@ class AdmitData(object):
                     # t_min       58123.420166 - 58123.445496
                     t = Time(a['date_obs'])
                     a['t_min'] = t.mjd
+                    a['cont_sensitivity_bandwidth'] = 0.0
+                    a['sensitivity_10kms'] = 0.0
                     a['proposal_abstract'] = '-'
                     a['obs_title'] = '-'
                     a['science_keyword'] = 'cal'
@@ -314,6 +322,7 @@ class AdmitData(object):
             if 'obs_id' in a:
                 a_id = self.create_alma((a['obs_id'], a['target_name'], float(a['s_ra']),
                                          float(a['s_dec']), float(a['frequency']), float(a['t_min']),
+                                         a['cont_sensitivity_bandwidth'], a['sensitivity_10kms'],
                                          a['proposal_abstract'], a['obs_title'], a['science_keyword'],
                                          a['scientific_category'], a['proposal_authors']))
             else:
@@ -467,8 +476,10 @@ class AdmitData(object):
                                                     float(S[iSL][6]),
                                                     snr_s,
                         ))
+                #print("OK:          the right number of sources",len(S)," == ", nsources*(nlines+1),nsources,nlines)
             else:
-                print("Warning: not the right number of sources")
+                print("Warning: not the right number of sources",len(S)," != ", nsources*(nlines+1),nsources,nlines)
+                print("         dir_name=",dir_name)
             return 1
 
 
