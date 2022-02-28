@@ -1,4 +1,4 @@
-# Tools used in this project
+# Tools in this project
 
 ## alma_aq.py
 
@@ -51,3 +51,25 @@ of 8 printed on the actual archive query.
 
 This converts mockdata.txt into mockdata.db, such that our astroquery.admit modules can query this database.
 It was used for narrower tables to get the workflow going. Good for testing.
+
+## check4.py
+
+Summarizes data an in **alma.db** type database
+
+    ./check4.py  admit_maps.db 
+    Database version: 25-feb-2022. core.py version: 26-feb-2022
+    header    : 1 entries
+    alma      : 133 entries
+    win       : 133 entries
+    lines     : 60 entries
+    sources   : 1234 entries
+
+    5  unique sources:  ['GM_Aur' 'MWC_480' 'IM_Lup' 'HD163296' 'AS_209']
+
+    9 unique lines:  ['HCO+' 'HCN' 'CCH' 'HC3N' 'C18O' '13CO' 'CO' 'H2CO' 'DCN']
+
+    Continuum maps:                       0
+    Spectral Line Cube:                   133
+      w/ Line detections:                 46
+      w/ Line detections with no sources: 1
+      w/ Source detections with no lines: 8
