@@ -92,8 +92,13 @@ new:
 	rm -f $(NEW)
 	$(MAKE) $(NEW)
 
+anew:
+	rm -f admit_maps.db # admit_all.db
+	$(MAKE) admit_maps.db
+	# $(MAKE) admit_all.db
+
 admit.db:
-	./admit_study7.py -d admit.db    data/product_member*latest/*sci*cube*admit      data/product_member*latest/*sci*mfs*admit
+	./admit_study7.py -d admit.db    data/product_member*latest/*sci*cube*admit      data/product_member*latest/*sci*mfs*admit data/product_member*latest/*sci*cont*admit
 
 admit_cal.db:
 	./admit_study7.py -c -d admit_cal.db    data/product_member*latest/*_ph*mfs*admit      data/product_member*latest/*_bp*mfs*admit
@@ -102,4 +107,8 @@ admit.tar.gz:
 	tar zcf admit.tar.gz data/product_member*latest/*admit/*.log data/product_member*latest/*admit/*.log
 
 admit_maps.db:
-	./admit_study7.py -d admit_maps.db    data/MAPS/product_member*latest/*sci*cube*admit      data/MAPS/product_member*latest/*sci*mfs*admit
+	./admit_study7.py -d admit_maps.db    data/MAPS/product_member*latest/*sci*cube*admit      data/MAPS/product_member*latest/*sci*mfs*admit  data/product_member*latest/*sci*cont*admit
+
+admit_all.db:
+	./admit_study7.py -d admit_all.db    data/MAPS/product_member*latest/*sci*cube*admit      data/MAPS/product_member*latest/*sci*mfs*admit \
+		                             data/product_member*latest/*sci*cube*admit      data/product_member*latest/*sci*mfs*admit
