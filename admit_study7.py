@@ -516,11 +516,10 @@ if __name__ == '__main__':
     md = AdmitData(db_name)
     nadd = 0
     header = version
-    try:
-        for ddir in args['admit_dirs']:
+    for ddir in args['admit_dirs']:
+        try:
             nadd = nadd + md.add_study7(ddir, aq=aq, verbose=verbose, header=header)
             header = None
-        print("OK. Added %d / %d admit results" % (nadd,len(args['admit_dirs'])))
-    except:
-        print("*** Added %d / %d admit results" % (nadd,len(args['admit_dirs'])))
-        print("*** but failed at ",ddir)
+        except:
+            print("*** failed at ",ddir)
+    print("OK. Added %d / %d admit results" % (nadd,len(args['admit_dirs'])))
