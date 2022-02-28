@@ -23,31 +23,22 @@ Things we should clarify or fix.
 
 9. (@todo?) edge tables
 
-12. example cone searching in an area around ra/dec; can we only do circles?
-
 13. sources only have 2D information;  no <vmean> and sigma and shape
 
 14. the two python universe
 
-15. ascii ingest from admit results, written using logging.study7()
+15. ascii ingest from admit results, written using logging.study7() - no XML/BDP yet
 
 16. archive might change the names of e.g. "spw19" to include "104.5GHz" its center
 
-18. need to do a sanity check on the rms in the cube, and the one used in SFind2D
-
-19. if you ever see a "dummy" entry in the alma table, it means that the "admit_aq" query didn't
-    work and/or the fits file wasn't a recent enough ALMA fits file with good headers, and to
-	prevent it from failing, just added a dummy entry
-	
 	
 30. There are some questions for the ALMA db team about some peculiarities of the ALMA columns:
     1. why is there obs_id and member_ous_uid. they seem the same
-	2. how come that s_fov < s_resolution
-	
+	2. how come that s_fov < s_resolution; seems degrees and arcsec are used. not in web version though
 	
 31. textual searches are case sensitive in abstract etc.   How about NGC vs. ngc in object name?
 
-32. table(s) are not normalized
+32. table(s) are not fully normalized
 
 33. sample3 : how can there be a line, and no source  member.uid___A001_X1288_Xbbe.NGC4414_sci.spw23.cube.I.pbcor.fits
 
@@ -61,6 +52,15 @@ Things we should clarify or fix.
      but only one makes it into the x.CH3COOH_242.49769 - this looks like a bug in LineID
 
 
+36. [CASA] - Ingest_AT fails on big files when the pb is a pb.fits.gz , but works fine if it's a pb.fits - go figure.
+    casa5.8 fails
+	casa6.1 fails
+	casa6.3 fails
+	casa6.4 ??? (some other weird - perhaps ADMIT related - startup failure)
+    Example file: member.uid___A001_X133d_X19d0.IM_Lup_sci.spw25.cube.I.pbcor.fits [2240, 2240, 958, 1]
+    ia.fromfits('junk','member.uid___A001_X133d_X19d0.IM_Lup_sci.spw25.cube.I.pb.fits.gz')     
+	
+	A helpdesk ticket was created for this.
 
 ## query
 
@@ -74,3 +74,4 @@ Things we should clarify or fix.
 https://almascience.eso.org/alma-data/lp/MAPS
 2018.1.01055.L   2.3TB
 http://alma-maps.info/.
+
