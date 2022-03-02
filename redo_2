@@ -8,8 +8,7 @@ cd admit2
 ./configure --with-casa-root=/n/astromake/opt/casa/casa-pipeline-release-5.6.2-2.el7
 source admit_start.sh
 
-make bench
+make bench WGET=wgetc
 
 
-
-
+echo Done with admit2
