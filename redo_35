@@ -7,8 +7,11 @@ git clone https://github.com/astroumd/admit admit35
 cd admit35
 git checkout python3
 cp scripts/configure .
-./configure --with-casa-root=/n/astromake/opt/casa/casa-pipeline-release-5.6.2-2.el7
+#./configure --with-casa-root=/n/astromake/opt/casa/casa-pipeline-release-5.6.2-2.el7
+./configure --with-casa-root=/n/astromake/opt/casa/pre
 source admit_start.sh     
 
-make bench
-make bench35
+make bench    # WGET=wgetc
+make bench35  # WGET=wgetc
+
+echo Done with admit35.
