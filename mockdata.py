@@ -19,69 +19,91 @@ from sqlite3 import Error
 header_table = """
 CREATE TABLE IF NOT EXISTS header (
     id integer PRIMARY KEY,
-        key text NOT NULL,
-        val text NOT NULL
+    key text NOT NULL,
+    val text NOT NULL
 );
 """
-
 
 alma_table = """
 CREATE TABLE IF NOT EXISTS alma (
     id integer PRIMARY KEY,
-        obs_id text NOT NULL,
-        target_name text NOT NULL,
-        s_ra FLOAT,
-        s_dec FLOAT,
-        frequency FLOAT
+    obs_id              text NOT NULL,
+    target_name         text NOT NULL,
+    s_ra                        FLOAT,
+    s_dec                       FLOAT,
+    frequency                   FLOAT,
+    s_resolution                FLOAT,
+    t_min                       FLOAT, 
+    cont_sensitivity_bandwidth  FLOAT,
+    sensitivity_10kms           FLOAT,
+    project_abstract    text not null,
+    obs_title           text not null,
+    science_keyword     text not null,
+    scientific_category text not null,
+    proposal_authors    text not null 
 );
 """
 
 spw_table = """
-CREATE TABLE IF NOT EXISTS spw (
+CREATE TABLE IF NOT EXISTS win (
     id integer PRIMARY KEY,
-    alma_id INTEGER NOT NULL,
-    spw INTEGER,
+    a_id INTEGER NOT NULL,
+    spw TEXT,
+    freqc FLOAT,
+    freqw FLOAT,
+    vlsr FLOAT,
     nlines INTEGER,
     nsources INTEGER,
     nchan INTEGER,
-    rms FLOAT,
-    FOREIGN KEY (alma_id) REFERENCES alma (id)
-);
-"""
-cont_table = """
-CREATE TABLE IF NOT EXISTS cont (
-    id integer PRIMARY KEY,
-    alma_id INTEGER NOT NULL,
-    cont text NOT NULL,
-    nsources INTEGER,
-    FOREIGN KEY (alma_id) REFERENCES alma (id)
+    peak_w FLOAT,
+    rms_w FLOAT,
+    bmaj FLOAT,
+    bmin FLOAT,
+    bpa FLOAT,
+    fcoverage FLOAT,
+    FOREIGN KEY (a_id) REFERENCES alma (id)
 );
 """
 
 lines_table = """
 CREATE TABLE IF NOT EXISTS lines (
     id integer PRIMARY KEY,
-        spw_id INTEGER NOT NULL,
-        transition text NOT NULL,
-        velocity FLOAT,
-        start_chan INTEGER,
-        end_chan INTEGER,
-    FOREIGN KEY (spw_id) REFERENCES spw (id)
+    w_id          INTEGER NOT NULL,
+    formula       text NOT NULL,
+    transition    text NOT NULL,
+    restfreq      FLOAT, 
+    vmin          FLOAT,
+    vmax          FLOAT,
+    mom0flux      FLOAT,
+    mom1peak      FLOAT,
+    mom2peak      FLOAT,
+    FOREIGN KEY (w_id) REFERENCES win (id)
 );
 """
 
 sources_table = """
 CREATE TABLE IF NOT EXISTS sources (
     id integer PRIMARY KEY,
-        spw_id INTEGER NOT NULL,
-        lines_id INTEGER,
-        ra FLOAT,
-        dec FLOAT,
-        flux FLOAT,
-    FOREIGN KEY (spw_id) REFERENCES spw (id)
-    FOREIGN KEY (lines_id) REFERENCES lines (id)
+    w_id INTEGER NOT NULL,
+    l_id INTEGER,
+    ra FLOAT,
+    dec FLOAT,
+    peak_s FLOAT,
+    flux FLOAT,
+    smaj FLOAT,
+    smin FLOAT,
+    spa FLOAT,
+    snr_s FLOAT,
+    FOREIGN KEY (w_id) REFERENCES win (id),
+    FOREIGN KEY (l_id) REFERENCES lines (id)
 );
 """
+
+project_abstract    = "We will do something wonderful"
+obs_title           = "The End of the Universe"
+science_keyword     = "molecules, galaxies"
+scientific_category = "ISM"
+proposal_authors    = "George, Paul, Ringo"
 
 class MockData(object):
     """
@@ -102,7 +124,6 @@ class MockData(object):
             self.create_table( header_table)
             self.create_table(   alma_table)
             self.create_table(    spw_table)
-            self.create_table(   cont_table)
             self.create_table(  lines_table)
             self.create_table(sources_table)
         else:
@@ -142,10 +163,14 @@ class MockData(object):
         :return: project id
         obs_id == member_ous_uid
         """
-        sql = ''' INSERT INTO alma(obs_id, target_name, s_ra, s_dec, frequency)
-                            VALUES(?,      ?,           ?,    ?,     ?) '''
+
+        e = entry + (project_abstract, obs_title, science_keyword, scientific_category, proposal_authors)
+        sql = ''' INSERT INTO alma(obs_id, target_name, s_ra, s_dec,
+frequency, project_abstract, obs_title, science_keyword, scientific_category, proposal_authors)
+                            VALUES(?,      ?,           ?,    ?,     ?,   ?,
+  ?,  ?, ?, ?) '''
         cur = self.conn.cursor()
-        cur.execute(sql, entry)
+        cur.execute(sql, e)
         self.conn.commit()
         return cur.lastrowid
 
@@ -155,21 +180,9 @@ class MockData(object):
         :param project:
         :return: project id
         """
-        sql = ''' INSERT INTO spw(alma_id, spw, nlines, nsources, nchan, rms)
-                           VALUES(?,       ?,   ?,      ?,        ?,     ?) '''
-        cur = self.conn.cursor()
-        cur.execute(sql, entry)
-        self.conn.commit()
-        return cur.lastrowid
-
-    def create_cont(self, entry):
-        """
-        Create a new project into the cont table
-        :param project:
-        :return: project id
-        """
-        sql = ''' INSERT INTO cont(alma_id, cont, nsources)
-                           VALUES(?,       ?,    ?) '''
+        sql = ''' INSERT INTO win(a_id, spw, nlines, nsources, nchan, rms_w,
+bmaj, bmin, bpa)
+                           VALUES(?,       ?,   ?,      ?,        ?,     ?,   ?,   ?,   ?) '''
         cur = self.conn.cursor()
         cur.execute(sql, entry)
         self.conn.commit()
@@ -181,8 +194,8 @@ class MockData(object):
         :param project:
         :return: project id
         """
-        sql = ''' INSERT INTO lines(spw_id, transition, velocity, start_chan, end_chan)
-                             VALUES(?,      ?,          ?,        ?,          ?) '''
+        sql = ''' INSERT INTO lines(w_id, formula, transition, restfreq, vmin, vmax)
+                             VALUES(?,      ?,          ?,        ?,          ?,     ?) '''
         cur = self.conn.cursor()
         cur.execute(sql, entry)
         self.conn.commit()
@@ -195,7 +208,7 @@ class MockData(object):
         :param project:
         :return: project id
         """
-        sql = ''' INSERT INTO sources(spw_id, lines_id, ra, dec, flux)
+        sql = ''' INSERT INTO sources(w_id, l_id, ra, dec, flux)
                                VALUES(?,      ?,        ?,  ?,   ?) '''
         cur = self.conn.cursor()
         cur.execute(sql, entry)
@@ -240,12 +253,15 @@ class MockData(object):
                 elif mode==2:
                     nl = int(w[2])
                     ns = int(w[3])
-                    w_id = self.create_spw((a_id, int(w[1]), nl, ns, int(w[4]), float(w[5])))
+                    bmaj = float(w[6])
+                    bmin = float(w[7])
+                    bpa = float(w[8])
+                    w_id = self.create_spw((a_id, int(w[1]), nl, ns, int(w[4]), float(w[5]), bmaj, bmin, bpa))
                     s_stack = []
                     for i in range(ns):  s_stack.append(0)
                 elif mode==3:
                     print("PJT-3",s_stack)
-                    l_id = self.create_lines((w_id, w[1], float(w[2]), int(w[3]), int(w[4])))
+                    l_id = self.create_lines((w_id, w[1], w[2], float(w[3]), float(w[4]), float(w[5])))
                     for i in range(ns):  s_stack.append(l_id)
                 elif mode==4:
                     print("PJT-4",s_stack)
@@ -255,7 +271,8 @@ class MockData(object):
                     else:
                         print("no stack left for another source; skipping")
                 elif mode==5:
-                    c_id = self.create_cont((a_id, w[1], int(w[2])))
+                    pass
+                    #c_id = self.create_cont((a_id, w[1], int(w[2])))
                     # @todo   note we have no method to add sources to a cont map
                 elif mode==6:
                     h_id = self.create_header((w[1], ' '.join(w[2:])))
@@ -263,6 +280,6 @@ class MockData(object):
                     print("should never get here")
 
 if __name__ == '__main__':
-    md = MockData('mockdata.db')
-    md.mock('mockdata.txt')
+    md = MockData('mockdata2.db')
+    md.mock('mockdata.txt',dryrun=True)
     print("Wrote mockdata.db")

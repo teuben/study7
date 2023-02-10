@@ -3,47 +3,46 @@
 
 # some header items. Keep one deliberately without value
 H name    mockdata
-H version 2.3
-H author  Peter Teuben
+H version 2.4
+H author  Peter Teuben/Marc Pound
 H history fake alma matching real alma table
-H none
+H history update to match final tables for proposed ALMA study
 
 # table references:  A=alma W=spw L=lines S=sources
 #
-# A (alma):    project     source     ra     dec   spw
-# W (spw):     spw  nlines  nsources   nchan  rms
-# L (lines):   transition vel  start_chan end_chan  
+# A (alma):    project     source     ra     dec   frequency spw
+# W (spw):     spw  nlines  nsources   nchan  rms  bmaj bmin bpa
+# L (lines):   formula transition restfreq vmin vmax 
 # S (sources): ra dec flux
 
 X this is a future table
 
 
-A 2022.2.0001.A    NGC1234   18.00   60.00   115.0  1,2,3,4,5,6
+A 2022.2.0001.A    NGC1234   18.00   60.00   115.271  1,2,3,4,5,6
 #  no info yet on this project
-
-
 
 A 2022.1.0001.A    CenA      12.00   30.00   115.0  19,21,23,25
 
 #  spw19 is cont, and has 1 source
-W    19   0     2    1  0.123
+W    19   0     2    1  0.123  4.3 2.1 45.0
 S    12   30    1.0
 
 #  we're skipping 21
 
 # spw25 has 1 line, and one source
 
-W   25    1     1       2048  2.35
-L   CO(2-1) 60.1  120  140 2.35
+W   25    1     1       2048  2.35  4.3 2.1 45.0
+L   CO (1-0)  115.271   -20.0 25.0
 S   12  30    2.0     # S1
 S   12  30    2.0     # S1(L1)
 
 #  spw23 has 3 lines, and 2 sources
-W    23   3     2    1024   0.01
+# W (spw):     spw  nlines  nsources   nchan  rms  bmaj bmin bpa
+W    23   3     2    1024   0.01  5.0 3.0 32.0
 
-L     CO       60.1  100  120      
-L     N2H+     60.1  200  230      
-L     H2O      60.1  400  420
+L     CO   (1-0)    60.1  100  120      
+L     N2H+ (1-0)    60.1  200  230      
+L     H3CN (1-0)    60.1  400  420
 
 S   12   30      10    # S1
 S   12.5 30.5     1    # S2
@@ -55,12 +54,12 @@ S   12   30       0.9  # S1(L3)
 S   12.5 30.5     0.2  # S2(L3)
 
 #  a continuum, we're not using it in ADMIT?  x
-C   19_21_23_25    0
+#C   19_21_23_25    0
 #S   12.1  30.1    100        # no method to add sources for continuum maps yet
 
 
 A 2022.1.0003.A    NGC5888   12.00   30.00     115.0  19,21,23,25
-C   19_21_23_25    0
+#C   19_21_23_25    0
 #S   12.1  30.1    100        # no method to add sources for continuum maps yet
 
 
