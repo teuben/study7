@@ -1,12 +1,46 @@
-<html>
+
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+   <link type="image/png" rel="image_src" href="https://dp.lmtgtm.org/javax.faces.resource/images/dataverseproject.png.xhtml" />
+        <link type="text/css" rel="stylesheet" href="https://dp.lmtgtm.org/javax.faces.resource/bs/css/bootstrap.min.css.xhtml?version=5.9" />
+        <link type="text/css" rel="stylesheet" href="https://dp.lmtgtm.org/javax.faces.resource/bs/css/bootstrap-theme.min.css.xhtml?version=5.9" />
+        <link type="text/css" rel="stylesheet" href="https://dp.lmtgtm.org/javax.faces.resource/css/ie-compat.css.xhtml?version=5.9" />
+        <link type="text/css" rel="stylesheet" href="https://dp.lmtgtm.org/javax.faces.resource/css/owl.carousel.css.xhtml?version=5.9" />
+        <link type="text/css" rel="stylesheet" href="https://dp.lmtgtm.org/javax.faces.resource/css/fontcustom.css.xhtml?version=5.9" />
+        <link type="text/css" rel="stylesheet" href="https://dp.lmtgtm.org/javax.faces.resource/css/socicon.css.xhtml?version=5.9" />
+        <link type="text/css" rel="stylesheet" href="https://dp.lmtgtm.org/javax.faces.resource/css/structure.css.xhtml?version=5.9" />
+</head>
+
    <body>
+<div class="container">
+<!-- <div class="panel panel-default"> -->
+<div class="form-group">
       <form action = "{{ url_for('search') }}" method = "POST">
+
          <h3>LMT Data Search</h3>
-         Project code<br>
-         <input type = "text" name = "obs_id" /></br>
-         
-         Source<br>
-         <input type = "text" name = "target_name" /></br>
+         <!--<input type = "text" name = "obs_id" class="ui-inputfield ui-inputtext ui-widget ui-state-default ui-corner-all form-control"/></br>-->
+         Project ID<br>
+         <input type = "text" name = "alma_id" /></br>
+
+         ObsNum<br>
+         <input type = "text" name = "obs_id"/></br>
+
+         Target Name<br>
+         <input type = "text" name = "source_name_alma" /></br>
+
+         Frequency Center<br>
+         <input type = "text" name = "freq_c" /></br>
+
+         Line Formula<br>
+         <input type = "text" name = "formula" /></br>
+
+         Line Transition<br>
+         <input type = "text" name = "transition" /></br>
+
+         Velocity<br>
+         <input type = "text" name = "velocity" /></br>
 
          RA<br>
          <input type = "text" name = "s_ra" /></br>
@@ -17,7 +51,16 @@
          Search radius (arcsec) <br>
          <input type = "text" name = "radius" /><br>
          
-         <input type = "submit" value = "submit" /><br>
+       <span class="input-group-btn">
+            <button type="submit" title="Find" class="btn btn-default bootstrap-button-tooltip">Find
+                <span class="glyphicon glyphicon-search no-text"></span>
+          </button>
+         </span>
       </form>
+<!--</div>-->
+</div>
+</div>
+</div>
+
    </body>
 </html>
