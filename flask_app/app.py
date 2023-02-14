@@ -95,24 +95,27 @@ cols_to_exclude = ['id','project_abstract','obs_title','fcoverage','science_keyw
 app = Flask(__name__)
 db = "../query/admit.db"    
 a = ADMIT(db,check_same_thread=False)
-columns_to_show = ['obs_id','target_name','s_ra','s_dec','obs_title','proposal_authors','freqc','vlsr','formula','transition']
+columns_to_show = ['obs_id','target_name','s_ra','s_dec','obs_title','proposal_authors','freqc','vlsr']
 
 @app.route('/')
 def home():
     return render_template('search.html')
 
+
 @app.route('/search', methods=['POST','GET'])
 def search():
     #a.check()
     length = 0
+    almalink = "https://almascience.nrao.edu/aq/?result_view=observations&observationsProjectCode="
     if request.method == 'POST':
       search_kwargs = request.form.to_dict()
       try:
-         s_ra = request.form['s_ra']
-         s_dec = request.form['s_dec']
-         radius = search_kwargs.pop('radius',None)
+         s_ra = search_kwargs.pop('s_ra','')
+         s_dec = search_kwargs.pop('s_dec','')
+         radius = search_kwargs.pop('radius','')
          c = None
-         if s_ra != '' and s_dec != '' and radius != '':
+         #NB this does not allow "give me everything at a certain RA". oh well.
+         if s_ra != '' and s_dec != ''  and radius != '':
              c = SkyCoord(s_ra,s_dec,frame='icrs')
              size = float(radius)*u.arcsec
              search_kwargs['region'] = [c,size]
@@ -121,8 +124,20 @@ def search():
          sknew =  dict(filter(itemgetter(1), search_kwargs.items()))
          print(sknew)
          result = a.query(**sknew)
+         print("COLUMNS ",result.columns)
          length=len(result)
-         msg = result.to_html(columns=columns_to_show)
+         if 'formula' in result.columns:
+            print("adding formula")
+            columns_to_show.append('formula')
+         if 'transition' in result.columns:
+            print("adding columns")
+            columns_to_show.append('transition')
+         # replace UID with alma archive link to UID
+         i = 0
+         for v in result['obs_id']:
+            result.loc[i,'obs_id'] = f'<a href="{almalink}{v}">{v}</a>'
+            i = i+1
+         msg = result.to_html(classes=['table', 'table-striped'],columns=columns_to_show,escape=False)
          
       except Exception as e:
          msg = "Got Exception : %s"%str(e)

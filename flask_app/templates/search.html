@@ -15,52 +15,130 @@
 
    <body>
 <div class="container">
-<!-- <div class="panel panel-default"> -->
-<div class="form-group">
-      <form action = "{{ url_for('search') }}" method = "POST">
-
-         <h3>LMT Data Search</h3>
+<div class="panel-group">
+      <form id="searchForm" name="searchForm" action="{{ url_for('search') }}" method = "post" enctype="application/x-www-form-urlencoded">
+<br>
+<br>
+        <div class="panel panel-default"> 
+<div class="panel-heading">LMT Data Search</div>
          <!--<input type = "text" name = "obs_id" class="ui-inputfield ui-inputtext ui-widget ui-state-default ui-corner-all form-control"/></br>-->
-         Project ID<br>
-         <input type = "text" name = "alma_id" /></br>
+<div class="panel-body">
+        <div class="form-group">
+        <label for="obs_id" class="col-sm-4 control-label">
+         Project ID</label>
+         <div class="col-sm-6">
+         <input type="text" id="obs_id" name="obs_id" class="ui-inputfield ui-inputtext ui-widget ui-state-default ui-corner-all form-control" role="textbox" area-readonly="false" aria-disabled="false"/>
+        </div>
+        </div><!-- form-group-->
 
-         ObsNum<br>
-         <input type = "text" name = "obs_id"/></br>
+        <div class="form-group">
+        <label for="alma_id" class="col-sm-4 control-label">
+         Obsnum</label>
+         <div class="col-sm-6">
+         <input type="text" id="alma_id" name="alma_id" class="ui-inputfield ui-inputtext ui-widget ui-state-default ui-corner-all form-control" role="textbox" area-readonly="false" aria-disabled="false"/>
+        </div>
+        </div><!-- form-group-->
 
-         Target Name<br>
-         <input type = "text" name = "source_name_alma" /></br>
+        <div class="form-group">
+        <label for="source_name_alma" class="col-sm-4 control-label">
+         Target Name</label>
+         <div class="col-sm-6">
+         <input type="text" id="source_name_alma" name="source_name_alma" class="ui-inputfield ui-inputtext ui-widget ui-state-default ui-corner-all form-control" role="textbox" area-readonly="false" aria-disabled="false"/>
+        </div>
+        </div><!-- form-group-->
 
-         Frequency Center<br>
-         <input type = "text" name = "freq_c" /></br>
+        <div class="form-group">
+        <label for="s_ra" class="col-sm-4 control-label">
+         RA
+        </label>
+         <div class="col-sm-6">
+         <input type="text" id="s_ra" name="s_ra" class="ui-inputfield ui-inputtext ui-widget ui-state-default ui-corner-all form-control" role="textbox" area-readonly="false" aria-disabled="false"/>
+        </div>
+        </div><!-- form-group-->
 
-         Line Formula<br>
-         <input type = "text" name = "formula" /></br>
+        <div class="form-group">
+        <label for="s_dec" class="col-sm-4 control-label">
+         DEC
+        </label>
+         <div class="col-sm-6">
+         <input type="text" id="s_dec" name="s_dec" class="ui-inputfield ui-inputtext ui-widget ui-state-default ui-corner-all form-control" role="textbox" area-readonly="false" aria-disabled="false"/>
+        </div>
+        </div><!-- form-group-->
 
-         Line Transition<br>
-         <input type = "text" name = "transition" /></br>
+        <div class="form-group">
+        <label for="radius" class="col-sm-4 control-label">
+         Search radius (arcsec)
+        </label>
+         <div class="col-sm-6">
+         <input type="text" id="radius" name="radius" class="ui-inputfield ui-inputtext ui-widget ui-state-default ui-corner-all form-control" role="textbox" area-readonly="false" aria-disabled="false"/>
+        </div>
+        </div><!-- form-group-->
 
-         Velocity<br>
-         <input type = "text" name = "velocity" /></br>
+        <div class="form-group">
+        <label for="freq_c" class="col-sm-4 control-label">
+         Frequency Center (GHz)</label>
+         <div class="col-sm-6">
+         <input type="text" id="freq_c" name="freq_c" class="ui-inputfield ui-inputtext ui-widget ui-state-default ui-corner-all form-control" role="textbox" area-readonly="false" aria-disabled="false"/>
+        </div>
+        </div><!-- form-group-->
 
-         RA<br>
-         <input type = "text" name = "s_ra" /></br>
+        <div class="form-group">
+        <label for="formula" class="col-sm-4 control-label">
+         Line Formula
+        </label>
+         <div class="col-sm-6">
+         <input type="text" id="formula" name="formula" class="ui-inputfield ui-inputtext ui-widget ui-state-default ui-corner-all form-control" role="textbox" area-readonly="false" aria-disabled="false"/>
+        </div>
+        </div><!-- form-group-->
 
-         DEC<br>
-         <input type = "text" name = "s_dec" /></br>
+        <div class="form-group">
+        <label for="transition" class="col-sm-4 control-label">
+         Line Transition
+        </label>
+         <div class="col-sm-6">
+         <input type="text" id="transition" name="transition" class="ui-inputfield ui-inputtext ui-widget ui-state-default ui-corner-all form-control" role="textbox" area-readonly="false" aria-disabled="false"/>
+        </div>
+        </div><!-- form-group-->
+
+        <div class="form-group">
+        <label for="velocity" class="col-sm-4 control-label">
+         Velocity
+        </label>
+         <div class="col-sm-6">
+         <input type="text" id="velocity" name="velocity" class="ui-inputfield ui-inputtext ui-widget ui-state-default ui-corner-all form-control" role="textbox" area-readonly="false" aria-disabled="false"/>
+        </div>
+        </div><!-- form-group-->
+
+
+        <div class="form-group">
+        <label for="project_title" class="col-sm-4 control-label">
+         Project Title
+        </label>
+         <div class="col-sm-6">
+         <input type="text" id="project_title" name="project_title" class="ui-inputfield ui-inputtext ui-widget ui-state-default ui-corner-all form-control" role="textbox" area-readonly="false" aria-disabled="false"/>
+        </div>
+        </div><!-- form-group-->
          
-         Search radius (arcsec) <br>
-         <input type = "text" name = "radius" /><br>
-         
-       <span class="input-group-btn">
-            <button type="submit" title="Find" class="btn btn-default bootstrap-button-tooltip">Find
-                <span class="glyphicon glyphicon-search no-text"></span>
+        <div class="form-group">
+        <label for="project_abstract" class="col-sm-4 control-label">
+         Project Abstract
+        </label>
+         <div class="col-sm-6">
+         <input type="text" id="project_abstract" name="project_abstract" class="ui-inputfield ui-inputtext ui-widget ui-state-default ui-corner-all form-control" role="textbox" area-readonly="false" aria-disabled="false"/>
+        </div>
+        </div><!-- form-group-->
+
+     </div><!-- panel -->
+       <div class="button-block margin-bottom">
+            <button id="Find" name="Find" type="submit" role="button" aria-disabled="false".
+            class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only btn btn-default">
+                <span class="ui-button-text ui-c">Find</span>
           </button>
-         </span>
+      </div> <!-- button block-->
+     </div><!-- panel-body-->
       </form>
-<!--</div>-->
-</div>
-</div>
-</div>
+</div><!-- panel-group -->
+</div><!-- container-->
 
    </body>
 </html>
