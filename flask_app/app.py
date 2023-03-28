@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 #------------------------------------------------
 #       Keyword                      Description               Database Table
 #--------------------- --------------------------------------- --------------
@@ -23,10 +22,15 @@ cols_to_exclude = ['id','project_abstract','obs_title','fcoverage','science_keyw
 
 
 app = Flask(__name__)
+# made up key. it's an md5 hash of "LMT DATABASE SEARCH"
+app.secret_key = "864feb319aa38d67b46f40f657442192"
+#app.config['SECRET_KEY'] = "864feb319aa38d67b46f40f657442192"
 app.config["SESSION_PERMANENT"] = False
-app.config["SESSION_TYPE"] = "filesystem"
+app.config["SESSION_TYPE"] = "null"
+#app.config['SESSION_PERMANENT']= False
 Session(app)
-db = "example_lmt.db"    
+#db = "example_lmt.db"    
+db = "/lma/www/html/lmtsearch/study7/flask_app/example_lmt.db"    
 a = ADMIT(db,check_same_thread=False)
 
 @app.route('/')
