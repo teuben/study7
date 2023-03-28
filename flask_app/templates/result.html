@@ -1,16 +1,35 @@
-<!doctype html>
-<html>
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous" type="text/css">
+   <link type="image/png" rel="image_src" href="https://dp.lmtgtm.org/javax.faces.resource/images/dataverseproject.png.xhtml" />
+        <link type="text/css" rel="stylesheet" href="https://dp.lmtgtm.org/javax.faces.resource/bs/css/bootstrap.min.css.xhtml?version=5.9" />
+        <link type="text/css" rel="stylesheet" href="https://dp.lmtgtm.org/javax.faces.resource/bs/css/bootstrap-theme.min.css.xhtml?version=5.9" />
+        <link type="text/css" rel="stylesheet" href="https://dp.lmtgtm.org/javax.faces.resource/css/ie-compat.css.xhtml?version=5.9" />
+        <link type="text/css" rel="stylesheet" href="https://dp.lmtgtm.org/javax.faces.resource/css/owl.carousel.css.xhtml?version=5.9" />
+        <link type="text/css" rel="stylesheet" href="https://dp.lmtgtm.org/javax.faces.resource/css/fontcustom.css.xhtml?version=5.9" />
+        <link type="text/css" rel="stylesheet" href="https://dp.lmtgtm.org/javax.faces.resource/css/socicon.css.xhtml?version=5.9" />
+        <link type="text/css" rel="stylesheet" href="https://dp.lmtgtm.org/javax.faces.resource/css/structure.css.xhtml?version=5.9" />
 </head>
    <body>
    
       <div class="container">
-          <h2>Got {{length}} results</h2>
+      <form id="searchForm" name="downloadForm" action="{{ url_for('download') }}" method = "post" enctype="application/x-www-form-urlencoded">
+          <h4>Got {{length}} results</h4>
           <div class="table-responsive">
           {{ msg|safe }}
           </div>
-      <h3><a href = "/">Back to search page</a></h3>
+      <div class="container">
+       <div class="button-block margin-bottom">
+            <button id="Download" name="Download" type="submit" role="button" aria-disabled="false".
+            class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only btn btn-default">
+                <span class="ui-button-text ui-c">Download</span>
+          </button>
+      </div> <!-- button block-->
+     </div>
+      </form>
+      <h4><a href = "/">Back to search page</a></h4>
       </div>
       
    </body>
