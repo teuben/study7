@@ -26,8 +26,10 @@ app = Flask(__name__)
 app.secret_key = "864feb319aa38d67b46f40f657442192"
 #app.config['SECRET_KEY'] = "864feb319aa38d67b46f40f657442192"
 app.config["SESSION_PERMANENT"] = False
-app.config["SESSION_TYPE"] = "null"
-#app.config['SESSION_PERMANENT']= False
+app.config["SESSION_TYPE"] = "filesystem"
+# make sure this is writeable by apache or whatever process owns the script
+app.config["SESSION_FILE_DIR"] = "/tmp/flask_session"
+app.config['SESSION_PERMANENT']= False
 Session(app)
 #db = "example_lmt.db"    
 db = "/lma/www/html/lmtsearch/study7/flask_app/example_lmt.db"    
